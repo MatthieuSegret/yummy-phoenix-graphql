@@ -20,7 +20,7 @@ defmodule Yummy.Mixfile do
   def application do
     [
       mod: {Yummy.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :absinthe, :absinthe_plug]
     ]
   end
 
@@ -38,7 +38,10 @@ defmodule Yummy.Mixfile do
       {:phoenix_ecto, "~> 3.2"},
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
-      {:cowboy, "~> 1.0"}
+      {:cowboy, "~> 1.0"},
+      {:absinthe, github: "absinthe-graphql/absinthe", tag: "v1.4.0-beta.3", override: true},
+      {:absinthe_plug, github: "absinthe-graphql/absinthe_plug", tag: "v1.4.0-beta.1"},
+      {:poison, "~> 3.1.0"}
     ]
   end
 
