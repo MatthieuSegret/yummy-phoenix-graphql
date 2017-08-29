@@ -1,16 +1,31 @@
 {
-  "name": "client",
+  "name": "yummy",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bulma": "^0.5.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "react-scripts": "1.0.12"
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.0.12",
+    "redux": "^3.7.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build-css":
+      "node-sass --include-path node_modules/ --include-path src/ src/assets/stylesheets/scss -o src/assets/stylesheets/css",
+    "watch-css":
+      "npm run build-css && node-sass --include-path node_modules/ --include-path src/ src/assets/stylesheets/scss -o src/assets/stylesheets/css --watch --recursive",
+    "start-js": "react-scripts start",
+    "start": "npm-run-all -p watch-css start-js",
+    "build": "npm run build-css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^2.3.0",
+    "node-sass": "^4.5.3",
+    "npm-run-all": "^4.1.1",
+    "prettier": "^1.6.0"
   }
 }

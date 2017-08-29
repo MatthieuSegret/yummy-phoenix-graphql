@@ -2,6 +2,8 @@
 /_build
 /db
 /deps
+/client/build
+/client/src/assets/stylesheets/css
 /*.ez
 
 # Generated on crash by the VM
