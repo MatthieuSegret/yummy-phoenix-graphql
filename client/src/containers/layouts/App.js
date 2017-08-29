@@ -15,7 +15,7 @@ export default class App extends Component {
 
         <main role="main">
           <section className="section">
-            <div class="container">
+            <div className="container">
               <div className="columns">
                 <div className="column is-offset-2 is-8">
                   <Switch>
