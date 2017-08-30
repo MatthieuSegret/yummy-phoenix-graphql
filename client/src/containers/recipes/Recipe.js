@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { gql, graphql } from 'react-apollo';
+import ReactMarkdown from 'react-markdown';
 
 class Recipe extends Component {
   static propTypes = {
@@ -16,9 +17,14 @@ class Recipe extends Component {
 
     return (
       <div className="recipe-show">
-        <h1 className="title is-3">{recipe.title}</h1>
+        <div className="title-wrapper">
+          <h1 className="title is-3">{recipe.title}</h1>
+          <hr />
+        </div>
 
-        <div className="content">{recipe.content}</div>
+        <div className="content">
+          <ReactMarkdown source={recipe.content} />
+        </div>
         <Link to="/">Retour</Link>
       </div>
     );

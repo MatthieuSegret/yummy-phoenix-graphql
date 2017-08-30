@@ -23,9 +23,12 @@ class AllRecipes extends Component {
         <div className="recipes">
           {recipes.map(recipe => (
             <div key={recipe.id} className="recipe">
-              <h2 className="title is-4">
-                <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
-              </h2>
+              <div className="title-wrapper">
+                <h2 className="title is-4">
+                  <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
+                </h2>
+              </div>
+              <div className="recipe-begin">{recipe.description}</div>
             </div>
           ))}
         </div>
@@ -39,6 +42,7 @@ let withRecipes = graphql(gql`
     recipes {
       id
       title
+      description
     }
   }
 `);

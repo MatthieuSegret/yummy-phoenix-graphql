@@ -11,3 +11,13 @@
     }
   }
 }
+
+.recipe {
+  .title-wrapper .title {
+    display: inline-block;
+  }
+
+  .recipe-begin {
+    color: $grey;
+  }
+}
