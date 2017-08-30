@@ -14,5 +14,14 @@ defmodule YummyWeb.Graph.Schema do
       end
     end
 
+    @desc "fetch a Recipe by id"
+    field :recipe, :recipe do
+      arg :id, non_null(:id)
+      resolve fn args, _ ->
+        recipe = Recipe |> Repo.get!(args[:id])
+        {:ok, recipe}
+      end
+    end
+
   end
 end

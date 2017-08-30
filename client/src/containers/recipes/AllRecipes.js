@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { gql, graphql } from 'react-apollo';
 
 class AllRecipes extends Component {
@@ -22,7 +23,9 @@ class AllRecipes extends Component {
         <div className="recipes">
           {recipes.map(recipe => (
             <div key={recipe.id} className="recipe">
-              <h2 className="title is-4">{recipe.title}</h2>
+              <h2 className="title is-4">
+                <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
+              </h2>
             </div>
           ))}
         </div>
