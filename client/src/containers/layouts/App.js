@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import AllRecipes from 'containers/recipes/AllRecipes';
+import SearchRecipe from 'containers/recipes/SearchRecipe';
 import Recipe from 'containers/recipes/Recipe';
 import NotFound from 'components/NotFound';
 import Header from 'containers/layouts/Header';
@@ -21,6 +22,7 @@ export default class App extends Component {
                 <div className="column is-offset-2 is-8">
                   <Switch>
                     <Route path="/" exact component={AllRecipes} />
+                    <Route path="/recipes/search/:keywords" component={SearchRecipe} />
                     <Route path="/recipes/:id" component={Recipe} />
                     <Route component={NotFound} />
                   </Switch>

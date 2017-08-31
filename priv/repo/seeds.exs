@@ -16,7 +16,7 @@ alias Yummy.Recipes
 alias Yummy.Recipes.Recipe
 
 Recipe |> Repo.delete_all
-Recipes.create_recipe(%{
+Recipes.create(%{
   title: "Panna cotta coco fruits rouges",
   content: ~s[#### Ingrédients
   
@@ -48,7 +48,7 @@ Recipes.create_recipe(%{
 })
 
 
-Recipes.create_recipe(%{
+Recipes.create(%{
   title: "Tarte aux figues",
   content: ~s[#### Ingrédients
   
@@ -73,7 +73,7 @@ Recipes.create_recipe(%{
 })
 
 
-Recipes.create_recipe(%{
+Recipes.create(%{
   title: "Clafoutis aux tomates cerise",
   content: ~s[#### Ingrédients
   
@@ -111,7 +111,7 @@ Recipes.create_recipe(%{
 })
 
 
-Recipes.create_recipe(%{
+Recipes.create(%{
   title: "Tresse feuilletée au chocolat",
   content: ~s[#### Ingrédients
   
@@ -142,7 +142,7 @@ Recipes.create_recipe(%{
 })
 
 
-Recipes.create_recipe(%{
+Recipes.create(%{
   title: "Pain de courgettes",
   content: ~s[#### Ingrédients
   
@@ -168,7 +168,7 @@ Recipes.create_recipe(%{
 })
 
 
-Recipes.create_recipe(%{
+Recipes.create(%{
   title: "Cake châtaigne et crème de marron",
   content: ~s[#### Ingrédients
   

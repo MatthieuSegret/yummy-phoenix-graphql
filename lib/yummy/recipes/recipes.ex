@@ -3,7 +3,14 @@ defmodule Yummy.Recipes do
   alias Yummy.Repo
   alias Yummy.Recipes.Recipe
 
-  def create_recipe(attrs) do
+  def search(query, nil), do: query 
+  def search(query, keywords) do
+    from r in query,
+    where: ilike(r.title, ^("%#{keywords}%")) or
+           ilike(r.content, ^("%#{keywords}%"))
+  end
+
+  def create(attrs) do
     %Recipe{}
     |> Recipe.changeset(attrs)
     |> Repo.insert()

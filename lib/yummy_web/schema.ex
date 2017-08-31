@@ -1,6 +1,7 @@
 defmodule YummyWeb.Graph.Schema do
   use Absinthe.Schema
   alias Yummy.Repo
+  alias Yummy.Recipes
   alias Yummy.Recipes.Recipe
 
   import_types YummyWeb.Graph.Types.RecipeType
@@ -9,8 +10,12 @@ defmodule YummyWeb.Graph.Schema do
 
     @desc "get recipes list"
     field :recipes, list_of(:recipe) do
-      resolve fn _, _ ->
-        {:ok, Repo.all(Recipe)}
+      arg :keywords, :string, default_value: nil
+      resolve fn args, _ ->
+        recipes = Recipe
+        |> Recipes.search(args[:keywords])
+        |> Repo.all()
+        {:ok, recipes}
       end
     end
 
