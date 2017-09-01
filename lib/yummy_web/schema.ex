@@ -10,12 +10,25 @@ defmodule YummyWeb.Graph.Schema do
 
     @desc "get recipes list"
     field :recipes, list_of(:recipe) do
+      arg :offset, :integer, default_value: 0
       arg :keywords, :string, default_value: nil
       resolve fn args, _ ->
         recipes = Recipe
         |> Recipes.search(args[:keywords])
-        |> Repo.all()
+        |> Repo.paginate(args[:offset])
+        |> Repo.all
         {:ok, recipes}
+      end
+    end
+
+    @desc "Number of recipes"
+    field :recipes_count, :integer do
+      arg :keywords, :string, default_value: nil
+      resolve fn args, _ ->
+        recipes_count = Recipe
+        |> Recipes.search(args[:keywords])
+        |> Repo.count
+        {:ok, recipes_count}
       end
     end
 

@@ -12,7 +12,7 @@ class AllRecipes extends Component {
   };
 
   render() {
-    const { recipes } = this.props.data;
+    const { data: { recipes, recipesCount }, loadMoreRecipes } = this.props;
     const { params: { keywords } } = this.props.match;
 
     if (!recipes) {
@@ -28,7 +28,11 @@ class AllRecipes extends Component {
           <SearchForm initialKeywords={keywords} />
         </div>
 
-        <ListRecipes recipes={recipes} />
+        <ListRecipes
+          recipes={recipes}
+          recipesCount={recipesCount}
+          loadMoreRecipes={loadMoreRecipes}
+        />
       </div>
     );
   }

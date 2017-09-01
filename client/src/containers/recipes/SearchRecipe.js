@@ -18,7 +18,7 @@ class SearchRecipes extends Component {
   }
 
   render() {
-    const { recipes } = this.props.data;
+    const { data: { recipes, recipesCount }, loadMoreRecipes } = this.props;
     const { params: { keywords } } = this.props.match;
 
     if (!recipes) {
@@ -37,7 +37,11 @@ class SearchRecipes extends Component {
         {recipes && recipes.length === 0 ? (
           <h3>Pas de résultats ...</h3>
         ) : (
-          <ListRecipes recipes={recipes} />
+          <ListRecipes
+            recipes={recipes}
+            recipesCount={recipesCount}
+            loadMoreRecipes={loadMoreRecipes}
+          />
         )}
       </div>
     );

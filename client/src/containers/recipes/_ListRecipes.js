@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 
 export default class ListRecipes extends Component {
   static propTypes = {
-    recipes: PropTypes.array
+    recipes: PropTypes.array,
+    recipesCount: PropTypes.number,
+    loadMoreRecipes: PropTypes.func
   };
 
   render() {
-    const { recipes } = this.props;
+    const { recipes, recipesCount, loadMoreRecipes } = this.props;
 
     if (!recipes) {
       return null;
@@ -26,6 +28,12 @@ export default class ListRecipes extends Component {
             <div className="recipe-begin">{recipe.description}</div>
           </div>
         ))}
+
+        {recipes && recipes.length < recipesCount ? (
+          <button className="button load-more" onClick={loadMoreRecipes}>
+            Plus de recettes
+          </button>
+        ) : null}
       </div>
     );
   }
