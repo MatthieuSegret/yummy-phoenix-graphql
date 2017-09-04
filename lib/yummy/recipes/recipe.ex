@@ -16,5 +16,6 @@ defmodule Yummy.Recipes.Recipe do
     recipe
     |> cast(attrs, [:title, :content])
     |> validate_required([:title, :content])
+    |> validate_length(:content, min: 10)
   end
 end

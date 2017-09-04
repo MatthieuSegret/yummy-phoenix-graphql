@@ -21,7 +21,6 @@ defmodule YummyWeb do
     quote do
       use Phoenix.Controller, namespace: YummyWeb
       import Plug.Conn
-      import YummyWeb.Router.Helpers
       import YummyWeb.Gettext
     end
   end

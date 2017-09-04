@@ -20,7 +20,6 @@ defmodule YummyWeb.Mutations.RecipeMutations do
           {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
         end
       end
-      middleware &build_payload/2
     end
 
   end
