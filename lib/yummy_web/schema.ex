@@ -1,45 +1,15 @@
 defmodule YummyWeb.Graph.Schema do
   use Absinthe.Schema
-  alias Yummy.Repo
-  alias Yummy.Recipes
-  alias Yummy.Recipes.Recipe
 
-  import_types YummyWeb.Graph.Types.RecipeType
+  import_types YummyWeb.Types.RecipeType
+  import_types YummyWeb.Queries.RecipeQueries
+  import_types YummyWeb.Mutations.RecipeMutations
 
   query do
+    import_fields :recipe_queries
+  end
 
-    @desc "get recipes list"
-    field :recipes, list_of(:recipe) do
-      arg :offset, :integer, default_value: 0
-      arg :keywords, :string, default_value: nil
-      resolve fn args, _ ->
-        recipes = Recipe
-        |> Recipes.search(args[:keywords])
-        |> Repo.paginate(args[:offset])
-        |> Repo.all
-        {:ok, recipes}
-      end
-    end
-
-    @desc "Number of recipes"
-    field :recipes_count, :integer do
-      arg :keywords, :string, default_value: nil
-      resolve fn args, _ ->
-        recipes_count = Recipe
-        |> Recipes.search(args[:keywords])
-        |> Repo.count
-        {:ok, recipes_count}
-      end
-    end
-
-    @desc "fetch a Recipe by id"
-    field :recipe, :recipe do
-      arg :id, non_null(:id)
-      resolve fn args, _ ->
-        recipe = Recipe |> Repo.get!(args[:id])
-        {:ok, recipe}
-      end
-    end
-
+  mutation do
+    import_fields :recipe_mutations
   end
 end

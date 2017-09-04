@@ -1,4 +1,4 @@
-defmodule YummyWeb.Graph.Types.RecipeType do
+defmodule YummyWeb.Types.RecipeType do
   use Absinthe.Schema.Notation
   alias YummyWeb.Helpers.ApplicationHelpers
 
