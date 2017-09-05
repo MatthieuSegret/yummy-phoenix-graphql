@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
 
 export default class ListRecipes extends Component {
@@ -38,3 +39,13 @@ export default class ListRecipes extends Component {
     );
   }
 }
+
+export const fragments = {
+  recipe: gql`
+    fragment RecipePreviewFragment on Recipe {
+      id
+      title
+      description
+    }
+  `
+};

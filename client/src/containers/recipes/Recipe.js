@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { gql, graphql } from 'react-apollo';
+import { gql } from 'react-apollo';
 import ReactMarkdown from 'react-markdown';
+
+import withRecipe from 'queries/recipes/recipeQuery';
 
 class Recipe extends Component {
   static propTypes = {
@@ -31,23 +33,14 @@ class Recipe extends Component {
   }
 }
 
-let withRecipe = graphql(
-  gql`
-    query recipe($id: ID) {
-      recipe(id: $id) {
-        id
-        title
-        content
-      }
+export const fragments = {
+  recipe: gql`
+    fragment RecipeFragment on Recipe {
+      id
+      title
+      content
     }
-  `,
-  {
-    options: ownProps => ({
-      variables: {
-        id: ownProps.match.params.id
-      }
-    })
-  }
-);
+  `
+};
 
 export default withRecipe(Recipe);
