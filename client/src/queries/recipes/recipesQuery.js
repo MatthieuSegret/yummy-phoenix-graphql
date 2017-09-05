@@ -1,6 +1,8 @@
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { updateQuery } from 'reducers/recipesReducer';
+
 const GET_RECIPES = gql`
   query recipes($offset: Int, $keywords: String) {
     recipesCount(keywords: $keywords)
@@ -22,13 +24,7 @@ export default graphql(GET_RECIPES, {
       loadMoreRecipes() {
         return data.fetchMore({
           variables: { offset: data.recipes.length },
-          updateQuery(state, { fetchMoreResult }) {
-            const { recipes, recipesCount } = fetchMoreResult;
-            return {
-              recipes: [...state.recipes, ...recipes],
-              recipesCount
-            };
-          }
+          updateQuery
         });
       }
     };

@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { withRouter } from 'react-router';
 
 import normalizeMessages from 'helpers/errorHelpers';
+import updateQueries from 'reducers/recipesReducer';
 
 export default function(WrappedComponent) {
   const CREATE_RECIPE = gql`
@@ -34,18 +35,7 @@ export default function(WrappedComponent) {
       createRecipe(recipe) {
         return mutate({
           variables: { ...recipe },
-          updateQueries: {
-            recipes(state = [], { mutationResult, queryVariables }) {
-              const { newRecipe } = mutationResult.data.createRecipe;
-              if (!newRecipe) {
-                return null;
-              }
-              return {
-                recipes: [newRecipe, ...state.recipes],
-                recipesCount: state.recipesCount + 1
-              };
-            }
-          }
+          updateQueries
         }).then(onResult.bind(ownProps));
       }
     })
