@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
 export default class SubmitField extends Component {
   static propTypes = {
-    value: PropTypes.string
+    value: PropTypes.string,
+    loading: PropTypes.bool
   };
 
   static defaultProps = {
-    value: 'Soumettre'
+    value: 'Soumettre',
+    loading: false
   };
 
   render() {
-    let { value } = this.props;
-
+    const { loading, value } = this.props;
     return (
       <div className="field is-grouped">
         <div className="control">
-          <button className="button is-primary" type="submit">
+          <button className={classnames('button is-primary', { 'is-loading': loading })} type="submit">
             {value}
           </button>
         </div>
