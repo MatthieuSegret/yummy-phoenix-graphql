@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import withRecipes from 'queries/recipes/recipesQuery';
-import SearchForm from 'containers/recipes/_SearchForm';
+import HeadListRecipes from 'containers/recipes/_HeadListRecipes';
 import ListRecipes from 'containers/recipes/_ListRecipes';
 
 class AllRecipes extends Component {
@@ -24,9 +24,7 @@ class AllRecipes extends Component {
         <h1 className="title is-3 has-text-centered">Les recettes de cuisine de vos amis</h1>
         <hr />
 
-        <div className="content">
-          <SearchForm initialKeywords={keywords} />
-        </div>
+        <HeadListRecipes keywords={keywords} />
 
         <ListRecipes
           recipes={recipes}

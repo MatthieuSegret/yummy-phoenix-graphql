@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import withRecipes from 'queries/recipes/recipesQuery';
-import SearchForm from 'containers/recipes/_SearchForm';
+import HeadListRecipes from 'containers/recipes/_HeadListRecipes';
 import ListRecipes from 'containers/recipes/_ListRecipes';
 
 class SearchRecipes extends Component {
@@ -30,9 +30,7 @@ class SearchRecipes extends Component {
         <h1 className="title is-3 has-text-centered">Recherche pour : {keywords}</h1>
         <hr />
 
-        <div className="content">
-          <SearchForm initialKeywords={keywords} />
-        </div>
+        <HeadListRecipes keywords={keywords} />
 
         {recipes && recipes.length === 0 ? (
           <h3>Pas de résultats ...</h3>
