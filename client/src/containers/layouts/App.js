@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
 
 import AllRecipes from 'containers/recipes/AllRecipes';
@@ -8,9 +11,31 @@ import Recipe from 'containers/recipes/Recipe';
 import NotFound from 'components/NotFound';
 import Header from 'containers/layouts/Header';
 
+import { deleteFlashMessage } from 'actions/flashActions';
+import FlashMessage from 'components/FlashMessage';
+
 import 'assets/stylesheets/css/application.css';
 
-export default class App extends Component {
+class App extends Component {
+  static propTypes = {
+    history: PropTypes.object,
+    deleteFlashMessage: PropTypes.func
+  };
+
+  componentWillMount() {
+    const { history } = this.props;
+    this.unsubscribeFromHistory = history.listen(this.handleLocationChange);
+    this.handleLocationChange(history.location);
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
+  }
+
+  handleLocationChange = location => {
+    this.props.deleteFlashMessage();
+  };
+
   render() {
     return (
       <div>
@@ -21,6 +46,7 @@ export default class App extends Component {
             <div className="container">
               <div className="columns">
                 <div className="column is-offset-2 is-8">
+                  <FlashMessage />
                   <Switch>
                     <Route path="/" exact component={AllRecipes} />
                     <Route path="/recipes/search/:keywords" component={SearchRecipe} />
@@ -37,3 +63,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default withRouter(connect(null, { deleteFlashMessage })(App));

@@ -4,13 +4,16 @@ import { withRouter } from 'react-router';
 
 import { fragments as RecipePreviewFragments } from 'containers/recipes/_ListRecipes';
 import normalizeMessages from 'helpers/errorHelpers';
+import withFlashMessage from 'components/withFlashMessage';
 import updateQueries from 'reducers/recipesReducer';
 
 export default function(WrappedComponent) {
   function onResult(response) {
     const errors = response.errors || normalizeMessages(response.data.createRecipe.messages);
     if (!errors) {
-      this.history.push('/');
+      this.redirect('/', { notice: 'La recette a bien été créée.' });
+    } else {
+      this.error('Des erreurs ont eu lieu, veuillez vérifier :');
     }
     return errors;
   }
@@ -42,5 +45,5 @@ export default function(WrappedComponent) {
     }
   );
 
-  return withCreateRecipe(withRouter(WrappedComponent));
+  return withFlashMessage(withCreateRecipe(WrappedComponent));
 }
