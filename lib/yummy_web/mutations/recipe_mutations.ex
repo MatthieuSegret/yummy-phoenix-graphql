@@ -38,5 +38,16 @@ defmodule YummyWeb.Mutations.RecipeMutations do
       end
     end
 
+    @desc "Destroy a Recipe"
+    field :delete_recipe, :recipe_payload do
+      arg :id, non_null(:id)
+
+      resolve fn args, _ ->
+        Recipe
+        |> Repo.get!(args[:id])
+        |> Repo.delete()
+      end
+    end
+
   end
 end
