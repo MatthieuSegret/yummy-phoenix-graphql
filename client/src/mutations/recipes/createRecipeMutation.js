@@ -1,7 +1,7 @@
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { fragments as RecipePreviewFragments } from 'containers/recipes/_ListRecipes';
+import { fragments as RecipePreviewFragments } from 'containers/recipes/_RecipePreview';
 import normalizeMessages from 'helpers/errorHelpers';
 import withFlashMessage from 'components/withFlashMessage';
 import updateQueries from 'reducers/recipesReducer';

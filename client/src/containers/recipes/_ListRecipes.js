@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
-import { Link } from 'react-router-dom';
+
+import RecipePreview from 'containers/recipes/_RecipePreview';
 
 export default class ListRecipes extends Component {
   static propTypes = {
@@ -19,19 +19,7 @@ export default class ListRecipes extends Component {
 
     return (
       <div className="recipes">
-        {recipes.map(recipe => (
-          <div key={recipe.id} className="recipe">
-            <div className="title-wrapper">
-              <h2 className="title is-4">
-                <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
-              </h2>
-              <div className="recipe-actions is-pulled-right">
-                <Link to={`/recipes/${recipe.id}/edit`}>Editer</Link>
-              </div>
-            </div>
-            <div className="recipe-begin">{recipe.description}</div>
-          </div>
-        ))}
+        {recipes.map(recipe => <RecipePreview key={recipe.id} recipe={recipe} />)}
 
         {recipes && recipes.length < recipesCount ? (
           <button className="button load-more" onClick={loadMoreRecipes}>
@@ -42,13 +30,3 @@ export default class ListRecipes extends Component {
     );
   }
 }
-
-export const fragments = {
-  recipe: gql`
-    fragment RecipePreviewFragment on Recipe {
-      id
-      title
-      description
-    }
-  `
-};

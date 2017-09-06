@@ -1,6 +1,6 @@
 export default {
   recipes(state = [], { mutationResult, queryVariables }) {
-    const { createRecipe } = mutationResult.data;
+    const { createRecipe, deleteRecipe } = mutationResult.data;
 
     if (createRecipe) {
       const newRecipe = createRecipe.newRecipe;
@@ -10,6 +10,17 @@ export default {
       return {
         recipes: [newRecipe, ...state.recipes],
         recipesCount: state.recipesCount + 1
+      };
+    }
+
+    if (deleteRecipe) {
+      const recipeDeleted = deleteRecipe.recipe;
+      if (!recipeDeleted) {
+        return null;
+      }
+      return {
+        recipes: state.recipes.filter(recipe => recipe.id !== recipeDeleted.id),
+        recipesCount: state.recipesCount - 1
       };
     }
 

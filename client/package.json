@@ -6,6 +6,7 @@
     "apollo-client": "^1.9.1",
     "bulma": "^0.5.1",
     "classnames": "^2.2.5",
+    "font-awesome": "^4.7.0",
     "react": "^15.6.1",
     "react-apollo": "^1.4.15",
     "react-dom": "^15.6.1",

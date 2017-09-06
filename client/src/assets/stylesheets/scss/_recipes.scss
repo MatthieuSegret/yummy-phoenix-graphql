@@ -4,10 +4,13 @@
 
   .recipe {
     margin-bottom: 30px;
-    .title a {
-      color: $dark;
-      &:hover {
-        color: $primary;
+    .title-wrapper .title {
+      margin-bottom: 0;
+      a {
+        color: $dark;
+        &:hover {
+          color: $primary;
+        }
       }
     }
   }
@@ -27,5 +30,9 @@
 
   .recipe-begin {
     color: $grey;
+  }
+
+  .recipe-actions a {
+    margin-left: 10px;
   }
 }
