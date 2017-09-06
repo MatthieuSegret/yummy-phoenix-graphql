@@ -4,10 +4,11 @@ import gql from 'graphql-tag';
 
 import RecipeForm from 'containers/recipes/_RecipeForm';
 import withRecipeForEditing from 'queries/recipes/recipeForEditingQuery';
+import withUpdateRecipe from 'mutations/recipes/updateRecipeMutation';
 
 class EditRecipe extends Component {
   static propTypes = {
-    createRecipe: PropTypes.func
+    updateRecipe: PropTypes.func
   };
 
   render() {
@@ -19,7 +20,7 @@ class EditRecipe extends Component {
     return (
       <div>
         <h1 className="title">Editer la recette</h1>
-        <RecipeForm action={this.props.createRecipe} initialValues={{ ...recipe }} />
+        <RecipeForm action={this.props.updateRecipe} initialValues={{ ...recipe }} />
       </div>
     );
   }
@@ -31,8 +32,9 @@ export const fragments = {
       id
       title
       content
+      description
     }
   `
 };
 
-export default withRecipeForEditing(EditRecipe);
+export default withRecipeForEditing(withUpdateRecipe(EditRecipe));

@@ -1,28 +1,27 @@
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { fragments as RecipePreviewFragments } from 'containers/recipes/_ListRecipes';
 import normalizeMessages from 'helpers/errorHelpers';
 import withFlashMessage from 'components/withFlashMessage';
-import updateQueries from 'reducers/recipesReducer';
+import { fragments } from 'containers/recipes/EditRecipe';
 
 export default function(WrappedComponent) {
   function onResult(response) {
-    const errors = response.errors || normalizeMessages(response.data.createRecipe.messages);
+    const errors = response.errors || normalizeMessages(response.data.updateRecipe.messages);
     if (!errors) {
-      this.redirect('/', { notice: 'La recette a bien été créée.' });
+      this.redirect('/', { notice: 'La recette a bien été éditée' });
     } else {
       this.error('Des erreurs ont eu lieu, veuillez vérifier :');
     }
     return errors;
   }
 
-  const withCreateRecipe = graphql(
+  const withUpdatePost = graphql(
     gql`
-      mutation createRecipe($title: String, $content: String) {
-        createRecipe(title: $title, content: $content) {
-          newRecipe: result {
-            ...RecipePreviewFragment
+      mutation updateRecipe($id: ID, $title: String, $content: String) {
+        updateRecipe(id: $id, title: $title, content: $content) {
+          recipe: result {
+            ...RecipeForEditingFragment
           }
           messages {
             field
@@ -30,14 +29,13 @@ export default function(WrappedComponent) {
           }
         }
       }
-      ${RecipePreviewFragments.recipe}
+      ${fragments.recipe}
     `,
     {
       props: ({ ownProps, mutate }) => ({
-        createRecipe(recipe) {
+        updateRecipe(recipe) {
           return mutate({
-            variables: { ...recipe },
-            updateQueries
+            variables: { ...recipe }
           })
             .then(onResult.bind(ownProps))
             .catch(error => {
@@ -48,5 +46,5 @@ export default function(WrappedComponent) {
     }
   );
 
-  return withFlashMessage(withCreateRecipe(WrappedComponent));
+  return withFlashMessage(withUpdatePost(WrappedComponent));
 }
