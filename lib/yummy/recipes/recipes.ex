@@ -15,4 +15,10 @@ defmodule Yummy.Recipes do
     |> Recipe.changeset(attrs)
     |> Repo.insert()
   end
+
+  def update(%Recipe{} = recipe, attrs) do
+    recipe
+    |> Recipe.changeset(attrs)
+    |> Repo.update()
+  end
 end
