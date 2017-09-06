@@ -25,6 +25,9 @@ export default class ListRecipes extends Component {
               <h2 className="title is-4">
                 <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
               </h2>
+              <div className="recipe-actions is-pulled-right">
+                <Link to={`/recipes/${recipe.id}/edit`}>Editer</Link>
+              </div>
             </div>
             <div className="recipe-begin">{recipe.description}</div>
           </div>

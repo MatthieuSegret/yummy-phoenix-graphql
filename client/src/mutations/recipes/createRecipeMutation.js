@@ -1,6 +1,5 @@
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { withRouter } from 'react-router';
 
 import { fragments as RecipePreviewFragments } from 'containers/recipes/_ListRecipes';
 import normalizeMessages from 'helpers/errorHelpers';
