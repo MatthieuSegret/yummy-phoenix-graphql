@@ -33,6 +33,9 @@ export const fragments = {
       title
       content
       description
+      totalTime
+      level
+      budget
     }
   `
 };

@@ -40,5 +40,24 @@ defmodule YummyWeb.Queries.RecipeQueries do
         {:ok, recipe}
       end
     end
+
+    @desc "recipe not stored with default value"
+    field :recipe_with_default_value, :recipe do
+      resolve fn _,_ ->
+        {:ok, Recipe.default_values()}
+      end
+    end
+
+    @desc "recipe options for a field"
+    field :recipe_options, list_of(:option) do
+      arg :field, non_null(:string)
+      resolve fn args,_ ->
+        field = String.to_existing_atom(args[:field])
+        options = Enum.map(Recipe.options()[field], fn opt ->
+            %{label: opt, value: opt}
+        end)
+        {:ok, options}
+      end
+    end
   end
 end

@@ -18,6 +18,9 @@ alias Yummy.Recipes.Recipe
 Recipe |> Repo.delete_all
 Recipes.create(%{
   title: "Panna cotta coco fruits rouges",
+  total_time: "30 min",
+  level: "Facile",
+  budget: "Bon marché",
   content: ~s[#### Ingrédients
   
   - 400 g de lait de coco
@@ -50,6 +53,9 @@ Recipes.create(%{
 
 Recipes.create(%{
   title: "Tarte aux figues",
+  total_time: "30 min",
+  level: "Moyenne",
+  budget: "Assez cher",
   content: ~s[#### Ingrédients
   
   - 20 figues fraîches
@@ -75,6 +81,9 @@ Recipes.create(%{
 
 Recipes.create(%{
   title: "Clafoutis aux tomates cerise",
+  total_time: "45 min",
+  level: "Moyenne",
+  budget: "Bon marché",
   content: ~s[#### Ingrédients
   
   - 1.5 cuillères à soupe de Moutarde Fine et Forte Amora
@@ -113,6 +122,9 @@ Recipes.create(%{
 
 Recipes.create(%{
   title: "Tresse feuilletée au chocolat",
+  total_time: "30 min",
+  level: "Difficile",
+  budget: "Moyen",
   content: ~s[#### Ingrédients
   
   - 1 pâte feuilletée (rectangle de préférence)
@@ -144,6 +156,9 @@ Recipes.create(%{
 
 Recipes.create(%{
   title: "Pain de courgettes",
+  total_time: "+1h",
+  level: "Moyenne",
+  budget: "Bon marché",
   content: ~s[#### Ingrédients
   
   - courgettes (ou 4 moyennes)
@@ -170,6 +185,9 @@ Recipes.create(%{
 
 Recipes.create(%{
   title: "Cake châtaigne et crème de marron",
+  total_time: "1h",
+  level: "Facile",
+  budget: "Moyen",
   content: ~s[#### Ingrédients
   
   - 3  oeufs

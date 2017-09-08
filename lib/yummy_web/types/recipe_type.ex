@@ -12,5 +12,8 @@ defmodule YummyWeb.Types.RecipeType do
         {:ok, ApplicationHelpers.description(recipe.content)}
       end
     end
+    field :total_time, :string
+    field :level, :string
+    field :budget, :string
   end
 end

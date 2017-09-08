@@ -23,12 +23,18 @@
   }
 }
 
+.recipe-show {
+  .title-wrapper .title {
+    margin-bottom: 10px;
+  }
+}
+
 .recipe {
   .title-wrapper .title {
     display: inline-block;
   }
 
-  .recipe-begin {
+  .recipe-info {
     color: $grey;
   }
 

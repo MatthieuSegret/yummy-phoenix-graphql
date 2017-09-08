@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { gql } from 'react-apollo';
 import ReactMarkdown from 'react-markdown';
 
+import RecipeInfos from 'containers/recipes/_RecipeInfos';
+import RecipeActions from 'containers/recipes/_RecipeActions';
 import withRecipe from 'queries/recipes/recipeQuery';
 
 class Recipe extends Component {
@@ -18,9 +20,12 @@ class Recipe extends Component {
     }
 
     return (
-      <div className="recipe-show">
+      <div className="recipe-show recipe">
         <div className="title-wrapper">
           <h1 className="title is-3">{recipe.title}</h1>
+
+          <RecipeActions recipe={recipe} />
+          <RecipeInfos recipe={recipe} />
           <hr />
         </div>
 
@@ -39,6 +44,9 @@ export const fragments = {
       id
       title
       content
+      totalTime
+      level
+      budget
     }
   `
 };

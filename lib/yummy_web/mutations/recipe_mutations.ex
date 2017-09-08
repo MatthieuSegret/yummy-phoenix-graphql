@@ -14,6 +14,9 @@ defmodule YummyWeb.Mutations.RecipeMutations do
     field :create_recipe, :recipe_payload do
       arg :title, non_null(:string)
       arg :content, non_null(:string)
+      arg :total_time, non_null(:string)
+      arg :level, non_null(:string)
+      arg :budget, non_null(:string)
 
       resolve fn args, _ ->
         case Recipes.create(args) do
@@ -28,6 +31,9 @@ defmodule YummyWeb.Mutations.RecipeMutations do
       arg :id, non_null(:id)
       arg :title, non_null(:string)
       arg :content, non_null(:string)
+      arg :total_time, non_null(:string)
+      arg :level, non_null(:string)
+      arg :budget, non_null(:string)
 
       resolve fn args, _ ->
         recipe = Recipe |> Repo.get!(args[:id])

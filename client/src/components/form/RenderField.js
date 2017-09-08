@@ -9,6 +9,7 @@ export default class RenderField extends Component {
     meta: PropTypes.object.isRequired,
     type: PropTypes.string,
     inputHtml: PropTypes.object,
+    options: PropTypes.array,
     className: PropTypes.string,
     label: PropTypes.string,
     hint: PropTypes.string
@@ -16,7 +17,8 @@ export default class RenderField extends Component {
 
   static defaultProps = {
     type: 'text',
-    label: ''
+    label: '',
+    options: []
   };
 
   constructor(props) {
@@ -30,7 +32,7 @@ export default class RenderField extends Component {
   }
 
   input() {
-    const { input, type, inputHtml, input: { name } } = this.props;
+    const { input, type, inputHtml, options, input: { name } } = this.props;
     let inputClass = classnames(inputHtml && inputHtml.className, this.stateClass());
 
     switch (type) {
@@ -39,6 +41,18 @@ export default class RenderField extends Component {
         return <textarea id={name} {...input} {...inputHtml} className={inputClass} />;
       case 'checkbox':
         return <input type="checkbox" id={name} {...input} {...inputHtml} className={inputClass} />;
+      case 'select':
+        return (
+          <div className="select">
+            <select id={name} {...input} {...inputHtml} className={inputClass}>
+              {options.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        );
       default:
         inputClass = classnames('input', inputClass);
         return <input type={type} id={name} {...input} {...inputHtml} className={inputClass} />;

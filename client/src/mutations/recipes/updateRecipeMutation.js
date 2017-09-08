@@ -18,8 +18,8 @@ export default function(WrappedComponent) {
 
   const withUpdatePost = graphql(
     gql`
-      mutation updateRecipe($id: ID, $title: String, $content: String) {
-        updateRecipe(id: $id, title: $title, content: $content) {
+      mutation updateRecipe($id: ID, $title: String, $content: String, $totalTime: String, $level: String, $budget: String) {
+        updateRecipe(id: $id, title: $title, content: $content, totalTime: $totalTime, level: $level, budget: $budget) {
           recipe: result {
             ...RecipeForEditingFragment
           }

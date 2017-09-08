@@ -3,25 +3,14 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
 
-import withDeleteRecipe from 'mutations/recipes/deleteRecipeMutation';
+import RecipeInfos from 'containers/recipes/_RecipeInfos';
+import RecipeActions from 'containers/recipes/_RecipeActions';
 
-class RecipePreview extends Component {
+export default class RecipePreview extends Component {
   static propTypes = {
     recipe: PropTypes.object,
     deleteRecipe: PropTypes.func
   };
-
-  constructor(props) {
-    super(props);
-    this.destroy = this.destroy.bind(this);
-  }
-
-  destroy() {
-    if (window.confirm('êtes vous sûre ?')) {
-      this.props.deleteRecipe(this.props.recipe.id);
-    }
-    return false;
-  }
 
   render() {
     const { recipe } = this.props;
@@ -32,19 +21,11 @@ class RecipePreview extends Component {
           <h2 className="title is-4">
             <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
           </h2>
-          <div className="recipe-actions is-pulled-right">
-            <Link to={`/recipes/${recipe.id}/edit`}>
-              <span className="icon">
-                <i className="fa fa-edit" />
-              </span>
-            </Link>
-            <a onClick={this.destroy}>
-              <span className="icon">
-                <i className="fa fa-trash-o" />
-              </span>
-            </a>
-          </div>
+
+          <RecipeActions recipe={recipe} />
         </div>
+
+        <RecipeInfos recipe={recipe} />
         <div className="recipe-begin">{recipe.description}</div>
       </div>
     );
@@ -57,8 +38,9 @@ export const fragments = {
       id
       title
       description
+      totalTime
+      level
+      budget
     }
   `
 };
-
-export default withDeleteRecipe(RecipePreview);

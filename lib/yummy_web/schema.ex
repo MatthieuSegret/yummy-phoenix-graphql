@@ -4,6 +4,7 @@ defmodule YummyWeb.Graph.Schema do
   import Kronky.Payload
   alias YummyWeb.Middleware.TranslateMessages
 
+  import_types YummyWeb.Types.OptionType
   import_types YummyWeb.Types.RecipeType
   import_types YummyWeb.Queries.RecipeQueries
   import_types YummyWeb.Mutations.RecipeMutations
