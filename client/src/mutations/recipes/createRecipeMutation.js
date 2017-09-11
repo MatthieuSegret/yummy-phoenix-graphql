@@ -20,7 +20,7 @@ export default function(WrappedComponent) {
   const withCreateRecipe = graphql(
     gql`
       mutation createRecipe($title: String, $content: String, $totalTime: String, $level: String, $budget: String) {
-        createRecipe(title: $title, content: $content, totalTime: $totalTime, level: $level, budget: $budget) {
+        createRecipe(input: {title: $title, content: $content, totalTime: $totalTime, level: $level, budget: $budget}) {
           newRecipe: result {
             ...RecipePreviewFragment
           }

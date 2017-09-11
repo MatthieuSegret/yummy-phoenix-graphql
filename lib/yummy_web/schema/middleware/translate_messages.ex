@@ -1,4 +1,4 @@
-defmodule YummyWeb.Middleware.TranslateMessages do
+defmodule YummyWeb.Schema.Middleware.TranslateMessages do
   @behaviour Absinthe.Middleware
 
   def call(%{value: value} = resolution, _config) do

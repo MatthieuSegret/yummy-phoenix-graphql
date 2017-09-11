@@ -1,4 +1,4 @@
-defmodule YummyWeb.Types.OptionType do
+defmodule YummyWeb.Schema.OptionTypes do
   use Absinthe.Schema.Notation
 
   @desc "A option for select field in a form"

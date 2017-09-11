@@ -2,19 +2,19 @@ defmodule YummyWeb.Graph.Schema do
   use Absinthe.Schema
 
   import Kronky.Payload
-  alias YummyWeb.Middleware.TranslateMessages
+  alias YummyWeb.Schema.Middleware.TranslateMessages
 
-  import_types YummyWeb.Types.OptionType
-  import_types YummyWeb.Types.RecipeType
-  import_types YummyWeb.Queries.RecipeQueries
-  import_types YummyWeb.Mutations.RecipeMutations
+  import_types YummyWeb.Schema.OptionTypes
+  import_types YummyWeb.Schema.RecipesTypes
+  import_types YummyWeb.Queries.RecipesQueries
+  import_types YummyWeb.Mutations.RecipesMutations
 
   query do
-    import_fields :recipe_queries
+    import_fields :recipes_queries
   end
 
   mutation do
-    import_fields :recipe_mutations
+    import_fields :recipes_mutations
   end
 
   def middleware(middleware, _field, %Absinthe.Type.Object{identifier: :mutation}) do
