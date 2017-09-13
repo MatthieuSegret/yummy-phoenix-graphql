@@ -4,7 +4,7 @@ export default function normalizeMessages(messages) {
   }
   const messagesNormalized = {};
   messages.map(messageValidation => {
-    return (messagesNormalized[messageValidation.field] = messageValidation.message);
+    return (messagesNormalized[messageValidation.field || 'base'] = messageValidation.message);
   });
   return messagesNormalized;
 }
