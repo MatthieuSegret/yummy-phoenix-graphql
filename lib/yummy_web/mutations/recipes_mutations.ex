@@ -3,7 +3,6 @@ defmodule YummyWeb.Mutations.RecipesMutations do
   import Kronky.Payload
   alias YummyWeb.Resolvers.RecipesResolvers
 
-  import_types Kronky.ValidationMessageTypes
   payload_object(:recipe_payload, :recipe)
 
   input_object :recipe_input do

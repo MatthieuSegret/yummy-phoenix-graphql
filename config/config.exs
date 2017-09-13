@@ -22,6 +22,11 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :yummy, YummyWeb.Guardian,
+  issuer: "Yummy",
+  ttl: { 30, :days },
+  secret_key: "GR9C6wl7EWVR8ZEz5la8X3X4pFzg7fFGu405/eBqbn4OJkPrjkcf1EYiRCI3pU2R"
+
 config :yummy, YummyWeb.Gettext,
   default_locale: "fr"
 

@@ -45,7 +45,8 @@ defmodule Yummy.Mixfile do
       {:cors_plug, "~> 1.4"},
       {:kronky, "~> 0.4.0"},
       {:comeonin, "~> 4.0.3"},
-      {:bcrypt_elixir, "~> 1.0.3"}
+      {:bcrypt_elixir, "~> 1.0.3"},
+      {:guardian, "~> 1.0.0-beta.0"}
     ]
   end
 
