@@ -43,7 +43,9 @@ defmodule Yummy.Mixfile do
       {:absinthe_plug, github: "absinthe-graphql/absinthe_plug", tag: "v1.4.0-beta.1"},
       {:poison, "~> 3.1.0"},
       {:cors_plug, "~> 1.4"},
-      {:kronky, "~> 0.4.0"}
+      {:kronky, "~> 0.4.0"},
+      {:comeonin, "~> 4.0.3"},
+      {:bcrypt_elixir, "~> 1.0.3"}
     ]
   end
 
