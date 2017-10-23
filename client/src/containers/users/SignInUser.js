@@ -75,10 +75,10 @@ class SignInUser extends Component {
 function validate(values) {
   const errors = {};
   if (!values.email) {
-    errors.email = 'doit être rempli(e)';
+    errors.email = 'doit être rempli';
   }
   if (!values.password) {
-    errors.password = 'doit être rempli(e)';
+    errors.password = 'doit être rempli';
   }
   return errors;
 }

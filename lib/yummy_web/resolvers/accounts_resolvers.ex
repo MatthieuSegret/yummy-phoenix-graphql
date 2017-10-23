@@ -27,7 +27,33 @@ defmodule YummyWeb.Resolvers.AccountsResolvers do
       {:ok, %{token: jwt}}
     else
       {:error, msg} -> {:ok, generic_message(msg)}
-      :error -> {:error, generic_message("Email ou mot de passe invalide")}
+      :error -> {:ok, generic_message("Email ou mot de passe invalide")}
+    end
+  end
+
+  def create_user(%{input: params}, _) do
+    case Accounts.create_user(params) do
+      {:ok, user} -> {:ok, user}
+      {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
+    end
+  end
+
+  def update_user(%{input: params}, %{context: context}) do
+    current_user = context[:current_user]
+    case current_user |> Accounts.update_user(params) do
+      {:ok, user} -> {:ok, user}
+      {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
+    end
+  end
+
+  def change_password(%{input: params}, %{context: context}) do
+    current_user = context[:current_user]
+    params[:password]
+    params[:password_confirmation]
+    params[:current_password]
+    case current_user |> Accounts.change_password(params) do
+      {:ok, user} -> {:ok, user}
+      {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
     end
   end
 end

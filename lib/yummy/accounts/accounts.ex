@@ -5,13 +5,19 @@ defmodule Yummy.Accounts do
 
   def create_user(attrs) do
     %User{}
-    |> User.registration_changeset(attrs)
+    |> User.changeset_with_password(attrs)
     |> Repo.insert()
   end
 
   def update_user(%User{} = user, attrs) do
     user
     |> User.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def change_password(%User{} = user, %{password: password}) do
+    user
+    |> User.changeset_with_password(%{password: password})
     |> Repo.update()
   end
 

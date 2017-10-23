@@ -20,10 +20,11 @@ defmodule Yummy.Accounts.User do
     |> validate_required([:name, :email])
   end
  
-  def registration_changeset(%User{} = user, params \\ %{}) do
+  def changeset_with_password(%User{} = user, params \\ %{}) do
     user
     |> cast(params, [:name, :email, :password])
     |> validate_required([:name, :email, :password])
+    |> validate_length(:content, min: 6)
     |> put_pass_hash()
   end
  
