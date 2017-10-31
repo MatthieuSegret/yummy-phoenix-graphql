@@ -9,6 +9,7 @@ defmodule Yummy.Accounts.User do
     field :name, :string
     field :password, :string, virtual: true
     field :password_hash, :string
+    field :access_token, :string
 
     timestamps()
   end
@@ -16,7 +17,7 @@ defmodule Yummy.Accounts.User do
   def changeset(%User{} = user, params \\ %{}) do
     params = params |> Map.delete(:password)
     user
-    |> cast(params, [:name, :email])
+    |> cast(params, [:name, :email, :access_token])
     |> validate_required([:name, :email])
   end
  

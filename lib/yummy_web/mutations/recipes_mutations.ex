@@ -1,9 +1,11 @@
 defmodule YummyWeb.Mutations.RecipesMutations do
   use Absinthe.Schema.Notation
   import Kronky.Payload
-  alias YummyWeb.Resolvers.RecipesResolvers
 
-  import_types Kronky.ValidationMessageTypes
+  alias Yummy.Repo
+  alias Yummy.Recipes
+  alias Yummy.Recipes.Recipe
+
   payload_object(:recipe_payload, :recipe)
 
   input_object :recipe_input do
@@ -19,20 +21,38 @@ defmodule YummyWeb.Mutations.RecipesMutations do
     @desc "Create a recipe"
     field :create_recipe, :recipe_payload do
       arg :input, non_null(:recipe_input)
-      resolve &RecipesResolvers.create_recipe/2
+
+      resolve fn (%{input: params}, _) ->
+        case Recipes.create(params) do
+          {:ok, recipe} -> {:ok, recipe}
+          {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
+        end
+      end
     end
 
     @desc "Update a Recipe and return Recipe"
     field :update_recipe, :recipe_payload do
       arg :id, non_null(:id)
       arg :input, non_null(:recipe_input)
-      resolve &RecipesResolvers.update_recipe/2
+
+      resolve fn (%{input: params} = args, _) ->
+        recipe = Recipe |> Repo.get!(args[:id])
+        case Recipes.update(recipe, params) do
+          {:ok, recipe} -> {:ok, recipe}
+          {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
+        end
+      end
     end
 
     @desc "Destroy a Recipe"
     field :delete_recipe, :recipe_payload do
       arg :id, non_null(:id)
-      resolve &RecipesResolvers.delete_recipe/2
+
+      resolve fn (args, _) ->
+        Recipe
+        |> Repo.get!(args[:id])
+        |> Repo.delete()
+      end
     end
 
   end

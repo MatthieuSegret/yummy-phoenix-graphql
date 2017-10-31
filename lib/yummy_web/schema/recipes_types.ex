@@ -1,6 +1,6 @@
 defmodule YummyWeb.Schema.RecipesTypes do
   use Absinthe.Schema.Notation
-  alias YummyWeb.Resolvers.RecipesResolvers
+  alias YummyWeb.Helpers.StringHelpers
 
   @desc "A Recipe with title and content"
   object :recipe do
@@ -8,7 +8,9 @@ defmodule YummyWeb.Schema.RecipesTypes do
     field :title, :string
     field :content, :string
     field :description, :string do
-      resolve &RecipesResolvers.recipe_description/3
+      resolve fn (recipe, _, _) ->
+        {:ok, StringHelpers.description(recipe.content)}
+      end
     end
     field :total_time, :string
     field :level, :string

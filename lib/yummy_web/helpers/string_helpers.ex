@@ -1,4 +1,4 @@
-defmodule YummyWeb.Helpers.ApplicationHelpers do
+defmodule YummyWeb.Helpers.StringHelpers do
   def description(text) do
     text
     |> truncate(length: 180)
@@ -10,5 +10,10 @@ defmodule YummyWeb.Helpers.ApplicationHelpers do
     text
     |> String.slice(0..length)
     |> String.replace(~r/\s(.)*$/, "...")
+  end
+
+  def present?(nil), do: false
+  def present?(string) do
+    string |> String.trim() |> String.length() > 0
   end
 end

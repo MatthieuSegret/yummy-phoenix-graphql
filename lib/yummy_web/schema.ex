@@ -4,16 +4,22 @@ defmodule YummyWeb.Graph.Schema do
   import Kronky.Payload
   alias YummyWeb.Schema.Middleware.TranslateMessages
 
+  import_types Kronky.ValidationMessageTypes 
   import_types YummyWeb.Schema.OptionTypes
+  import_types YummyWeb.Schema.AccountsTypes
   import_types YummyWeb.Schema.RecipesTypes
+  import_types YummyWeb.Queries.AccountsQueries
   import_types YummyWeb.Queries.RecipesQueries
+  import_types YummyWeb.Mutations.AuthMutations
   import_types YummyWeb.Mutations.RecipesMutations
 
   query do
+    import_fields :accounts_queries
     import_fields :recipes_queries
   end
 
   mutation do
+    import_fields :accounts_mutations
     import_fields :recipes_mutations
   end
 
