@@ -4,6 +4,7 @@ defmodule YummyWeb.Mutations.AuthMutations do
   import Kronky.Payload
   import YummyWeb.Helpers.ValidationMessageHelpers
 
+  alias YummyWeb.Schema.Middleware
   alias Yummy.Accounts
 
   payload_object(:session_payload, :session)
@@ -29,6 +30,7 @@ defmodule YummyWeb.Mutations.AuthMutations do
 
     @desc "Revoke token"
     field :revoke_token, :boolean do
+      middleware Middleware.Authorize
       resolve fn (_, %{context: context}) ->
         context[:current_user] |> Accounts.update_user(%{access_token: nil})
         {:ok, true}
