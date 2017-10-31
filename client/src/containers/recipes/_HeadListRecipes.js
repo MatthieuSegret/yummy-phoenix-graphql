@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import SearchForm from 'containers/recipes/_SearchForm';
+import withCurrentUser from 'queries/users/currentUserQuery';
 
-export default class HeadListRecipes extends Component {
+class HeadListRecipes extends Component {
   static propTypes = {
-    keywords: PropTypes.string
+    keywords: PropTypes.string,
+    currentUser: PropTypes.object
   };
 
   render() {
-    const { keywords } = this.props;
+    const { keywords, currentUser } = this.props;
 
     return (
       <div className="columns">
@@ -19,12 +21,16 @@ export default class HeadListRecipes extends Component {
             <SearchForm initialKeywords={keywords} />
           </div>
         </div>
-        <div className="column">
-          <Link to="/recipes/new" className="button is-primary is-pulled-right">
-            Nouvelle Recette
-          </Link>
-        </div>
+        {currentUser ? (
+          <div className="column">
+            <Link to="/recipes/new" className="button is-primary is-pulled-right">
+              Nouvelle Recette
+            </Link>
+          </div>
+        ) : null}
       </div>
     );
   }
 }
+
+export default withCurrentUser(HeadListRecipes);

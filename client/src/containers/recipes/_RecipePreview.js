@@ -5,15 +5,16 @@ import { Link } from 'react-router-dom';
 
 import RecipeInfos from 'containers/recipes/_RecipeInfos';
 import RecipeActions from 'containers/recipes/_RecipeActions';
+import withCurrentUser from 'queries/users/currentUserQuery';
 
-export default class RecipePreview extends Component {
+class RecipePreview extends Component {
   static propTypes = {
     recipe: PropTypes.object,
-    deleteRecipe: PropTypes.func
+    currentUser: PropTypes.object
   };
 
   render() {
-    const { recipe } = this.props;
+    const { recipe, currentUser } = this.props;
 
     return (
       <div className="recipe">
@@ -21,8 +22,7 @@ export default class RecipePreview extends Component {
           <h2 className="title is-4">
             <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
           </h2>
-
-          <RecipeActions recipe={recipe} />
+          {currentUser ? <RecipeActions recipe={recipe} /> : null}
         </div>
 
         <RecipeInfos recipe={recipe} />
@@ -44,3 +44,5 @@ export const fragments = {
     }
   `
 };
+
+export default withCurrentUser(RecipePreview);

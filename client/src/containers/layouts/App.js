@@ -10,6 +10,8 @@ import NewRecipe from 'containers/recipes/NewRecipe';
 import EditRecipe from 'containers/recipes/EditRecipe';
 import Recipe from 'containers/recipes/Recipe';
 import SignInUser from 'containers/users/SignInUser';
+
+import UserIsAuthenticated from 'components/UserIsAuthenticated';
 import NotFound from 'components/NotFound';
 import Header from 'containers/layouts/Header';
 
@@ -57,8 +59,8 @@ class App extends Component {
                   <Switch>
                     <Route path="/" exact component={AllRecipes} />
                     <Route path="/recipes/search/:keywords" component={SearchRecipe} />
-                    <Route path="/recipes/new" component={NewRecipe} />
-                    <Route path="/recipes/:id/edit" component={EditRecipe} />
+                    <Route path="/recipes/new" component={UserIsAuthenticated(NewRecipe)} />
+                    <Route path="/recipes/:id/edit" component={UserIsAuthenticated(EditRecipe)} />
                     <Route path="/recipes/:id" component={Recipe} />
                     <Route path="/users/signin" component={SignInUser} />
                     <Route component={NotFound} />

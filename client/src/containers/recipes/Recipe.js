@@ -7,14 +7,16 @@ import ReactMarkdown from 'react-markdown';
 import RecipeInfos from 'containers/recipes/_RecipeInfos';
 import RecipeActions from 'containers/recipes/_RecipeActions';
 import withRecipe from 'queries/recipes/recipeQuery';
+import withCurrentUser from 'queries/users/currentUserQuery';
 
 class Recipe extends Component {
   static propTypes = {
-    data: PropTypes.object
+    data: PropTypes.object,
+    currentUser: PropTypes.object
   };
 
   render() {
-    const { recipe } = this.props.data;
+    const { data: { recipe }, currentUser } = this.props;
     if (!recipe) {
       return null;
     }
@@ -24,7 +26,7 @@ class Recipe extends Component {
         <div className="title-wrapper">
           <h1 className="title is-3">{recipe.title}</h1>
 
-          <RecipeActions recipe={recipe} />
+          {currentUser ? <RecipeActions recipe={recipe} /> : null}
           <RecipeInfos recipe={recipe} />
           <hr />
         </div>
@@ -51,4 +53,4 @@ export const fragments = {
   `
 };
 
-export default withRecipe(Recipe);
+export default withCurrentUser(withRecipe(Recipe));
