@@ -1,13 +1,13 @@
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import normalizeMessages from 'helpers/errorHelpers';
+import formatErrors from 'utils/errorsUtils';
 import withFlashMessage from 'components/withFlashMessage';
 import updateQueries from 'reducers/recipesReducer';
 
 export default function(WrappedComponent) {
   function onResult(response) {
-    const errors = response.errors || normalizeMessages(response.data.deleteRecipe.messages);
+    const errors = response.errors || formatErrors(response.data.deleteRecipe.messages);
     if (!errors) {
       this.notice('La recette a bien été supprimé.');
     }

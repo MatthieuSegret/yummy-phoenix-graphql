@@ -8,6 +8,19 @@ const networkInterface = createNetworkInterface({
   }
 });
 
+networkInterface.use([
+  {
+    applyMiddleware(req, next) {
+      if (!req.options.headers) {
+        req.options.headers = {}; // Create the header object if needed.
+      }
+      const token = window.localStorage.getItem('yummy:token');
+      req.options.headers.authorization = token ? `Bearer ${token}` : null;
+      next();
+    }
+  }
+]);
+
 export default new ApolloClient({
   networkInterface,
   queryDeduplication: true

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import capitalize from 'helpers/stringHelpers';
+import capitalize from 'utils/stringUtils';
 
 export default class RenderField extends Component {
   static propTypes = {

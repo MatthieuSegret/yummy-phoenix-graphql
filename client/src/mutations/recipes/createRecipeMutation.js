@@ -2,13 +2,13 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { fragments as RecipePreviewFragments } from 'containers/recipes/_RecipePreview';
-import normalizeMessages from 'helpers/errorHelpers';
+import formatErrors from 'utils/errorsUtils';
 import withFlashMessage from 'components/withFlashMessage';
 import updateQueries from 'reducers/recipesReducer';
 
 export default function(WrappedComponent) {
   function onResult(response) {
-    const errors = response.errors || normalizeMessages(response.data.createRecipe.messages);
+    const errors = response.errors || formatErrors(response.data.createRecipe.messages);
     if (!errors) {
       this.redirect('/', { notice: 'La recette a bien été créée.' });
     } else {

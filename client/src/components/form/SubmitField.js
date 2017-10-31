@@ -6,16 +6,18 @@ import { Link } from 'react-router-dom';
 export default class SubmitField extends Component {
   static propTypes = {
     value: PropTypes.string,
-    loading: PropTypes.bool
+    loading: PropTypes.bool,
+    cancel: PropTypes.bool
   };
 
   static defaultProps = {
     value: 'Soumettre',
-    loading: false
+    loading: false,
+    cancel: true
   };
 
   render() {
-    const { loading, value } = this.props;
+    const { loading, value, cancel } = this.props;
     return (
       <div className="field is-grouped">
         <div className="control">
@@ -23,11 +25,13 @@ export default class SubmitField extends Component {
             {value}
           </button>
         </div>
-        <div className="control">
-          <Link className="button is-link" to="/">
-            Retour
-          </Link>
-        </div>
+        {cancel ? (
+          <div className="control">
+            <Link className="button is-text" to="/">
+              Retour
+            </Link>
+          </div>
+        ) : null}
       </div>
     );
   }

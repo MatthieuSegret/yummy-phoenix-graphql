@@ -6,7 +6,6 @@ import { ApolloProvider } from 'react-apollo';
 import client from 'config/apolloClient';
 import store from 'config/store';
 import App from 'containers/layouts/App';
-import registerServiceWorker from 'config/registerServiceWorker';
 
 ReactDOM.render(
   <ApolloProvider store={store} client={client}>
@@ -16,4 +15,3 @@ ReactDOM.render(
   </ApolloProvider>,
   document.getElementById('root')
 );
-registerServiceWorker();

@@ -1,13 +1,13 @@
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import normalizeMessages from 'helpers/errorHelpers';
+import formatErrors from 'utils/errorsUtils';
 import withFlashMessage from 'components/withFlashMessage';
 import { fragments } from 'containers/recipes/EditRecipe';
 
 export default function(WrappedComponent) {
   function onResult(response) {
-    const errors = response.errors || normalizeMessages(response.data.updateRecipe.messages);
+    const errors = response.errors || formatErrors(response.data.updateRecipe.messages);
     if (!errors) {
       this.redirect('/', { notice: 'La recette a bien été éditée' });
     } else {

@@ -9,18 +9,22 @@ import SearchRecipe from 'containers/recipes/SearchRecipe';
 import NewRecipe from 'containers/recipes/NewRecipe';
 import EditRecipe from 'containers/recipes/EditRecipe';
 import Recipe from 'containers/recipes/Recipe';
+import SignInUser from 'containers/users/SignInUser';
 import NotFound from 'components/NotFound';
 import Header from 'containers/layouts/Header';
 
 import { deleteFlashMessage } from 'actions/flashActions';
 import FlashMessage from 'components/FlashMessage';
+import withCurrentUser from 'queries/users/currentUserQuery';
 
 import 'assets/stylesheets/css/application.css';
 
 class App extends Component {
   static propTypes = {
     history: PropTypes.object,
-    deleteFlashMessage: PropTypes.func
+    deleteFlashMessage: PropTypes.func,
+    currentUser: PropTypes.object,
+    currentUserLoading: PropTypes.bool
   };
 
   componentWillMount() {
@@ -38,9 +42,11 @@ class App extends Component {
   };
 
   render() {
+    const { currentUser, currentUserLoading } = this.props;
+
     return (
       <div>
-        <Header />
+        <Header currentUser={currentUser} currentUserLoading={currentUserLoading} />
 
         <main role="main">
           <section className="section">
@@ -54,6 +60,7 @@ class App extends Component {
                     <Route path="/recipes/new" component={NewRecipe} />
                     <Route path="/recipes/:id/edit" component={EditRecipe} />
                     <Route path="/recipes/:id" component={Recipe} />
+                    <Route path="/users/signin" component={SignInUser} />
                     <Route component={NotFound} />
                   </Switch>
                 </div>
@@ -66,4 +73,4 @@ class App extends Component {
   }
 }
 
-export default withRouter(connect(null, { deleteFlashMessage })(App));
+export default withCurrentUser(withRouter(connect(null, { deleteFlashMessage })(App)));
