@@ -21,6 +21,7 @@ export default graphql(
     props: ({ data }) => {
       return {
         data,
+        refetchRecipes: data.refetch,
         loadMoreRecipes() {
           return data.fetchMore({
             variables: { offset: data.recipes.length },

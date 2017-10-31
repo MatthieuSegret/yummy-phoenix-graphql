@@ -11,6 +11,7 @@ defmodule YummyWeb.Graph.Schema do
   import_types YummyWeb.Queries.AccountsQueries
   import_types YummyWeb.Queries.RecipesQueries
   import_types YummyWeb.Mutations.AuthMutations
+  import_types YummyWeb.Mutations.AccountsMutations
   import_types YummyWeb.Mutations.RecipesMutations
 
   query do
@@ -19,6 +20,7 @@ defmodule YummyWeb.Graph.Schema do
   end
 
   mutation do
+    import_fields :auth_mutations
     import_fields :accounts_mutations
     import_fields :recipes_mutations
   end

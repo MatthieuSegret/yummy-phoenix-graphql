@@ -2,7 +2,7 @@ defmodule YummyWeb.Mutations.RecipesMutations do
   use Absinthe.Schema.Notation
   import Kronky.Payload
 
-  alias YummyWeb.Schema.Middleware  
+  alias YummyWeb.Schema.Middleware
   alias Yummy.Repo
   alias Yummy.Recipes
   alias Yummy.Recipes.Recipe

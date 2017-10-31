@@ -9,7 +9,7 @@ defmodule YummyWeb.Mutations.AuthMutations do
 
   payload_object(:session_payload, :session)
 
-  object :accounts_mutations do
+  object :auth_mutations do
 
     @desc "Sign in"
     field :sign_in, :session_payload do
@@ -18,7 +18,7 @@ defmodule YummyWeb.Mutations.AuthMutations do
 
       resolve fn (args, _) ->
         with {:ok, user} <- Accounts.authenticate(args[:email], args[:password]),
-          {:ok, token} <- Accounts.generate_access_token(user)
+          {:ok, token, _} <- Accounts.generate_access_token(user)
         do
           {:ok, %{token: token}}
         else
@@ -32,7 +32,7 @@ defmodule YummyWeb.Mutations.AuthMutations do
     field :revoke_token, :boolean do
       middleware Middleware.Authorize
       resolve fn (_, %{context: context}) ->
-        context[:current_user] |> Accounts.update_user(%{access_token: nil})
+        context[:current_user] |> Accounts.revoke_access_token()
         {:ok, true}
       end
     end

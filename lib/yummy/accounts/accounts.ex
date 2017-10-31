@@ -5,7 +5,7 @@ defmodule Yummy.Accounts do
 
   def create_user(attrs) do
     %User{}
-    |> User.registration_changeset(attrs)
+    |> User.changeset_with_password(attrs)
     |> Repo.insert()
   end
 
@@ -15,17 +15,29 @@ defmodule Yummy.Accounts do
     |> Repo.update()
   end
 
+  def change_password(%User{} = user, %{password: password}) do
+    user
+    |> User.changeset_with_password(%{password: password})
+    |> Repo.update()
+  end
+
   @doc """
   Generate an access token and associates it with the user
   """
   def generate_access_token(user) do
     access_token = generate_token(user)
-    user |> update_user(%{access_token: access_token})
-    {:ok, access_token}
+    user_modified = Ecto.Changeset.change(user, access_token: access_token)
+    {:ok, user} = Repo.update(user_modified)
+    {:ok, access_token, user}
   end
 
   defp generate_token(user) do
     Base.encode64(:erlang.md5("#{:os.system_time(:milli_seconds)}-#{user.id}-#{SecureRandom.hex}"))
+  end
+
+  def revoke_access_token(user) do
+    user_modified = Ecto.Changeset.change(user, access_token: nil)
+    {:ok, _user} = Repo.update(user_modified)
   end
 
   @doc """

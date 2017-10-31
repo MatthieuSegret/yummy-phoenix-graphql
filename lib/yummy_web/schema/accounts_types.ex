@@ -6,9 +6,14 @@ defmodule YummyWeb.Schema.AccountsTypes do
     field :id, :id
     field :name, :string
     field :email, :string
+    field :token, :string do
+      resolve fn (user, _, _) ->
+        {:ok, user.access_token}
+      end
+    end
   end
 
-  @desc "JWT token to authenticate user"
+  @desc "token to authenticate user"
   object :session do
     field :token, :string
   end
