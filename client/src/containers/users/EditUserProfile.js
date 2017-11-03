@@ -8,6 +8,7 @@ import gql from 'graphql-tag';
 
 import withFlashMessage from 'components/withFlashMessage';
 import withUserForEditing from 'queries/users/userForEditingQuery';
+import withCancelAccount from 'mutations/users/cancelAccountMutation';
 import withUpdateUser from 'mutations/users/updateUserMutation';
 import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
@@ -15,6 +16,7 @@ import SubmitField from 'components/form/SubmitField';
 class EditUserProfile extends Component {
   static propTypes = {
     redirect: PropTypes.func,
+    cancelAccount: PropTypes.func,
     updateUser: PropTypes.func,
     handleSubmit: PropTypes.func
   };
@@ -23,6 +25,7 @@ class EditUserProfile extends Component {
     super(props);
     this.state = { loading: false };
     this.submitForm = this.submitForm.bind(this);
+    this.onCancelAccount = this.onCancelAccount.bind(this);
   }
 
   submitForm(values) {
@@ -35,6 +38,19 @@ class EditUserProfile extends Component {
     });
   }
 
+  onCancelAccount() {
+    if (window.confirm('Etes vous sûr ?')) {
+      return this.props.cancelAccount().then(response => {
+        console.log(response);
+        if (!response.errors) {
+          window.localStorage.removeItem('yummy:token');
+          window.location = '/';
+        }
+      });
+    }
+    return false;
+  }
+
   render() {
     const { loading } = this.state;
     const { handleSubmit, pristine, submitting } = this.props;
@@ -43,12 +59,13 @@ class EditUserProfile extends Component {
       <div className="edit-user-profile">
         <div className="columns">
           <div className="column is-offset-one-quarter is-half">
-            <h1 className="title is-2">Edit profile</h1>
+            <h1 className="title is-2">Modifier votre profile</h1>
             <form onSubmit={handleSubmit(this.submitForm)}>
               <Field name="name" label="Nom" component={RenderField} />
               <Field name="email" label="Email" component={RenderField} />
               <SubmitField loading={loading} disabled={pristine || submitting} value="Mise à jour" />
             </form>
+
             <div className="change-password">
               <h3 className="title is-4">Mot de passe</h3>
               <Link to="/users/password/edit" className="change-password-link">
@@ -57,6 +74,16 @@ class EditUserProfile extends Component {
                 </span>
                 Changer votre mot de passe
               </Link>
+            </div>
+
+            <div className="cancel-account">
+              <h3 className="title is-4">Supprimer votre compte Yummy ?</h3>
+              <a onClick={this.onCancelAccount}>
+                <span className="icon">
+                  <i className="fa fa-trash-o" />
+                </span>
+                Supprimer votre compte
+              </a>
             </div>
           </div>
         </div>
@@ -97,5 +124,6 @@ export default compose(
     validate
   }),
   withFlashMessage,
+  withCancelAccount,
   withUpdateUser
 )(EditUserProfile);

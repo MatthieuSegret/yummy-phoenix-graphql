@@ -62,5 +62,14 @@ defmodule YummyWeb.Mutations.AccountsMutations do
         end
       end
     end
+
+    @desc "Cancel Account"
+    field :cancel_account, :boolean do
+      middleware Middleware.Authorize
+      resolve fn (_, %{context: context}) ->
+        context[:current_user] |> Accounts.cancel_account()
+        {:ok, true}
+      end
+    end
   end
 end

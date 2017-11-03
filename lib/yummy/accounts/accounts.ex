@@ -21,6 +21,10 @@ defmodule Yummy.Accounts do
     |> Repo.update()
   end
 
+  def cancel_account(%User{} = user) do
+    user |> Repo.delete()
+  end
+
   @doc """
   Generate an access token and associates it with the user
   """

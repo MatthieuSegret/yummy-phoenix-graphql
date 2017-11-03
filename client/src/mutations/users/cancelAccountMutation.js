@@ -4,15 +4,15 @@ import gql from 'graphql-tag';
 import withFlashMessage from 'components/withFlashMessage';
 
 export default function(WrappedComponent) {
-  const withRevokeToken = graphql(
+  const withChangePassword = graphql(
     gql`
-      mutation revokeToken {
-        revokeToken
+      mutation cancelAccount {
+        cancelAccount
       }
     `,
     {
       props: ({ ownProps, mutate }) => ({
-        revokeToken() {
+        cancelAccount(user) {
           return mutate().catch(error => {
             ownProps.error("Oups, nous sommes désolés, mais quelque chose s'est mal passé");
             return { errors: error };
@@ -22,5 +22,5 @@ export default function(WrappedComponent) {
     }
   );
 
-  return withFlashMessage(withRevokeToken(WrappedComponent));
+  return withFlashMessage(withChangePassword(WrappedComponent));
 }
