@@ -13,8 +13,8 @@ defmodule YummyWeb.Mutations.AuthMutations do
 
     @desc "Sign in"
     field :sign_in, :session_payload do
-      arg :email, non_null(:string)
-      arg :password, non_null(:string)
+      arg :email, :string
+      arg :password, :string
 
       resolve fn (args, _) ->
         with {:ok, user} <- Accounts.authenticate(args[:email], args[:password]),

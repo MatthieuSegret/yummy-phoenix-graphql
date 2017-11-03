@@ -72,21 +72,9 @@ class SignInUser extends Component {
   }
 }
 
-function validate(values) {
-  const errors = {};
-  if (!values.email) {
-    errors.email = 'doit être rempli(e)';
-  }
-  if (!values.password) {
-    errors.password = 'doit être rempli(e)';
-  }
-  return errors;
-}
-
 export default compose(
   reduxForm({
-    form: 'SignInForm',
-    validate
+    form: 'SignInForm'
   }),
   connect(null, { change }),
   withCurrentUser,

@@ -15,9 +15,9 @@ defmodule Yummy.Accounts do
     |> Repo.update()
   end
 
-  def change_password(%User{} = user, %{password: password}) do
+  def change_password(%User{} = user, %{password: password, password_confirmation: password_confirmation}) do
     user
-    |> User.changeset_with_password(%{password: password})
+    |> User.changeset_with_password(%{password: password, password_confirmation: password_confirmation})
     |> Repo.update()
   end
 
@@ -43,6 +43,8 @@ defmodule Yummy.Accounts do
   @doc """
   Authenticate user with email and password
   """
+  def authenticate(nil, password), do: {:error, "L'email n'est pas valide"}
+  def authenticate(email, nil), do: {:error, "Le mot de passe n'est pas valide"}
   def authenticate(email, password) do
     user = User |> Repo.get_by(email: String.downcase(email))
     case check_password(user, password) do

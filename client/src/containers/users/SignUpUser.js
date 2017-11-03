@@ -82,12 +82,6 @@ function validate(values) {
   if (!values.email) {
     errors.email = 'doit être rempli';
   }
-  if (!values.password) {
-    errors.password = 'doit être rempli';
-  }
-  if (!values.passwordConfirmation) {
-    errors.passwordConfirmation = 'doit être rempli';
-  }
   return errors;
 }
 

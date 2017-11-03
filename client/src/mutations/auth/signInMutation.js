@@ -45,6 +45,7 @@ export default function(WrappedComponent) {
             .then(onResult.bind(ownProps))
             .catch(error => {
               ownProps.error(fatalMessage);
+              return error;
             });
         }
       })

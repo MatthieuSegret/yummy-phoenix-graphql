@@ -2,6 +2,7 @@ defmodule YummyWeb.Mutations.AccountsMutations do
   use Absinthe.Schema.Notation
 
   import Kronky.Payload
+  import YummyWeb.Helpers.ValidationMessageHelpers
 
   alias YummyWeb.Schema.Middleware  
   alias Yummy.Accounts
@@ -12,14 +13,14 @@ defmodule YummyWeb.Mutations.AccountsMutations do
 
     @desc "Sign up"
     field :sign_up, :user_payload do
-      arg :name, non_null(:string)
-      arg :email, non_null(:string)
-      arg :password, non_null(:string)
-      arg :password_confirmation, non_null(:string)
+      arg :name, :string
+      arg :email, :string
+      arg :password, :string
+      arg :password_confirmation, :string
 
       resolve fn (args, _) ->
         with {:ok, user} <- Accounts.create_user(args),
-          {:ok, token, user_with_token} <- Accounts.generate_access_token(user)
+          {:ok, _token, user_with_token} <- Accounts.generate_access_token(user)
         do
           {:ok, user_with_token}
         else
@@ -31,8 +32,8 @@ defmodule YummyWeb.Mutations.AccountsMutations do
 
     @desc "Update current user profile"
     field :update_user, :user_payload do
-      arg :name, non_null(:string)
-      arg :email, non_null(:string)
+      arg :name, :string
+      arg :email, :string
       middleware Middleware.Authorize
 
       resolve fn (args, %{context: context}) ->
@@ -45,15 +46,19 @@ defmodule YummyWeb.Mutations.AccountsMutations do
 
     @desc "Change user password"
     field :change_password, :user_payload do
-      arg :password, non_null(:string)
-      arg :password_confirmation, non_null(:string)
-      arg :current_password, non_null(:string)
+      arg :password, :string
+      arg :password_confirmation, :string
+      arg :current_password, :string
       middleware Middleware.Authorize
       
       resolve fn (args, %{context: context}) ->
-        case context[:current_user] |> Accounts.change_password(args) do
-          {:ok, user} -> {:ok, user}
+        with {:ok, _user} <- Accounts.authenticate(context[:current_user].email, args[:current_password]),
+          {:ok, user} <- context[:current_user] |> Accounts.change_password(args)
+        do
+          {:ok, user}
+        else
           {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
+          {:error, msg} -> {:ok, message(:current_password, "Le mot de passe n'est pas valide")}
         end
       end
     end

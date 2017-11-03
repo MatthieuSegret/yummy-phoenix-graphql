@@ -29,7 +29,7 @@ defmodule Yummy.Accounts.User do
     |> cast(params, [:name, :email, :password, :password_confirmation])
     |> validate_required([:name, :email, :password, :password_confirmation])
     |> validate_length(:password, min: 6)
-    |> validate_confirmation(:password, message: "ne correspond pas au mot de passe")    
+    |> validate_confirmation(:password, message: "Ne correspond pas")    
     |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)
     |> put_pass_hash()

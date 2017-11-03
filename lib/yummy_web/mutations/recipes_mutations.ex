@@ -10,18 +10,18 @@ defmodule YummyWeb.Mutations.RecipesMutations do
   payload_object(:recipe_payload, :recipe)
 
   input_object :recipe_input do
-    field :title, non_null(:string)
-    field :content, non_null(:string)
-    field :total_time, non_null(:string)
-    field :level, non_null(:string)
-    field :budget, non_null(:string)
+    field :title, :string
+    field :content, :string
+    field :total_time, :string
+    field :level, :string
+    field :budget, :string
   end
 
   object :recipes_mutations do
 
     @desc "Create a recipe"
     field :create_recipe, :recipe_payload do
-      arg :input, non_null(:recipe_input)
+      arg :input, :recipe_input
       middleware Middleware.Authorize
 
       resolve fn (%{input: params}, _) ->
@@ -35,7 +35,7 @@ defmodule YummyWeb.Mutations.RecipesMutations do
     @desc "Update a Recipe and return Recipe"
     field :update_recipe, :recipe_payload do
       arg :id, non_null(:id)
-      arg :input, non_null(:recipe_input)
+      arg :input, :recipe_input
       middleware Middleware.Authorize
 
       resolve fn (%{input: params} = args, _) ->

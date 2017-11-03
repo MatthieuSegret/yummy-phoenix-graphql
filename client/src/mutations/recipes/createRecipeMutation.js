@@ -42,6 +42,7 @@ export default function(WrappedComponent) {
             .then(onResult.bind(ownProps))
             .catch(error => {
               ownProps.error("Oups, nous sommes désolés, mais quelque chose s'est mal passé");
+              return error;
             });
         }
       })

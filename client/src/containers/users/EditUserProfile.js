@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import gql from 'graphql-tag';
 
@@ -36,17 +37,27 @@ class EditUserProfile extends Component {
 
   render() {
     const { loading } = this.state;
+    const { handleSubmit, pristine, submitting } = this.props;
 
     return (
       <div className="edit-user-profile">
         <div className="columns">
           <div className="column is-offset-one-quarter is-half">
-            <h1 className="title is-3">Edit profile</h1>
-            <form onSubmit={this.props.handleSubmit(this.submitForm)}>
+            <h1 className="title is-2">Edit profile</h1>
+            <form onSubmit={handleSubmit(this.submitForm)}>
               <Field name="name" label="Nom" component={RenderField} />
               <Field name="email" label="Email" component={RenderField} />
-              <SubmitField loading={loading} value="Update" />
+              <SubmitField loading={loading} disabled={pristine || submitting} value="Mise à jour" />
             </form>
+            <div className="change-password">
+              <h3 className="title is-4">Mot de passe</h3>
+              <Link to="/users/password/edit" className="change-password-link">
+                <span className="icon">
+                  <i className="fa fa-pencil" />
+                </span>
+                Changer votre mot de passe
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -67,10 +78,10 @@ export const fragments = {
 function validate(values) {
   const errors = {};
   if (!values.name) {
-    errors.name = "can't be blank";
+    errors.name = 'doit être rempli';
   }
   if (!values.email) {
-    errors.email = "can't be blank";
+    errors.email = 'doit être rempli';
   }
   return errors;
 }

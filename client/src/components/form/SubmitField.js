@@ -7,21 +7,27 @@ export default class SubmitField extends Component {
   static propTypes = {
     value: PropTypes.string,
     loading: PropTypes.bool,
-    cancel: PropTypes.bool
+    cancel: PropTypes.bool,
+    disabled: PropTypes.bool
   };
 
   static defaultProps = {
     value: 'Soumettre',
     loading: false,
-    cancel: true
+    cancel: true,
+    disabled: false
   };
 
   render() {
-    const { loading, value, cancel } = this.props;
+    const { loading, value, cancel, disabled } = this.props;
     return (
       <div className="field is-grouped">
         <div className="control">
-          <button className={classnames('button is-primary', { 'is-loading': loading })} type="submit">
+          <button
+            className={classnames('button is-primary', { 'is-loading': loading })}
+            disabled={disabled}
+            type="submit"
+          >
             {value}
           </button>
         </div>

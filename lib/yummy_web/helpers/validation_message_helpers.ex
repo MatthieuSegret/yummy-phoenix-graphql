@@ -6,4 +6,10 @@ defmodule YummyWeb.Helpers.ValidationMessageHelpers do
       code: :unknown, field: "base", template: message, message: message, options: []
     }
   end
+
+  def message(field, message) when is_binary(message) do
+    %ValidationMessage{
+      code: :unknown, field: field, template: message, message: message, options: []
+    }
+  end
 end

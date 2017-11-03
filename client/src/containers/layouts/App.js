@@ -13,6 +13,7 @@ import Recipe from 'containers/recipes/Recipe';
 import SignInUser from 'containers/users/SignInUser';
 import SignUpUser from 'containers/users/SignUpUser';
 import EditUserProfile from 'containers/users/EditUserProfile';
+import ChangeUserPassword from 'containers/users/ChangeUserPassword';
 
 import UserIsAuthenticated from 'components/UserIsAuthenticated';
 import NotFound from 'components/NotFound';
@@ -68,6 +69,7 @@ class App extends Component {
                     <Route path="/users/signin" component={SignInUser} />
                     <Route path="/users/signup" component={SignUpUser} />
                     <Route path="/users/profile/edit" component={UserIsAuthenticated(EditUserProfile)} />
+                    <Route path="/users/password/edit" component={UserIsAuthenticated(ChangeUserPassword)} />
                     <Route component={NotFound} />
                   </Switch>
                 </div>
