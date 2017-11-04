@@ -29,7 +29,8 @@ class SignUpUser extends Component {
   submitForm(values) {
     const { signUp } = this.props;
     this.setState({ loading: true });
-    return signUp(values).then(errors => {
+    return signUp(values).then(response => {
+      const errors = response.data.signUp.errors;
       if (!errors) {
         this.props.refetchRecipes();
         this.props.redirect('/', { notice: 'Bienvenue sur Yummy ! Votre compte a bien été créé.' });
@@ -37,7 +38,6 @@ class SignUpUser extends Component {
         this.setState({ loading: false });
         this.props.change('SignUpForm', 'password', '');
         this.props.change('SignUpForm', 'passwordConfirmation', '');
-        this.props.error('Des erreurs ont eu lieu, veuillez vérifier :');
         throw new SubmissionError(errors);
       }
     });

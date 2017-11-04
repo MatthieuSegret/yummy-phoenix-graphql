@@ -1,26 +1,17 @@
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import withFlashMessage from 'components/withFlashMessage';
-
-export default function(WrappedComponent) {
-  const withChangePassword = graphql(
-    gql`
-      mutation cancelAccount {
-        cancelAccount
-      }
-    `,
-    {
-      props: ({ ownProps, mutate }) => ({
-        cancelAccount(user) {
-          return mutate().catch(error => {
-            ownProps.error("Oups, nous sommes désolés, mais quelque chose s'est mal passé");
-            return { errors: error };
-          });
-        }
-      })
+export default graphql(
+  gql`
+    mutation cancelAccount {
+      cancelAccount
     }
-  );
-
-  return withFlashMessage(withChangePassword(WrappedComponent));
-}
+  `,
+  {
+    props: ({ mutate }) => ({
+      cancelAccount(user) {
+        return mutate();
+      }
+    })
+  }
+);

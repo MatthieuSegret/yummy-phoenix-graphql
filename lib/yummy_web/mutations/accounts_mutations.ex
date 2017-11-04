@@ -58,7 +58,7 @@ defmodule YummyWeb.Mutations.AccountsMutations do
           {:ok, user}
         else
           {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
-          {:error, msg} -> {:ok, message(:current_password, "Le mot de passe n'est pas valide")}
+          {:error, _msg} -> {:ok, message(:current_password, "Le mot de passe n'est pas valide")}
         end
       end
     end

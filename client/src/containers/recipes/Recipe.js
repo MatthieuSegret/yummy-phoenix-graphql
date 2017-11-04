@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { gql } from 'react-apollo';
+import gql from 'graphql-tag';
 import ReactMarkdown from 'react-markdown';
 
 import RecipeInfos from 'containers/recipes/_RecipeInfos';

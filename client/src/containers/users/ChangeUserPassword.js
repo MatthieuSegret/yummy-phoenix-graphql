@@ -22,8 +22,11 @@ class ChangeUserPassword extends Component {
 
   submitForm(values) {
     this.setState({ loading: true });
-    return this.props.changePassword(values).then(errors => {
-      if (errors) {
+    return this.props.changePassword(values).then(response => {
+      const errors = response.data.changePassword.errors;
+      if (!errors) {
+        this.props.redirect('/', { notice: 'Votre mot de passe a bien été mis à jour' });
+      } else {
         this.setState({ loading: false });
         throw new SubmissionError(errors);
       }

@@ -1,27 +1,11 @@
-import ApolloClient, { createNetworkInterface } from 'react-apollo';
-import ROOT_URL from 'config/rootUrl';
+import { ApolloClient } from 'apollo-client';
+import { ApolloLink } from 'apollo-link';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
-const networkInterface = createNetworkInterface({
-  uri: `${ROOT_URL}/graphql`,
-  opts: {
-    credentials: process.env.NODE_ENV === 'development' ? 'include' : 'same-origin'
-  }
-});
-
-networkInterface.use([
-  {
-    applyMiddleware(req, next) {
-      if (!req.options.headers) {
-        req.options.headers = {}; // Create the header object if needed.
-      }
-      const token = window.localStorage.getItem('yummy:token');
-      req.options.headers.authorization = token ? `Bearer ${token}` : null;
-      next();
-    }
-  }
-]);
+import { authLink, formatErrorsLink, errorLink, httpLink } from 'config/links';
 
 export default new ApolloClient({
-  networkInterface,
+  link: ApolloLink.from([authLink, formatErrorsLink, errorLink, httpLink]),
+  cache: new InMemoryCache(),
   queryDeduplication: true
 });

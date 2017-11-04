@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import withDeleteRecipe from 'mutations/recipes/deleteRecipeMutation';
+import withFlashMessage from 'components/withFlashMessage';
 
 class RecipeActions extends Component {
   static propTypes = {
-    recipe: PropTypes.object
+    recipe: PropTypes.object,
+    notice: PropTypes.func
   };
 
   constructor(props) {
@@ -16,7 +18,11 @@ class RecipeActions extends Component {
 
   destroy() {
     if (window.confirm('êtes vous sûre ?')) {
-      this.props.deleteRecipe(this.props.recipe.id);
+      this.props.deleteRecipe(this.props.recipe.id).then(response => {
+        if (!response.data.deleteRecipe.errors) {
+          this.props.notice('La recette a bien été supprimé.');
+        }
+      });
     }
     return false;
   }
@@ -41,4 +47,4 @@ class RecipeActions extends Component {
   }
 }
 
-export default withDeleteRecipe(RecipeActions);
+export default withDeleteRecipe(withFlashMessage(RecipeActions));

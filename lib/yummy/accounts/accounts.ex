@@ -47,8 +47,8 @@ defmodule Yummy.Accounts do
   @doc """
   Authenticate user with email and password
   """
-  def authenticate(nil, password), do: {:error, "L'email n'est pas valide"}
-  def authenticate(email, nil), do: {:error, "Le mot de passe n'est pas valide"}
+  def authenticate(nil, _password), do: {:error, "L'email n'est pas valide"}
+  def authenticate(_email, nil), do: {:error, "Le mot de passe n'est pas valide"}
   def authenticate(email, password) do
     user = User |> Repo.get_by(email: String.downcase(email))
     case check_password(user, password) do

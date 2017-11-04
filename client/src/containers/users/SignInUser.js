@@ -10,6 +10,7 @@ import SubmitField from 'components/form/SubmitField';
 import withCurrentUser from 'queries/users/currentUserQuery';
 import withSignIn from 'mutations/auth/signInMutation';
 import withFlashMessage from 'components/withFlashMessage';
+import { fetchCurrentUser } from 'queries/users/currentUserQuery';
 
 class SignInUser extends Component {
   static propTypes = {
@@ -46,10 +47,17 @@ class SignInUser extends Component {
   submitForm(values) {
     this.setState({ loading: true });
 
-    return this.props.signIn(values).then(errors => {
-      if (errors) {
+    return this.props.signIn(values).then(response => {
+      const payload = response.data.signIn;
+      if (payload.errors) {
+        window.localStorage.removeItem('yummy:token');
         this.setState({ loading: false });
         this.props.change('SignInForm', 'password', '');
+      } else {
+        window.localStorage.setItem('yummy:token', payload.result.token);
+        fetchCurrentUser().then(() => {
+          this.props.redirect('/', { notice: 'Vous êtes bien connecté(e)' });
+        });
       }
     });
   }

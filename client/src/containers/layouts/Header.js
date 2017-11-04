@@ -23,7 +23,8 @@ class Header extends Component {
   logout(event) {
     event.preventDefault();
     this.props.revokeToken().then(response => {
-      if (!response.errors) {
+      const errors = response.data.revokeToken.errors;
+      if (!errors) {
         window.localStorage.removeItem('yummy:token');
         window.location = '/';
       }

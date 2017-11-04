@@ -30,8 +30,11 @@ class EditUserProfile extends Component {
 
   submitForm(values) {
     this.setState({ loading: true });
-    return this.props.updateUser(values).then(errors => {
-      if (errors) {
+    return this.props.updateUser(values).then(response => {
+      const errors = response.data.updateUser.errors;
+      if (!errors) {
+        this.props.redirect('/', { notice: 'Votre profil a bien été mis à jour' });
+      } else {
         this.setState({ loading: false });
         throw new SubmissionError(errors);
       }
@@ -41,14 +44,12 @@ class EditUserProfile extends Component {
   onCancelAccount() {
     if (window.confirm('Etes vous sûr ?')) {
       return this.props.cancelAccount().then(response => {
-        console.log(response);
-        if (!response.errors) {
+        if (!response.data.cancelAccount.errors) {
           window.localStorage.removeItem('yummy:token');
           window.location = '/';
         }
       });
     }
-    return false;
   }
 
   render() {

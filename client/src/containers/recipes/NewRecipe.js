@@ -10,6 +10,24 @@ class NewRecipe extends Component {
     createRecipe: PropTypes.func
   };
 
+  constructor(props) {
+    super(props);
+    this.action = this.action.bind(this);
+  }
+
+  action(values) {
+    return new Promise((resolve, reject) => {
+      this.props.createRecipe(values).then(response => {
+        const errors = response.data.createRecipe.errors;
+        if (!errors) {
+          this.props.redirect('/', { notice: 'La recette a bien été créée.' });
+        } else {
+          reject(errors);
+        }
+      });
+    });
+  }
+
   render() {
     const { recipeWithDefaultValue } = this.props.data;
     if (!recipeWithDefaultValue) {
@@ -19,7 +37,7 @@ class NewRecipe extends Component {
     return (
       <div>
         <h1 className="title">Nouvelle recette</h1>
-        <RecipeForm action={this.props.createRecipe} initialValues={{ ...recipeWithDefaultValue }} />
+        <RecipeForm action={this.action} initialValues={{ ...recipeWithDefaultValue }} />
       </div>
     );
   }

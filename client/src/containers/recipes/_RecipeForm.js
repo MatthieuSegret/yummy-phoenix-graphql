@@ -21,11 +21,9 @@ class RecipeForm extends Component {
 
   submitForm(values) {
     this.setState({ loading: true });
-    return this.props.action(values).then(errors => {
-      if (errors) {
-        this.setState({ loading: false });
-        throw new SubmissionError(errors);
-      }
+    return this.props.action(values).catch(errors => {
+      this.setState({ loading: false });
+      throw new SubmissionError(errors);
     });
   }
 
