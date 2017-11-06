@@ -1,7 +1,7 @@
 defmodule Yummy.Recipes.Recipe do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Yummy.Recipes.Recipe
+  alias Yummy.Recipes.{Comment, Recipe}
   alias Yummy.Accounts.User
 
   @options %{
@@ -22,6 +22,7 @@ defmodule Yummy.Recipes.Recipe do
     field :level, :string
     field :budget, :string
     belongs_to :author, User, foreign_key: :user_id
+    has_many :comments, Comment
 
     timestamps()
   end

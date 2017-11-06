@@ -43,7 +43,7 @@ defmodule YummyWeb.Queries.RecipesQueries do
 
       resolve fn (args, _) ->
         recipe = Recipe
-          |> preload(:author)
+          |> preload([{:comments, :author}, :author])
           |> Repo.get!(args[:id])
         {:ok, recipe}
       end

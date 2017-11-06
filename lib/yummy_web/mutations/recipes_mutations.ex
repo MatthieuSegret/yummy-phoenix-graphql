@@ -10,6 +10,7 @@ defmodule YummyWeb.Mutations.RecipesMutations do
   alias Yummy.Recipes.Recipe
 
   payload_object(:recipe_payload, :recipe)
+  payload_object(:comment_payload, :comment)
 
   input_object :recipe_input do
     field :title, :string
@@ -69,6 +70,24 @@ defmodule YummyWeb.Mutations.RecipesMutations do
         case Recipes.is_author(context[:current_user], recipe) do
           true -> recipe |> Repo.delete()
           {:error, msg} -> {:ok, generic_message(msg)}
+        end
+      end
+    end
+
+    @desc "Create a comment to recipe"
+    field :create_comment, :comment_payload do
+      arg :body, :string
+      arg :recipe_id, non_null(:id)
+      middleware Middleware.Authorize
+
+      resolve fn (args, %{context: context}) ->
+        recipe = Recipe
+          |> preload([{:comments, :author}, :author])
+          |> Repo.get!(args[:recipe_id])
+
+        case context[:current_user] |> Recipes.create_comment(recipe, %{body: args[:body]}) do
+          {:ok, comment} -> {:ok, comment}
+          {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
         end
       end
     end

@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 import ReactMarkdown from 'react-markdown';
-import * as moment from 'moment';
-import 'moment/locale/fr';
+import moment from 'moment';
 
 import RecipeInfos from 'containers/recipes/_RecipeInfos';
 import RecipeActions from 'containers/recipes/_RecipeActions';
+import Comment, { fragments as CommentFragments } from 'containers/comments/_Comment';
+import NewComment from 'containers/comments/_NewComment';
 import withRecipe from 'queries/recipes/recipeQuery';
 import withCurrentUser from 'queries/users/currentUserQuery';
 
@@ -19,7 +20,18 @@ class Recipe extends Component {
 
   constructor(props) {
     super(props);
-    moment.locale('fr');
+    this.listComments = this.listComments.bind(this);
+  }
+
+  listComments() {
+    const { comments } = this.props.data.recipe;
+
+    if (!comments || comments.length === 0) {
+      return null;
+    }
+    return comments.map(comment => {
+      return <Comment key={comment.id} comment={comment} />;
+    });
   }
 
   render() {
@@ -33,7 +45,7 @@ class Recipe extends Component {
         <div className="title-wrapper">
           <h1 className="title is-3">{recipe.title}</h1>
 
-          {currentUser && currentUser.id == recipe.author.id ? <RecipeActions recipe={recipe} /> : null}
+          {currentUser && currentUser.id === recipe.author.id ? <RecipeActions recipe={recipe} /> : null}
           <RecipeInfos recipe={recipe} />
 
           <div className="recipe-info-second">
@@ -47,6 +59,12 @@ class Recipe extends Component {
           <ReactMarkdown source={recipe.content} />
         </div>
         <Link to="/">Retour</Link>
+
+        <div className="comments">
+          <h4 className="title is-5">Commentaires</h4>
+          {this.listComments()}
+          <NewComment recipeId={recipe.id} />
+        </div>
       </div>
     );
   }
@@ -66,7 +84,11 @@ export const fragments = {
         id
         name
       }
+      comments {
+        ...CommentFragment
+      }
     }
+    ${CommentFragments.comment}
   `
 };
 

@@ -2,7 +2,7 @@ defmodule Yummy.Recipes do
   import Ecto.Query, warn: false
   import Ecto.Changeset, only: [put_assoc: 3] 
   alias Yummy.Repo
-  alias Yummy.Recipes.Recipe
+  alias Yummy.Recipes.{Comment, Recipe}
   alias Yummy.Accounts.User
 
   def search(query, nil), do: query 
@@ -31,5 +31,13 @@ defmodule Yummy.Recipes do
     else
       {:error, "Vous ne pouvez pas modifier la recette de quelqu'un d'autre"}
     end
+  end
+
+  def create_comment(user, recipe, attrs) do
+    %Comment{}
+    |> Comment.changeset(attrs)
+    |> put_assoc(:author, user)
+    |> put_assoc(:recipe, recipe)
+    |> Repo.insert()
   end
 end

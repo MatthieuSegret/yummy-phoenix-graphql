@@ -17,5 +17,18 @@ defmodule YummyWeb.Schema.RecipesTypes do
     field :budget, :string
     field :inserted_at, :string
     field :author, :user
+    field :comments, list_of(:comment) do
+      resolve fn (recipe, _, _) ->
+        {:ok, recipe.comments}
+      end
+    end
+  end
+
+  object :comment do
+    field :id, :id
+    field :body, :string
+    field :inserted_at, :string
+    field :recipe, :recipe
+    field :author, :user
   end
 end

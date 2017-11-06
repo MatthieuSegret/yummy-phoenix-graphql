@@ -28,6 +28,27 @@ export default {
   }
 };
 
+export const recipeReducers = {
+  recipe(state = [], { mutationResult, queryVariables }) {
+    const { createComment } = mutationResult.data;
+
+    if (createComment) {
+      const newComment = createComment.newComment;
+      if (!newComment) {
+        return null;
+      }
+      return {
+        recipe: {
+          ...state.recipe,
+          comments: [newComment, ...state.recipe.comments]
+        }
+      };
+    }
+
+    return state;
+  }
+};
+
 export function updateQuery(state, { fetchMoreResult }) {
   const { recipes, recipesCount } = fetchMoreResult;
   return {
