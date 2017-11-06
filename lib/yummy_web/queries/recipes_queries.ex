@@ -18,6 +18,7 @@ defmodule YummyWeb.Queries.RecipesQueries do
         recipes = Recipe
         |> Recipes.search(args[:keywords])
         |> order_by(desc: :inserted_at)
+        |> preload(:author)        
         |> Repo.paginate(args[:offset])
         |> Repo.all
         {:ok, recipes}
@@ -39,9 +40,11 @@ defmodule YummyWeb.Queries.RecipesQueries do
     @desc "fetch a Recipe by id"
     field :recipe, :recipe do
       arg :id, non_null(:id)
-      
+
       resolve fn (args, _) ->
-        recipe = Recipe |> Repo.get!(args[:id])
+        recipe = Recipe
+          |> preload(:author)
+          |> Repo.get!(args[:id])
         {:ok, recipe}
       end
     end

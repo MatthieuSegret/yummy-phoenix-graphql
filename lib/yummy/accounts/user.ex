@@ -2,7 +2,7 @@ defmodule Yummy.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias Yummy.Accounts.User
-
+  alias Yummy.Recipes.Recipe
 
   schema "users" do
     field :email, :string
@@ -11,6 +11,7 @@ defmodule Yummy.Accounts.User do
     field :password_confirmation, :string, virtual: true
     field :password_hash, :string
     field :access_token, :string
+    has_many :recipes, Recipe
 
     timestamps()
   end

@@ -22,7 +22,7 @@ class RecipePreview extends Component {
           <h2 className="title is-4">
             <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
           </h2>
-          {currentUser ? <RecipeActions recipe={recipe} /> : null}
+          {currentUser && currentUser.id == recipe.author.id ? <RecipeActions recipe={recipe} /> : null}
         </div>
 
         <RecipeInfos recipe={recipe} />
@@ -41,6 +41,10 @@ export const fragments = {
       totalTime
       level
       budget
+      author {
+        id
+        name
+      }
     }
   `
 };

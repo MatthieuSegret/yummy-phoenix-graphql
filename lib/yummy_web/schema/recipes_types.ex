@@ -15,5 +15,7 @@ defmodule YummyWeb.Schema.RecipesTypes do
     field :total_time, :string
     field :level, :string
     field :budget, :string
+    field :inserted_at, :string
+    field :author, :user
   end
 end

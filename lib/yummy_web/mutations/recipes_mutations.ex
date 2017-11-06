@@ -1,6 +1,8 @@
 defmodule YummyWeb.Mutations.RecipesMutations do
   use Absinthe.Schema.Notation
+  import Ecto.Query
   import Kronky.Payload
+  import YummyWeb.Helpers.ValidationMessageHelpers
 
   alias YummyWeb.Schema.Middleware
   alias Yummy.Repo
@@ -24,8 +26,8 @@ defmodule YummyWeb.Mutations.RecipesMutations do
       arg :input, :recipe_input
       middleware Middleware.Authorize
 
-      resolve fn (%{input: params}, _) ->
-        case Recipes.create(params) do
+      resolve fn (%{input: params}, %{context: context}) ->
+        case context[:current_user] |> Recipes.create(params) do
           {:ok, recipe} -> {:ok, recipe}
           {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
         end
@@ -38,11 +40,18 @@ defmodule YummyWeb.Mutations.RecipesMutations do
       arg :input, :recipe_input
       middleware Middleware.Authorize
 
-      resolve fn (%{input: params} = args, _) ->
-        recipe = Recipe |> Repo.get!(args[:id])
-        case Recipes.update(recipe, params) do
-          {:ok, recipe} -> {:ok, recipe}
+      resolve fn (%{input: params} = args, %{context: context}) ->
+        recipe = Recipe
+          |> preload(:author)
+          |> Repo.get!(args[:id])
+
+        with true <- Recipes.is_author(context[:current_user], recipe),
+          {:ok, recipe} <- Recipes.update(recipe, params)
+        do
+          {:ok, recipe}
+        else
           {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
+          {:error, msg} -> {:ok, generic_message(msg)}
         end
       end
     end
@@ -52,10 +61,15 @@ defmodule YummyWeb.Mutations.RecipesMutations do
       arg :id, non_null(:id)
       middleware Middleware.Authorize
 
-      resolve fn (args, _) ->
-        Recipe
-        |> Repo.get!(args[:id])
-        |> Repo.delete()
+      resolve fn (args, %{context: context}) ->
+        recipe = Recipe
+          |> preload(:author)
+          |> Repo.get!(args[:id])
+
+        case Recipes.is_author(context[:current_user], recipe) do
+          true -> recipe |> Repo.delete()
+          {:error, msg} -> {:ok, generic_message(msg)}
+        end
       end
     end
 

@@ -2,6 +2,7 @@ defmodule Yummy.Recipes.Recipe do
   use Ecto.Schema
   import Ecto.Changeset
   alias Yummy.Recipes.Recipe
+  alias Yummy.Accounts.User
 
   @options %{
     total_time: ["10 min", "20 min", "30 min", "45 min", "1h", "+1h"],
@@ -20,6 +21,7 @@ defmodule Yummy.Recipes.Recipe do
     field :total_time, :string
     field :level, :string
     field :budget, :string
+    belongs_to :author, User, foreign_key: :user_id
 
     timestamps()
   end
@@ -33,6 +35,7 @@ defmodule Yummy.Recipes.Recipe do
     |> validate_inclusion(:total_time, @options[:total_time])
     |> validate_inclusion(:level, @options[:level])
     |> validate_inclusion(:budget, @options[:budget])
+    |> foreign_key_constraint(:user_id)
   end
 
   def options(), do: @options

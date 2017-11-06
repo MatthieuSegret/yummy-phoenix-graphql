@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 import ReactMarkdown from 'react-markdown';
+import * as moment from 'moment';
+import 'moment/locale/fr';
 
 import RecipeInfos from 'containers/recipes/_RecipeInfos';
 import RecipeActions from 'containers/recipes/_RecipeActions';
@@ -15,6 +17,11 @@ class Recipe extends Component {
     currentUser: PropTypes.object
   };
 
+  constructor(props) {
+    super(props);
+    moment.locale('fr');
+  }
+
   render() {
     const { data: { recipe }, currentUser } = this.props;
     if (!recipe) {
@@ -26,8 +33,13 @@ class Recipe extends Component {
         <div className="title-wrapper">
           <h1 className="title is-3">{recipe.title}</h1>
 
-          {currentUser ? <RecipeActions recipe={recipe} /> : null}
+          {currentUser && currentUser.id == recipe.author.id ? <RecipeActions recipe={recipe} /> : null}
           <RecipeInfos recipe={recipe} />
+
+          <div className="recipe-info-second">
+            <span className="recipe-author">Par {recipe.author.name}</span> -
+            <span className="recipe-date"> {moment(new Date(recipe.inserted_at)).fromNow()}</span>
+          </div>
           <hr />
         </div>
 
@@ -49,6 +61,11 @@ export const fragments = {
       totalTime
       level
       budget
+      inserted_at
+      author {
+        id
+        name
+      }
     }
   `
 };
