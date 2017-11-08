@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { reduxForm, Field, SubmissionError, change } from 'redux-form';
 
 import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
+import updateQueries from 'reducers/usersReducer';
+import withRecipes from 'queries/recipesQuery';
 import withFlashMessage from 'components/withFlashMessage';
-import withRecipes from 'queries/recipes/recipesQuery';
-import withSignUp from 'mutations/users/signUpMutation';
+
+import SIGN_UP from 'graphql/users/signUpMutation.graphql';
 
 class SignUpUser extends Component {
   static propTypes = {
@@ -30,15 +33,16 @@ class SignUpUser extends Component {
     const { signUp } = this.props;
     this.setState({ loading: true });
     return signUp(values).then(response => {
-      const errors = response.data.signUp.errors;
-      if (!errors) {
+      const payload = response.data.signUp;
+      if (!payload.errors) {
+        window.localStorage.setItem('yummy:token', payload.currentUser.token);
         this.props.refetchRecipes();
         this.props.redirect('/', { notice: 'Bienvenue sur Yummy ! Votre compte a bien été créé.' });
       } else {
         this.setState({ loading: false });
         this.props.change('SignUpForm', 'password', '');
         this.props.change('SignUpForm', 'passwordConfirmation', '');
-        throw new SubmissionError(errors);
+        throw new SubmissionError(payload.errors);
       }
     });
   }
@@ -84,6 +88,14 @@ function validate(values) {
   }
   return errors;
 }
+
+const withSignUp = graphql(SIGN_UP, {
+  props: ({ mutate }) => ({
+    signUp(user) {
+      return mutate({ variables: { ...user }, updateQueries });
+    }
+  })
+});
 
 export default reduxForm({
   form: 'SignUpForm',

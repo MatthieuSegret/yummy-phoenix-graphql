@@ -21,7 +21,7 @@ import Header from 'containers/layouts/Header';
 
 import { deleteFlashMessage } from 'actions/flashActions';
 import FlashMessage from 'components/FlashMessage';
-import withCurrentUser from 'queries/users/currentUserQuery';
+import withCurrentUser from 'queries/currentUserQuery';
 
 import 'assets/stylesheets/css/application.css';
 

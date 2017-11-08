@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 
 import withFlashMessage from 'components/withFlashMessage';
-import withChangeUserPassword from 'mutations/users/changeUserPasswordMutation';
 import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
+
+import CHANGE_USER_PASSWORD from 'graphql/users/changeUserPasswordMutation.graphql';
 
 class ChangeUserPassword extends Component {
   static propTypes = {
@@ -59,6 +61,14 @@ class ChangeUserPassword extends Component {
     );
   }
 }
+
+const withChangeUserPassword = graphql(CHANGE_USER_PASSWORD, {
+  props: ({ mutate }) => ({
+    changePassword(user) {
+      return mutate({ variables: { ...user } });
+    }
+  })
+});
 
 export default withChangeUserPassword(
   reduxForm({

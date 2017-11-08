@@ -1,0 +1,8 @@
+#import "graphql/fragments/recipeFragments.graphql"
+
+query recipes($offset: Int, $keywords: String) {
+  recipesCount(keywords: $keywords)
+  recipes(offset: $offset, keywords: $keywords) {
+    ...RecipePreviewFragment
+  }
+}

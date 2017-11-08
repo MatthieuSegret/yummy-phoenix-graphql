@@ -4,14 +4,15 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
-import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
 import withFlashMessage from 'components/withFlashMessage';
-import withUserForEditing from 'queries/users/userForEditingQuery';
-import withCancelAccount from 'mutations/users/cancelAccountMutation';
-import withUpdateUser from 'mutations/users/updateUserMutation';
 import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
+
+import USER_FOR_EDITING from 'graphql/users/userForEditingQuery.graphql';
+import UPDATE_USER from 'graphql/users/updateUserMutation.graphql';
+import CANCEL_ACCOUNT from 'graphql/users/cancelAccountMutation.graphql';
 
 class EditUserProfile extends Component {
   static propTypes = {
@@ -93,16 +94,6 @@ class EditUserProfile extends Component {
   }
 }
 
-export const fragments = {
-  user: gql`
-    fragment UserForEditingFragment on User {
-      id
-      name
-      email
-    }
-  `
-};
-
 function validate(values) {
   const errors = {};
   if (!values.name) {
@@ -113,6 +104,28 @@ function validate(values) {
   }
   return errors;
 }
+
+const withUserForEditing = graphql(USER_FOR_EDITING, {
+  options: ownProps => ({
+    fetchPolicy: 'network-only'
+  })
+});
+
+const withUpdateUser = graphql(UPDATE_USER, {
+  props: ({ mutate }) => ({
+    updateUser(user) {
+      return mutate({ variables: { ...user } });
+    }
+  })
+});
+
+const withCancelAccount = graphql(CANCEL_ACCOUNT, {
+  props: ({ mutate }) => ({
+    cancelAccount(user) {
+      return mutate();
+    }
+  })
+});
 
 export default compose(
   withUserForEditing,

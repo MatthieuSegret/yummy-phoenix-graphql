@@ -1,0 +1,11 @@
+mutation deleteRecipe($id: ID) {
+  deleteRecipe(id: $id) {
+    recipe: result {
+      id
+    }
+    messages {
+      field
+      message
+    }
+  }
+}

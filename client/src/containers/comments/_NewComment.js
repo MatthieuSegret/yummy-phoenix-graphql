@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import { Link } from 'react-router-dom';
+import { graphql } from 'react-apollo';
+import shortid from 'shortid';
 
 import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
-import withCreateComment from 'mutations/recipes/createCommentMutation';
-import withCurrentUser from 'queries/users/currentUserQuery';
+import { recipeReducers as updateQueries } from 'reducers/recipesReducer';
+import withCurrentUser from 'queries/currentUserQuery';
+
+import CREATE_COMMENT from 'graphql/recipes/createCommentMutation.graphql';
 
 class NewComment extends Component {
   static propTypes = {
@@ -60,6 +64,35 @@ class NewComment extends Component {
     );
   }
 }
+
+const withCreateComment = graphql(CREATE_COMMENT, {
+  props: ({ ownProps, mutate }) => ({
+    createComment(recipeId, comment) {
+      return mutate({
+        variables: { recipeId, ...comment },
+        updateQueries,
+        optimisticResponse: {
+          __typename: 'Mutation',
+          createComment: {
+            __typename: 'Recipe',
+            newComment: {
+              __typename: 'Comment',
+              id: shortid.generate(),
+              body: comment.body,
+              inserted_at: +new Date(),
+              pending: true,
+              author: {
+                __typename: 'User',
+                name: ownProps.currentUser.name
+              }
+            },
+            messages: null
+          }
+        }
+      });
+    }
+  })
+});
 
 export default reduxForm({
   form: 'CommentForm'

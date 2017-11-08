@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import withRecipes from 'queries/recipes/recipesQuery';
+import withRecipes from 'queries/recipesQuery';
 import HeadListRecipes from 'containers/recipes/_HeadListRecipes';
 import ListRecipes from 'containers/recipes/_ListRecipes';
 
@@ -35,11 +35,7 @@ class SearchRecipes extends Component {
         {recipes && recipes.length === 0 ? (
           <h3>Pas de résultats ...</h3>
         ) : (
-          <ListRecipes
-            recipes={recipes}
-            recipesCount={recipesCount}
-            loadMoreRecipes={loadMoreRecipes}
-          />
+          <ListRecipes recipes={recipes} recipesCount={recipesCount} loadMoreRecipes={loadMoreRecipes} />
         )}
       </div>
     );

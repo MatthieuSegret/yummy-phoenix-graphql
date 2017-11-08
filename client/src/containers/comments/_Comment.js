@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
 import moment from 'moment';
 
 export default class Comment extends Component {
@@ -24,16 +23,3 @@ export default class Comment extends Component {
     );
   }
 }
-
-export const fragments = {
-  comment: gql`
-    fragment CommentFragment on Comment {
-      id
-      body
-      inserted_at
-      author {
-        name
-      }
-    }
-  `
-};

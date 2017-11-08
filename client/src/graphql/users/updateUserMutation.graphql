@@ -1,0 +1,13 @@
+#import "graphql/fragments/userFragments.graphql"
+
+mutation updateUser($name: String, $email: String) {
+  updateUser(name: $name, email: $email) {
+    user: result {
+      ...UserForEditingFragment
+    }
+    messages {
+      field
+      message
+    }
+  }
+}

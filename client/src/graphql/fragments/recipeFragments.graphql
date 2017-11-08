@@ -1,0 +1,48 @@
+fragment RecipeFragment on Recipe {
+  id
+  title
+  content
+  totalTime
+  level
+  budget
+  inserted_at
+  author {
+    id
+    name
+  }
+  comments {
+    ...CommentFragment
+  }
+}
+
+fragment RecipePreviewFragment on Recipe {
+  id
+  title
+  description
+  totalTime
+  level
+  budget
+  author {
+    id
+    name
+  }
+}
+
+fragment RecipeForEditingFragment on Recipe {
+  id
+  title
+  content
+  description
+  totalTime
+  level
+  budget
+}
+
+fragment CommentFragment on Comment {
+  id
+  body
+  inserted_at
+  author {
+    name
+  }
+}

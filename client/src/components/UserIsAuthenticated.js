@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import withFlashMessage from 'components/withFlashMessage';
-import withCurrentUser from 'queries/users/currentUserQuery';
+import withCurrentUser from 'queries/currentUserQuery';
 
 export default function UserIsAuthenticated(WrappedComponent) {
   class ComponentUserIsAuthenticated extends Component {

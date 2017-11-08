@@ -1,0 +1,7 @@
+query recipeWithDefaultValue {
+  recipeWithDefaultValue {
+    totalTime
+    level
+    budget
+  }
+}

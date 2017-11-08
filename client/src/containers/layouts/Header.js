@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
 import { Link } from 'react-router-dom';
 
 import withFlashMessage from 'components/withFlashMessage';
-import withRevokeToken from 'mutations/auth/revokeTokenMutation';
+import REVOKE_TOKEN from 'graphql/auth/revokeTokenMutation.graphql';
 
 import logo from 'assets/images/yummy-icon.png';
 
@@ -79,5 +80,13 @@ class Header extends Component {
     );
   }
 }
+
+const withRevokeToken = graphql(REVOKE_TOKEN, {
+  props: ({ mutate }) => ({
+    revokeToken() {
+      return mutate();
+    }
+  })
+});
 
 export default withFlashMessage(withRevokeToken(Header));

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
 import { reduxForm, Field, change } from 'redux-form';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -7,10 +8,11 @@ import { Link } from 'react-router-dom';
 
 import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
-import withCurrentUser from 'queries/users/currentUserQuery';
-import withSignIn from 'mutations/auth/signInMutation';
 import withFlashMessage from 'components/withFlashMessage';
-import { fetchCurrentUser } from 'queries/users/currentUserQuery';
+import withRecipes from 'queries/recipesQuery';
+import withCurrentUser, { fetchCurrentUser } from 'queries/currentUserQuery';
+
+import SIGN_IN from 'graphql/auth/signInMutation.graphql';
 
 class SignInUser extends Component {
   static propTypes = {
@@ -19,7 +21,8 @@ class SignInUser extends Component {
     change: PropTypes.func,
     signIn: PropTypes.func,
     currentUser: PropTypes.object,
-    currentUserLoading: PropTypes.bool
+    currentUserLoading: PropTypes.bool,
+    refetchRecipes: PropTypes.func
   };
 
   constructor(props) {
@@ -49,15 +52,16 @@ class SignInUser extends Component {
 
     return this.props.signIn(values).then(response => {
       const payload = response.data.signIn;
-      if (payload.errors) {
-        window.localStorage.removeItem('yummy:token');
-        this.setState({ loading: false });
-        this.props.change('SignInForm', 'password', '');
-      } else {
+      if (!payload.errors) {
         window.localStorage.setItem('yummy:token', payload.result.token);
         fetchCurrentUser().then(() => {
           this.props.redirect('/', { notice: 'Vous êtes bien connecté(e)' });
         });
+        this.props.refetchRecipes();
+      } else {
+        window.localStorage.removeItem('yummy:token');
+        this.setState({ loading: false });
+        this.props.change('SignInForm', 'password', '');
       }
     });
   }
@@ -80,6 +84,14 @@ class SignInUser extends Component {
   }
 }
 
+const withSignIn = graphql(SIGN_IN, {
+  props: ({ mutate }) => ({
+    signIn(user) {
+      return mutate({ variables: { ...user } });
+    }
+  })
+});
+
 export default compose(
   reduxForm({
     form: 'SignInForm'
@@ -87,5 +99,6 @@ export default compose(
   connect(null, { change }),
   withCurrentUser,
   withSignIn,
-  withFlashMessage
+  withFlashMessage,
+  withRecipes
 )(SignInUser);

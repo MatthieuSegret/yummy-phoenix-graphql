@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import SearchForm from 'containers/recipes/_SearchForm';
-import withCurrentUser from 'queries/users/currentUserQuery';
+import withCurrentUser from 'queries/currentUserQuery';
 
 class HeadListRecipes extends Component {
   static propTypes = {

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
 
 import RecipeForm from 'containers/recipes/_RecipeForm';
-import withRecipeWithDefaultValue from 'queries/recipes/recipeWithDefaultValueQuery';
-import withCreateRecipe from 'mutations/recipes/createRecipeMutation';
+import updateQueries from 'reducers/recipesReducer';
+
+import RECIPE_WITH_DEFAULT_VALUE from 'graphql/recipes/recipeWithDefaultValueQuery.graphql';
+import CREATE_RECIPE from 'graphql/recipes/createRecipeMutation.graphql';
 
 class NewRecipe extends Component {
   static propTypes = {
@@ -42,5 +45,15 @@ class NewRecipe extends Component {
     );
   }
 }
+
+const withRecipeWithDefaultValue = graphql(RECIPE_WITH_DEFAULT_VALUE);
+
+const withCreateRecipe = graphql(CREATE_RECIPE, {
+  props: ({ mutate }) => ({
+    createRecipe(recipe) {
+      return mutate({ variables: { ...recipe }, updateQueries });
+    }
+  })
+});
 
 export default withRecipeWithDefaultValue(withCreateRecipe(NewRecipe));

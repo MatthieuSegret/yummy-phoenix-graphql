@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import withRecipes from 'queries/recipes/recipesQuery';
 import HeadListRecipes from 'containers/recipes/_HeadListRecipes';
 import ListRecipes from 'containers/recipes/_ListRecipes';
+import withRecipes from 'queries/recipesQuery';
 
 class AllRecipes extends Component {
   static propTypes = {
@@ -26,11 +26,7 @@ class AllRecipes extends Component {
 
         <HeadListRecipes keywords={keywords} />
 
-        <ListRecipes
-          recipes={recipes}
-          recipesCount={recipesCount}
-          loadMoreRecipes={loadMoreRecipes}
-        />
+        <ListRecipes recipes={recipes} recipesCount={recipesCount} loadMoreRecipes={loadMoreRecipes} />
       </div>
     );
   }

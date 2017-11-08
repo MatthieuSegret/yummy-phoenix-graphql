@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
 
 import RecipeInfos from 'containers/recipes/_RecipeInfos';
 import RecipeActions from 'containers/recipes/_RecipeActions';
-import Comment, { fragments as CommentFragments } from 'containers/comments/_Comment';
+import Comment from 'containers/comments/_Comment';
 import NewComment from 'containers/comments/_NewComment';
-import withRecipe from 'queries/recipes/recipeQuery';
-import withCurrentUser from 'queries/users/currentUserQuery';
+import withCurrentUser from 'queries/currentUserQuery';
+
+import RECIPE from 'graphql/recipes/recipeQuery.graphql';
 
 class Recipe extends Component {
   static propTypes = {
@@ -70,26 +71,12 @@ class Recipe extends Component {
   }
 }
 
-export const fragments = {
-  recipe: gql`
-    fragment RecipeFragment on Recipe {
-      id
-      title
-      content
-      totalTime
-      level
-      budget
-      inserted_at
-      author {
-        id
-        name
-      }
-      comments {
-        ...CommentFragment
-      }
+const withRecipe = graphql(RECIPE, {
+  options: ownProps => ({
+    variables: {
+      id: ownProps.match.params.id
     }
-    ${CommentFragments.comment}
-  `
-};
+  })
+});
 
 export default withCurrentUser(withRecipe(Recipe));

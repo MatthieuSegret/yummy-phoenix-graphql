@@ -1,0 +1,13 @@
+#import "graphql/fragments/recipeFragments.graphql"
+
+mutation createRecipe($title: String, $content: String, $totalTime: String, $level: String, $budget: String) {
+  createRecipe(input: { title: $title, content: $content, totalTime: $totalTime, level: $level, budget: $budget }) {
+    newRecipe: result {
+      ...RecipePreviewFragment
+    }
+    messages {
+      field
+      message
+    }
+  }
+}

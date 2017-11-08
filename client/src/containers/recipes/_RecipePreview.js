@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import RecipeInfos from 'containers/recipes/_RecipeInfos';
 import RecipeActions from 'containers/recipes/_RecipeActions';
-import withCurrentUser from 'queries/users/currentUserQuery';
+import withCurrentUser from 'queries/currentUserQuery';
 
 class RecipePreview extends Component {
   static propTypes = {

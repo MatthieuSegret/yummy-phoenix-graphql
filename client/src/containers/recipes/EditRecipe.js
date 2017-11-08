@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
 import RecipeForm from 'containers/recipes/_RecipeForm';
-import withRecipeForEditing from 'queries/recipes/recipeForEditingQuery';
-import withUpdateRecipe from 'mutations/recipes/updateRecipeMutation';
 import withFlashMessage from 'components/withFlashMessage';
+
+import RECIPE_FOR_EDITING from 'graphql/recipes/recipeForEditingQuery.graphql';
+import UPDATE_RECIPE from 'graphql/recipes/updateRecipeMutation.graphql';
 
 class EditRecipe extends Component {
   static propTypes = {
@@ -46,18 +47,21 @@ class EditRecipe extends Component {
   }
 }
 
-export const fragments = {
-  recipe: gql`
-    fragment RecipeForEditingFragment on Recipe {
-      id
-      title
-      content
-      description
-      totalTime
-      level
-      budget
+const withRecipeForEditing = graphql(RECIPE_FOR_EDITING, {
+  options: ownProps => ({
+    variables: {
+      id: ownProps.match.params.id
+    },
+    fetchPolicy: 'network-only'
+  })
+});
+
+const withUpdateRecipe = graphql(UPDATE_RECIPE, {
+  props: ({ mutate }) => ({
+    updateRecipe(recipe) {
+      return mutate({ variables: { ...recipe } });
     }
-  `
-};
+  })
+});
 
 export default withRecipeForEditing(withUpdateRecipe(withFlashMessage(EditRecipe)));

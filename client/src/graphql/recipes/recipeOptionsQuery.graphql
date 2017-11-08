@@ -1,0 +1,14 @@
+query recipeOptions {
+  totalTimeOptions: recipeOptions(field: "total_time") {
+    label
+    value
+  }
+  levelOptions: recipeOptions(field: "level") {
+    label
+    value
+  }
+  budgetOptions: recipeOptions(field: "budget") {
+    label
+    value
+  }
+}

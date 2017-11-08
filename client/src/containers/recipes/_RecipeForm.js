@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
+import { graphql } from 'react-apollo';
 
 import SubmitField from 'components/form/SubmitField';
 import RenderField from 'components/form/RenderField';
-import withRecipeOptions from 'queries/recipes/recipeOptionsQuery';
+import RECIPE_OPTIONS from 'graphql/recipes/recipeOptionsQuery.graphql';
 
 class RecipeForm extends Component {
   static propTypes = {
@@ -64,7 +65,7 @@ function validate(values) {
   return errors;
 }
 
-export default withRecipeOptions(
+export default graphql(RECIPE_OPTIONS)(
   reduxForm({
     form: 'RecipeForm',
     validate
