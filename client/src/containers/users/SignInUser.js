@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
-import withFlashMessage from 'components/withFlashMessage';
+import withFlashMessage from 'components/flash/withFlashMessage';
 import withRecipes from 'queries/recipesQuery';
 import withCurrentUser, { fetchCurrentUser } from 'queries/currentUserQuery';
 

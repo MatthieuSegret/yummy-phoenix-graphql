@@ -1,4 +1,4 @@
-#import "graphql/fragments/recipeFragments.graphql"
+#import "graphql/fragments/recipeForEditingFragment.graphql"
 
 mutation updateRecipe($id: ID, $title: String, $content: String, $totalTime: String, $level: String, $budget: String) {
   updateRecipe(

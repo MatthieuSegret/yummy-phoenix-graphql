@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
 
 import RecipeInfos from 'containers/recipes/_RecipeInfos';
@@ -31,22 +30,5 @@ class RecipePreview extends Component {
     );
   }
 }
-
-export const fragments = {
-  recipe: gql`
-    fragment RecipePreviewFragment on Recipe {
-      id
-      title
-      description
-      totalTime
-      level
-      budget
-      author {
-        id
-        name
-      }
-    }
-  `
-};
 
 export default withCurrentUser(RecipePreview);

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import { graphql } from 'react-apollo';
 
-import withFlashMessage from 'components/withFlashMessage';
+import withFlashMessage from 'components/flash/withFlashMessage';
 import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
 

@@ -1,4 +1,4 @@
-#import "graphql/fragments/userFragments.graphql"
+#import "graphql/fragments/userFragment.graphql"
 
 mutation updateUser($name: String, $email: String) {
   updateUser(name: $name, email: $email) {

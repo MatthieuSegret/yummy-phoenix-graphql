@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 
 import RecipeForm from 'containers/recipes/_RecipeForm';
-import withFlashMessage from 'components/withFlashMessage';
+import withFlashMessage from 'components/flash/withFlashMessage';
 
 import RECIPE_FOR_EDITING from 'graphql/recipes/recipeForEditingQuery.graphql';
 import UPDATE_RECIPE from 'graphql/recipes/updateRecipeMutation.graphql';

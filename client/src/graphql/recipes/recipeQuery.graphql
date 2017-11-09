@@ -1,4 +1,4 @@
-#import "graphql/fragments/recipeFragments.graphql"
+#import "graphql/fragments/recipeFragment.graphql"
 
 query recipe($id: ID) {
   recipe(id: $id) {

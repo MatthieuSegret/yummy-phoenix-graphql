@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import { Link } from 'react-router-dom';
 
-import withFlashMessage from 'components/withFlashMessage';
+import withFlashMessage from 'components/flash/withFlashMessage';
 import REVOKE_TOKEN from 'graphql/auth/revokeTokenMutation.graphql';
 
 import logo from 'assets/images/yummy-icon.png';

@@ -7,10 +7,11 @@ import shortid from 'shortid';
 
 import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
-import { recipeReducers as updateQueries } from 'reducers/recipesReducer';
 import withCurrentUser from 'queries/currentUserQuery';
+import withFlashMessage from 'components/flash/withFlashMessage';
 
 import CREATE_COMMENT from 'graphql/recipes/createCommentMutation.graphql';
+import RECIPE from 'graphql/recipes/recipeQuery.graphql';
 
 class NewComment extends Component {
   static propTypes = {
@@ -18,6 +19,7 @@ class NewComment extends Component {
     createComment: PropTypes.func,
     handleSubmit: PropTypes.func,
     reset: PropTypes.func,
+    deleteFlashMessage: PropTypes.func,
     currentUser: PropTypes.object
   };
 
@@ -32,11 +34,12 @@ class NewComment extends Component {
     this.setState({ loading: true });
     return createComment(recipeId, values).then(response => {
       const errors = response.data.createComment.errors;
-      if (errors) {
-        throw new SubmissionError(errors);
-      } else {
+      if (!errors) {
+        this.props.deleteFlashMessage();
         this.setState({ loading: false });
         reset();
+      } else {
+        throw new SubmissionError(errors);
       }
     });
   }
@@ -70,7 +73,12 @@ const withCreateComment = graphql(CREATE_COMMENT, {
     createComment(recipeId, comment) {
       return mutate({
         variables: { recipeId, ...comment },
-        updateQueries,
+        update: (store, { data: { createComment: { newComment } } }) => {
+          const id = ownProps.recipeId;
+          const data = store.readQuery({ query: RECIPE, variables: { id } });
+          if (newComment) data.recipe.comments.unshift(newComment);
+          store.writeQuery({ query: RECIPE, variables: { id }, data });
+        },
         optimisticResponse: {
           __typename: 'Mutation',
           createComment: {
@@ -96,4 +104,4 @@ const withCreateComment = graphql(CREATE_COMMENT, {
 
 export default reduxForm({
   form: 'CommentForm'
-})(withCurrentUser(withCreateComment(NewComment)));
+})(withCurrentUser(withCreateComment(withFlashMessage(NewComment))));

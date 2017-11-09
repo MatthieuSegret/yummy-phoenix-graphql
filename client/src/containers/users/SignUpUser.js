@@ -7,11 +7,11 @@ import { reduxForm, Field, SubmissionError, change } from 'redux-form';
 
 import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
-import updateQueries from 'reducers/usersReducer';
 import withRecipes from 'queries/recipesQuery';
-import withFlashMessage from 'components/withFlashMessage';
+import withFlashMessage from 'components/flash/withFlashMessage';
 
 import SIGN_UP from 'graphql/users/signUpMutation.graphql';
+import CURRENT_USER from 'graphql/users/currentUserQuery.graphql';
 
 class SignUpUser extends Component {
   static propTypes = {
@@ -92,7 +92,14 @@ function validate(values) {
 const withSignUp = graphql(SIGN_UP, {
   props: ({ mutate }) => ({
     signUp(user) {
-      return mutate({ variables: { ...user }, updateQueries });
+      return mutate({
+        variables: { ...user },
+        update: (store, { data: { signUp: { currentUser } } }) => {
+          const data = store.readQuery({ query: CURRENT_USER });
+          data.currentUser = currentUser;
+          store.writeQuery({ query: CURRENT_USER, data });
+        }
+      });
     }
   })
 });

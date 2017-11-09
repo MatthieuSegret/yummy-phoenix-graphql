@@ -5,7 +5,7 @@ import { onError } from 'apollo-link-error';
 
 import ROOT_URL from 'config/rootUrl';
 import store from 'config/store';
-import { error } from 'actions/flashActions';
+import { error } from 'components/flash/flashActions';
 import formatErrors from 'utils/errorsUtils';
 
 export const httpLink = new HttpLink({

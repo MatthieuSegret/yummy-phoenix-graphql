@@ -30,6 +30,7 @@ class Recipe extends Component {
     if (!comments || comments.length === 0) {
       return null;
     }
+
     return comments.map(comment => {
       return <Comment key={comment.id} comment={comment} />;
     });

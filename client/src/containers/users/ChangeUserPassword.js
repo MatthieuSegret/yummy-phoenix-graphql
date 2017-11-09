@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 
-import withFlashMessage from 'components/withFlashMessage';
+import withFlashMessage from 'components/flash/withFlashMessage';
 import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
 

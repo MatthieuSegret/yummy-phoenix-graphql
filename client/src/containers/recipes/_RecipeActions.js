@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import { Link } from 'react-router-dom';
 
-import withFlashMessage from 'components/withFlashMessage';
-import updateQueries from 'reducers/recipesReducer';
+import withFlashMessage from 'components/flash/withFlashMessage';
 
 import DELETE_RECIPE from 'graphql/recipes/deleteRecipeMutation.graphql';
+import RECIPES from 'graphql/recipes/recipesQuery.graphql';
 
 class RecipeActions extends Component {
   static propTypes = {
@@ -51,9 +51,17 @@ class RecipeActions extends Component {
 }
 
 const withDeleteRecipe = graphql(DELETE_RECIPE, {
-  props: ({ ownProps, mutate }) => ({
+  props: ({ mutate }) => ({
     deleteRecipe(recipeID) {
-      return mutate({ variables: { id: recipeID }, updateQueries });
+      return mutate({
+        variables: { id: recipeID },
+        update: (store, { data: { deleteRecipe: { recipe: recipeDeleted } } }) => {
+          const data = store.readQuery({ query: RECIPES });
+          data.recipes = data.recipes.filter(recipe => recipe.id !== recipeDeleted.id);
+          data.recipesCount -= 1;
+          store.writeQuery({ query: RECIPES, data });
+        }
+      });
     }
   })
 });
