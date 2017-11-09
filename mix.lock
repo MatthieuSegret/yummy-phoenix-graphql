@@ -1,4 +1,5 @@
 %{"absinthe": {:git, "https://github.com/absinthe-graphql/absinthe.git", "4b328122717c5d3814640d585aab0aa3531b56d2", [tag: "v1.4.0-rc.3"]},
+  "absinthe_ecto": {:hex, :absinthe_ecto, "0.1.2", "bdee4bef46fa2f8ab931a711dc208c817e86d729a145085845de9a6d03c45135", [], [{:absinthe, "~> 1.3.0", [hex: :absinthe, repo: "hexpm", optional: false]}, {:ecto, ">= 0.0.0", [hex: :ecto, repo: "hexpm", optional: false]}], "hexpm"},
   "absinthe_plug": {:git, "https://github.com/absinthe-graphql/absinthe_plug.git", "b3bc13c59a3abccab83c29512e26c48b2e5c62d4", [tag: "v1.4.0-rc.2"]},
   "bcrypt_elixir": {:hex, :bcrypt_elixir, "1.0.4", "7598efbe9bd56fdc04412b4377a6a3add0bcf8e0cf1f31684190425a404f14e2", [], [{:elixir_make, "~> 0.4", [hex: :elixir_make, repo: "hexpm", optional: false]}], "hexpm"},
   "comeonin": {:hex, :comeonin, "4.0.3", "4e257dcb748ed1ca2651b7ba24fdbd1bd24efd12482accf8079141e3fda23a10", [], [{:argon2_elixir, "~> 1.2", [hex: :argon2_elixir, repo: "hexpm", optional: true]}, {:bcrypt_elixir, "~> 0.12.1 or ~> 1.0", [hex: :bcrypt_elixir, repo: "hexpm", optional: true]}, {:pbkdf2_elixir, "~> 0.12", [hex: :pbkdf2_elixir, repo: "hexpm", optional: true]}], "hexpm"},

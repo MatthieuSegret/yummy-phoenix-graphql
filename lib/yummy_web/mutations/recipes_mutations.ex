@@ -1,6 +1,6 @@
 defmodule YummyWeb.Mutations.RecipesMutations do
   use Absinthe.Schema.Notation
-  import Ecto.Query
+  import Ecto.Query, warn: false  
   import Kronky.Payload
   import YummyWeb.Helpers.ValidationMessageHelpers
 
@@ -64,8 +64,8 @@ defmodule YummyWeb.Mutations.RecipesMutations do
 
       resolve fn (args, %{context: context}) ->
         recipe = Recipe
-          |> preload(:author)
-          |> Repo.get!(args[:id])
+        |> preload(:author)
+        |> Repo.get!(args[:id])
 
         case Recipes.is_author(context[:current_user], recipe) do
           true -> recipe |> Repo.delete()
@@ -81,9 +81,7 @@ defmodule YummyWeb.Mutations.RecipesMutations do
       middleware Middleware.Authorize
 
       resolve fn (args, %{context: context}) ->
-        recipe = Recipe
-          |> preload([{:comments, :author}, :author])
-          |> Repo.get!(args[:recipe_id])
+        recipe = Recipe |> Repo.get!(args[:recipe_id])
 
         case context[:current_user] |> Recipes.create_comment(recipe, %{body: args[:body]}) do
           {:ok, comment} -> {:ok, comment}

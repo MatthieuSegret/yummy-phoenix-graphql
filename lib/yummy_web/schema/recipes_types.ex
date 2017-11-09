@@ -1,5 +1,6 @@
 defmodule YummyWeb.Schema.RecipesTypes do
   use Absinthe.Schema.Notation
+  use Absinthe.Ecto, repo: Yummy.Repo  
   alias YummyWeb.Helpers.StringHelpers
 
   @desc "A Recipe with title and content"
@@ -16,19 +17,15 @@ defmodule YummyWeb.Schema.RecipesTypes do
     field :level, :string
     field :budget, :string
     field :inserted_at, :string
-    field :author, :user
-    field :comments, list_of(:comment) do
-      resolve fn (recipe, _, _) ->
-        {:ok, recipe.comments}
-      end
-    end
+    field :author, :user, resolve: assoc(:author)
+    field :comments, list_of(:comment), resolve: assoc(:comments)
   end
 
   object :comment do
     field :id, :id
     field :body, :string
     field :inserted_at, :string
-    field :recipe, :recipe
-    field :author, :user
+    field :recipe, :recipe, resolve: assoc(:recipe)
+    field :author, :user, resolve: assoc(:author)
   end
 end

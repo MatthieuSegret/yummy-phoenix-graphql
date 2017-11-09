@@ -1,7 +1,7 @@
 defmodule YummyWeb.Queries.RecipesQueries do
   use Absinthe.Schema.Notation
 
-  import Ecto.Query
+  import Ecto.Query, warn: false
 
   alias Yummy.Repo
   alias Yummy.Recipes
@@ -18,7 +18,6 @@ defmodule YummyWeb.Queries.RecipesQueries do
         recipes = Recipe
         |> Recipes.search(args[:keywords])
         |> order_by(desc: :inserted_at)
-        |> preload(:author)        
         |> Repo.paginate(args[:offset])
         |> Repo.all
         {:ok, recipes}
@@ -42,9 +41,7 @@ defmodule YummyWeb.Queries.RecipesQueries do
       arg :id, non_null(:id)
 
       resolve fn (args, _) ->
-        recipe = Recipe
-          |> preload([{:comments, :author}, :author])
-          |> Repo.get!(args[:id])
+        recipe = Recipe |> Repo.get!(args[:id])
         {:ok, recipe}
       end
     end

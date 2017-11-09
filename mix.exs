@@ -41,6 +41,7 @@ defmodule Yummy.Mixfile do
       {:cowboy, "~> 1.1.2"},
       {:absinthe, github: "absinthe-graphql/absinthe", tag: "v1.4.0-rc.3", override: true},
       {:absinthe_plug, github: "absinthe-graphql/absinthe_plug", tag: "v1.4.0-rc.2"},
+      {:absinthe_ecto, "~> 0.1.2"},
       {:poison, "~> 3.1.0"},
       {:cors_plug, "~> 1.4"},
       {:kronky, "~> 0.4.0"},

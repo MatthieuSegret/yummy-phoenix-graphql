@@ -1,4 +1,4 @@
-mutation deleteRecipe($id: ID) {
+mutation deleteRecipe($id: ID!) {
   deleteRecipe(id: $id) {
     recipe: result {
       id
