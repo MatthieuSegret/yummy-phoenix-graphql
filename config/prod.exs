@@ -21,6 +21,16 @@ config :yummy, YummyWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :ex_aws,
+  access_key_id: [{:system, "S3_KEY"}, :instance_role],
+  secret_access_key: [{:system, "S3_SECRET"}, :instance_role],
+  region: "eu-central-1"
+
+config :arc,
+  storage: Arc.Storage.S3,
+  virtual_host: true,
+  bucket: {:system, "S3_BUCKET"}
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

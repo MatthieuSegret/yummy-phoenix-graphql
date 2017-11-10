@@ -10,13 +10,17 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-
 alias Yummy.Repo
+alias Yummy.Accounts
+alias Yummy.Accounts.User
 alias Yummy.Recipes
 alias Yummy.Recipes.Recipe
 
+User |> Repo.delete_all
+{:ok, user} = Accounts.create_user(%{name: "Jose", email: "jose@yummy.com", password: "password", password_confirmation: "password"})
+
 Recipe |> Repo.delete_all
-Recipes.create(%{
+Recipes.create(user, %{
   title: "Panna cotta coco fruits rouges",
   total_time: "30 min",
   level: "Facile",
@@ -47,11 +51,11 @@ Recipes.create(%{
   Réserver quelques fruits pour la décoration. Préparer le coulis de fruits rouges en ajoutant le sucre vanillé et le jus de citron. Mixer. Réserver au frigo.
   
   #### Etape 6
-  Un peu avant de servir, répartir le coulis et décorer avec les fruits réservés.]
+  Un peu avant de servir, répartir le coulis et décorer avec les fruits réservés.],
+  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "panna-cotta.jpg", path: "priv/repo/images/panna-cotta.jpg"}
 })
 
-
-Recipes.create(%{
+Recipes.create(user, %{
   title: "Tarte aux figues",
   total_time: "30 min",
   level: "Moyenne",
@@ -75,11 +79,12 @@ Recipes.create(%{
   Macérer 1/2 h en retournant de temps en temps.
   
   #### Etape 4
-  Laisser tiédir la pâte précuite 10 mn. Etendre la confiture d'abricots, poser dessus les figues, face coupée dessous. Saupoudrer de sucre glace, passer au four 230 °C 7 à 8 mn pour caraméliser légèrement le dessus des figues.]
+  Laisser tiédir la pâte précuite 10 mn. Etendre la confiture d'abricots, poser dessus les figues, face coupée dessous. Saupoudrer de sucre glace, passer au four 230 °C 7 à 8 mn pour caraméliser légèrement le dessus des figues.],
+  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "tarte-figues.jpg", path: "priv/repo/images/tarte-figues.jpg"}
 })
 
 
-Recipes.create(%{
+Recipes.create(user, %{
   title: "Clafoutis aux tomates cerise",
   total_time: "45 min",
   level: "Moyenne",
@@ -116,11 +121,12 @@ Recipes.create(%{
   Quand les tomates ont rôti, sortir le plat à gratin du four et recouvrir les tomates cerises de pâte à clafoutis. Saupoudrer d'une cuillère de Secret d'arômes et enfourner pour 25 à 30 minutes de cuisson.
   
   #### Etape 6
-  Quand le clafoutis est cuit, sortir le plat du four et laisser tiédir quelques minutes avant de déguster.]
+  Quand le clafoutis est cuit, sortir le plat du four et laisser tiédir quelques minutes avant de déguster.],
+  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "clafoutis.jpg", path: "priv/repo/images/clafoutis.jpg"}
 })
 
 
-Recipes.create(%{
+Recipes.create(user, %{
   title: "Tresse feuilletée au chocolat",
   total_time: "30 min",
   level: "Difficile",
@@ -150,11 +156,12 @@ Recipes.create(%{
   Badigeonner de jaune d'oeuf et enfourner 20 minutes.
   
   #### Etape 7
-  Il est possible de saupoudrer de pistaches, de noix, de noisettes ou d'amandes concassées avant d'enfourner.]
+  Il est possible de saupoudrer de pistaches, de noix, de noisettes ou d'amandes concassées avant d'enfourner.],
+  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "feuilletee.jpg", path: "priv/repo/images/feuilletee.jpg"}
 })
 
 
-Recipes.create(%{
+Recipes.create(user, %{
   title: "Pain de courgettes",
   total_time: "+1h",
   level: "Moyenne",
@@ -179,11 +186,12 @@ Recipes.create(%{
   Cuire envirn 45 mn à four moyen, dans un moule à cake beurré et tapissé de rondelles de courgettes.
   
   #### Etape 4
-  Servir tiède ou froid.]
+  Servir tiède ou froid.],
+  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "pain-courgettes.jpg", path: "priv/repo/images/pain-courgettes.jpg"}
 })
 
 
-Recipes.create(%{
+Recipes.create(user, %{
   title: "Cake châtaigne et crème de marron",
   total_time: "1h",
   level: "Facile",
@@ -212,5 +220,6 @@ Recipes.create(%{
   
   #### Etape 5
   Faire cuire à 180 degrés pendant 45 min.
-  J'ajoute mon grain de sel.]
+  J'ajoute mon grain de sel.],
+  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "cake.jpg", path: "priv/repo/images/cake.jpg"}
 })

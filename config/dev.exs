@@ -44,3 +44,6 @@ config :yummy, Yummy.Repo,
   database: "yummy_graphql_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :arc,
+  storage: Arc.Storage.Local

@@ -1,5 +1,6 @@
 defmodule Yummy.Recipes.Recipe do
   use Ecto.Schema
+  use Arc.Ecto.Schema
   import Ecto.Changeset
   alias Yummy.Recipes.{Comment, Recipe}
   alias Yummy.Accounts.User
@@ -21,6 +22,9 @@ defmodule Yummy.Recipes.Recipe do
     field :total_time, :string
     field :level, :string
     field :budget, :string
+    field :image_url, Yummy.ImageUploader.Type
+    field :remove_image, :boolean, virtual: true
+    field :uuid, :string
     belongs_to :author, User, foreign_key: :user_id
     has_many :comments, Comment
 
@@ -30,8 +34,10 @@ defmodule Yummy.Recipes.Recipe do
   @doc false
   def changeset(%Recipe{} = recipe, attrs) do
     recipe
-    |> cast(attrs, [:title, :content, :total_time, :level, :budget])
-    |> validate_required([:title, :content, :total_time, :level, :budget])
+    |> cast(attrs, [:title, :content, :total_time, :level, :budget, :uuid, :remove_image])
+    |> check_uuid
+    |> cast_attachments(attrs, [:image_url])
+    |> validate_required([:title, :content, :total_time, :level, :budget, :uuid])
     |> validate_length(:content, min: 10)
     |> validate_inclusion(:total_time, @options[:total_time])
     |> validate_inclusion(:level, @options[:level])
@@ -41,4 +47,12 @@ defmodule Yummy.Recipes.Recipe do
 
   def options(), do: @options
   def default_values(), do: @default_values
+
+  defp check_uuid(changeset) do
+    if get_field(changeset, :uuid) == nil do
+      force_change(changeset, :uuid, Ecto.UUID.generate())
+    else
+      changeset
+    end
+  end
 end

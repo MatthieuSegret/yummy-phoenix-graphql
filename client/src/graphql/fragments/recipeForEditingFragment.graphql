@@ -6,4 +6,5 @@ fragment RecipeForEditingFragment on Recipe {
   totalTime
   level
   budget
+  image_url
 }

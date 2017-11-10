@@ -5,6 +5,7 @@ import { graphql } from 'react-apollo';
 import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
 
+import ROOT_URL from 'config/rootUrl';
 import RecipeInfos from 'containers/recipes/_RecipeInfos';
 import RecipeActions from 'containers/recipes/_RecipeActions';
 import Comment from 'containers/comments/_Comment';
@@ -57,10 +58,12 @@ class Recipe extends Component {
           <hr />
         </div>
 
-        <div className="content">
+        <div className="content recipe-content">
+          {recipe.image_url ? (
+            <img src={`${ROOT_URL}${recipe.image_url}`} alt={recipe.title} className="recipe-image image" />
+          ) : null}
           <ReactMarkdown source={recipe.content} />
         </div>
-        <Link to="/">Retour</Link>
 
         <div className="comments">
           <h4 className="title is-5">Commentaires</h4>

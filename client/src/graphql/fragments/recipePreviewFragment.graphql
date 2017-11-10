@@ -5,6 +5,7 @@ fragment RecipePreviewFragment on Recipe {
   totalTime
   level
   budget
+  image_url
   author {
     id
     name
