@@ -29,16 +29,37 @@ export default class RenderField extends Component {
     this.stateClass = this.stateClass.bind(this);
     this.defaultWrapper = this.defaultWrapper.bind(this);
     this.checkboxWrapper = this.checkboxWrapper.bind(this);
+    this.fileWrapper = this.fileWrapper.bind(this);
   }
 
-  input() {
+  input(_inputHtml) {
     const { input, type, inputHtml, options, input: { name } } = this.props;
-    let inputClass = classnames(inputHtml && inputHtml.className, this.stateClass());
+    let inputClass = classnames(
+      inputHtml && inputHtml.className,
+      _inputHtml && _inputHtml.className,
+      this.stateClass()
+    );
 
     switch (type) {
       case 'textarea':
         inputClass = classnames('textarea', inputClass);
         return <textarea id={name} {...input} {...inputHtml} className={inputClass} />;
+      case 'file':
+        const { onChange, onBlur, value, ...fileInput } = input;
+        const onFileChange = handler => ({ target: { files } }) => {
+          handler(files.length ? files[0] : null);
+        };
+        return (
+          <input
+            type="file"
+            id={name}
+            {...fileInput}
+            {...inputHtml}
+            onChange={onFileChange(onChange)}
+            onBlur={onFileChange(onBlur)}
+            className={inputClass}
+          />
+        );
       case 'checkbox':
         return <input type="checkbox" id={name} {...input} {...inputHtml} className={inputClass} />;
       case 'select':
@@ -81,6 +102,26 @@ export default class RenderField extends Component {
     );
   }
 
+  fileWrapper() {
+    const value = this.props.input.value;
+    const filename = value && value.name;
+
+    return (
+      <div className="file">
+        <label className="file-label is-medium">
+          {this.input({ className: 'file-input' })}
+          <span className="file-cta">
+            <span className="file-icon">
+              <i className="fa fa-upload" />
+            </span>
+            <span className="file-label">{this.state.label}</span>
+          </span>
+          {filename ? <span className="file-name">{filename}</span> : null}
+        </label>
+      </div>
+    );
+  }
+
   render() {
     const { type, meta, className, hint } = this.props;
 
@@ -88,6 +129,9 @@ export default class RenderField extends Component {
     switch (type) {
       case 'checkbox':
         wrapper = this.checkboxWrapper();
+        break;
+      case 'file':
+        wrapper = this.fileWrapper();
         break;
       default:
         wrapper = this.defaultWrapper();

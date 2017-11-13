@@ -54,6 +54,7 @@ const withCreateRecipe = graphql(CREATE_RECIPE, {
       return mutate({
         variables: { ...recipe },
         update: (store, { data: { createRecipe: { newRecipe } } }) => {
+          if (!newRecipe) return false;
           const data = store.readQuery({ query: RECIPES });
           data.recipes.unshift(newRecipe);
           data.recipesCount += 1;

@@ -74,9 +74,10 @@ const withCreateComment = graphql(CREATE_COMMENT, {
       return mutate({
         variables: { recipeId, ...comment },
         update: (store, { data: { createComment: { newComment } } }) => {
+          if (!newComment) return false;
           const id = ownProps.recipeId;
           const data = store.readQuery({ query: RECIPE, variables: { id } });
-          if (newComment) data.recipe.comments.unshift(newComment);
+          data.recipe.comments.unshift(newComment);
           store.writeQuery({ query: RECIPE, variables: { id }, data });
         },
         optimisticResponse: {

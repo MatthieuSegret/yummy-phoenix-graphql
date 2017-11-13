@@ -18,6 +18,8 @@ defmodule YummyWeb.Mutations.RecipesMutations do
     field :total_time, :string
     field :level, :string
     field :budget, :string
+    field :remove_image, :boolean, default_value: false 
+    field :image, :upload
   end
 
   object :recipes_mutations do
@@ -47,9 +49,13 @@ defmodule YummyWeb.Mutations.RecipesMutations do
           |> Repo.get!(args[:id])
 
         with true <- Recipes.is_author(context[:current_user], recipe),
-          {:ok, recipe} <- Recipes.update(recipe, params)
+          {:ok, recipe_updated} <- Recipes.update(recipe, params)
         do
-          {:ok, recipe}
+          if params[:remove_image] do
+            {:ok, Recipes.delete_image(recipe_updated)} # return recipe without image
+          else
+            {:ok, recipe_updated}
+          end
         else
           {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
           {:error, msg} -> {:ok, generic_message(msg)}
@@ -68,7 +74,7 @@ defmodule YummyWeb.Mutations.RecipesMutations do
         |> Repo.get!(args[:id])
 
         case Recipes.is_author(context[:current_user], recipe) do
-          true -> recipe |> Repo.delete()
+          true -> recipe |> Recipes.delete()
           {:error, msg} -> {:ok, generic_message(msg)}
         end
       end

@@ -56,6 +56,7 @@ const withDeleteRecipe = graphql(DELETE_RECIPE, {
       return mutate({
         variables: { id: recipeID },
         update: (store, { data: { deleteRecipe: { recipe: recipeDeleted } } }) => {
+          if (!recipeDeleted) return false;
           const data = store.readQuery({ query: RECIPES });
           data.recipes = data.recipes.filter(recipe => recipe.id !== recipeDeleted.id);
           data.recipesCount -= 1;

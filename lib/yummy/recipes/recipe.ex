@@ -33,10 +33,15 @@ defmodule Yummy.Recipes.Recipe do
 
   @doc false
   def changeset(%Recipe{} = recipe, attrs) do
+    attributes = case attrs[:image] do
+      %Plug.Upload{} -> Map.merge(attrs, %{image_url: attrs[:image]})
+      _ -> attrs
+    end
+
     recipe
-    |> cast(attrs, [:title, :content, :total_time, :level, :budget, :uuid, :remove_image])
+    |> cast(attributes, [:title, :content, :total_time, :level, :budget, :uuid, :remove_image])
     |> check_uuid
-    |> cast_attachments(attrs, [:image_url])
+    |> cast_attachments(attributes, [:image_url])
     |> validate_required([:title, :content, :total_time, :level, :budget, :uuid])
     |> validate_length(:content, min: 10)
     |> validate_inclusion(:total_time, @options[:total_time])

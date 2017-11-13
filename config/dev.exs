@@ -43,6 +43,7 @@ config :yummy, Yummy.Repo,
   password: "postgres",
   database: "yummy_graphql_dev",
   hostname: "localhost",
+  port: System.get_env("DATABASE_PORT") || 5432,
   pool_size: 10
 
 config :arc,

@@ -95,6 +95,7 @@ const withSignUp = graphql(SIGN_UP, {
       return mutate({
         variables: { ...user },
         update: (store, { data: { signUp: { currentUser } } }) => {
+          if (!currentUser) return false;
           const data = store.readQuery({ query: CURRENT_USER });
           data.currentUser = currentUser;
           store.writeQuery({ query: CURRENT_USER, data });

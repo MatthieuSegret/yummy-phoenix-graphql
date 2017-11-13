@@ -1,9 +1,9 @@
 import { ApolloLink } from 'apollo-link';
-import { HttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import { onError } from 'apollo-link-error';
 
 import ROOT_URL from 'config/rootUrl';
+import { HttpLink } from 'config/httpWithUploadLink';
 import store from 'config/store';
 import { error } from 'components/flash/flashActions';
 import formatErrors from 'utils/errorsUtils';

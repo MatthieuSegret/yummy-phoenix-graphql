@@ -1,7 +1,7 @@
 defmodule Yummy.Recipes do
   import Ecto.Query, warn: false
   import Ecto.Changeset, only: [put_assoc: 3] 
-  alias Yummy.Repo
+  alias Yummy.{Repo, ImageUploader}
   alias Yummy.Recipes.{Comment, Recipe}
   alias Yummy.Accounts.User
 
@@ -31,6 +31,29 @@ defmodule Yummy.Recipes do
     else
       {:error, "Vous ne pouvez pas modifier la recette de quelqu'un d'autre"}
     end
+  end
+
+  def delete(%Recipe{} = recipe) do
+    {:ok, recipe} = recipe |> Repo.delete()
+    delete_image_files(recipe)
+    {:ok, recipe}
+  end
+
+  def delete_image(%Recipe{} = recipe) do
+    {:ok, recipe} = recipe
+    |> delete_image_files
+    |> Recipe.changeset(%{image_url: nil})
+    |> Repo.update()
+    recipe
+  end
+
+  defp delete_image_files(%Recipe{image_url: nil} = recipe), do: recipe
+  defp delete_image_files(%Recipe{} = recipe) do
+    path = ImageUploader.url({recipe.image_url, recipe})
+      |> String.split("?")
+      |> List.first 
+    :ok = ImageUploader.delete({path, recipe})
+    recipe
   end
 
   def create_comment(user, recipe, attrs) do

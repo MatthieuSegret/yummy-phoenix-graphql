@@ -16,18 +16,18 @@ defmodule Yummy.Accounts.User do
     timestamps()
   end
 
-  def changeset(%User{} = user, params \\ %{}) do
-    params = params |> Map.delete(:password)
+  def changeset(%User{} = user, attrs \\ %{}) do
+    attrs = attrs |> Map.delete(:password)
     user
-    |> cast(params, [:name, :email])
+    |> cast(attrs, [:name, :email])
     |> validate_required([:name, :email])
     |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)
   end
  
-  def changeset_with_password(%User{} = user, params \\ %{}) do
+  def changeset(%User{} = user, attrs, :password) do
     user
-    |> cast(params, [:name, :email, :password, :password_confirmation])
+    |> cast(attrs, [:name, :email, :password, :password_confirmation])
     |> validate_required([:name, :email, :password, :password_confirmation])
     |> validate_length(:password, min: 6)
     |> validate_confirmation(:password, message: "Ne correspond pas")    

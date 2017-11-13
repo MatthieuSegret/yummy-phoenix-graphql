@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import { graphql } from 'react-apollo';
 
+import ROOT_URL from 'config/rootUrl';
 import SubmitField from 'components/form/SubmitField';
 import RenderField from 'components/form/RenderField';
 import RECIPE_OPTIONS from 'graphql/recipes/recipeOptionsQuery.graphql';
@@ -16,24 +17,30 @@ class RecipeForm extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { loading: false };
+    this.state = { loading: false, removeImage: false };
     this.submitForm = this.submitForm.bind(this);
+    this.onRemoveImage = this.onRemoveImage.bind(this);
   }
 
   submitForm(values) {
+    const { removeImage } = this.state;
     this.setState({ loading: true });
-    return this.props.action(values).catch(errors => {
+    return this.props.action({ removeImage, ...values }).catch(errors => {
       this.setState({ loading: false });
       throw new SubmissionError(errors);
     });
   }
 
+  onRemoveImage() {
+    this.setState({ removeImage: true });
+  }
+
   render() {
-    const { handleSubmit, data: { totalTimeOptions, levelOptions, budgetOptions } } = this.props;
-    const { loading } = this.state;
+    const { handleSubmit, initialValues: recipe, data: { totalTimeOptions, levelOptions, budgetOptions } } = this.props;
+    const { loading, removeImage } = this.state;
 
     return (
-      <form onSubmit={handleSubmit(this.submitForm)}>
+      <form onSubmit={handleSubmit(this.submitForm)} className="recipe-form">
         <Field name="title" label="Titre" component={RenderField} />
         <div className="columns">
           <div className="column">
@@ -46,6 +53,19 @@ class RecipeForm extends Component {
             <Field name="budget" type="select" options={budgetOptions} component={RenderField} />
           </div>
         </div>
+
+        {recipe.image_url && !removeImage ? (
+          <div className="field">
+            <label className="label" htmlFor="recipe_image_url">
+              Photo
+            </label>
+            <img src={`${ROOT_URL}${recipe.image_url}`} alt={recipe.title} className="recipe-image image is-96x96" />
+            <a onClick={this.onRemoveImage} className="button is-text remove-image-link">
+              Supprimer
+            </a>
+          </div>
+        ) : null}
+        <Field name="image" label="Choisir une photo..." type="file" component={RenderField} />
         <Field name="content" label="Recette" type="textarea" inputHtml={{ rows: 14 }} component={RenderField} />
 
         <SubmitField loading={loading} />

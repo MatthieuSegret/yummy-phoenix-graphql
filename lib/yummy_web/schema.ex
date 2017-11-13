@@ -13,6 +13,7 @@ defmodule YummyWeb.Graph.Schema do
   import_types YummyWeb.Mutations.AuthMutations
   import_types YummyWeb.Mutations.AccountsMutations
   import_types YummyWeb.Mutations.RecipesMutations
+  import_types Absinthe.Plug.Types
 
   query do
     import_fields :accounts_queries

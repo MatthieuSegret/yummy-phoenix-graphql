@@ -1,9 +1,26 @@
 #import "graphql/fragments/recipeForEditingFragment.graphql"
 
-mutation updateRecipe($id: ID!, $title: String, $content: String, $totalTime: String, $level: String, $budget: String) {
+mutation updateRecipe(
+  $id: ID!
+  $title: String
+  $content: String
+  $totalTime: String
+  $level: String
+  $budget: String
+  $removeImage: Boolean
+  $image: Upload
+) {
   updateRecipe(
     id: $id
-    input: { title: $title, content: $content, totalTime: $totalTime, level: $level, budget: $budget }
+    input: {
+      title: $title
+      content: $content
+      totalTime: $totalTime
+      level: $level
+      budget: $budget
+      remove_image: $removeImage
+      image: $image
+    }
   ) {
     recipe: result {
       ...RecipeForEditingFragment

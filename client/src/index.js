@@ -9,6 +9,7 @@ import 'moment/locale/fr';
 import client from 'config/apolloClient';
 import store from 'config/store';
 import App from 'containers/layouts/App';
+import ScrollToTop from 'components/ScrollToTop';
 
 moment.locale('fr');
 
@@ -16,7 +17,9 @@ render(
   <ApolloProvider client={client}>
     <Provider store={store}>
       <Router>
-        <App />
+        <ScrollToTop>
+          <App />
+        </ScrollToTop>
       </Router>
     </Provider>
   </ApolloProvider>,

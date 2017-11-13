@@ -5,7 +5,7 @@ defmodule Yummy.Accounts do
 
   def create_user(attrs) do
     %User{}
-    |> User.changeset_with_password(attrs)
+    |> User.changeset(attrs, :password)
     |> Repo.insert()
   end
 
@@ -17,7 +17,7 @@ defmodule Yummy.Accounts do
 
   def change_password(%User{} = user, %{password: password, password_confirmation: password_confirmation}) do
     user
-    |> User.changeset_with_password(%{password: password, password_confirmation: password_confirmation})
+    |> User.changeset(%{password: password, password_confirmation: password_confirmation}, :password)
     |> Repo.update()
   end
 

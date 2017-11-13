@@ -11,7 +11,7 @@ defmodule Yummy.Repo.Migrations.AddUserToRecipies do
     end
 
     flush()
-    if user = Repo.get!(User, 1) do
+    if user = Repo.get(User, 1) do
       for recipe <- Repo.all(Recipe) do
         recipe
         |> Changeset.change(user_id: user.id)

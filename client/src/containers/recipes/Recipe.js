@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { graphql } from 'react-apollo';
 import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
