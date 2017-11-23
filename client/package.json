@@ -2,6 +2,10 @@
   "name": "yummy",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "9.2.0",
+    "npm": "5.5.1"
+  },
   "dependencies": {
     "apollo-cache-inmemory": "^1.0.0",
     "apollo-client": "^2.0.1",
@@ -29,8 +33,10 @@
     "shortid": "^2.2.8"
   },
   "scripts": {
-    "build-css": "node-sass --include-path node_modules/ --include-path src/ src/assets/stylesheets/scss -o src/assets/stylesheets/css",
-    "watch-css": "npm run build-css && node-sass --include-path node_modules/ --include-path src/ src/assets/stylesheets/scss -o src/assets/stylesheets/css --watch --recursive",
+    "build-css":
+      "node-sass --include-path node_modules/ --include-path src/ src/assets/stylesheets/scss -o src/assets/stylesheets/css",
+    "watch-css":
+      "npm run build-css && node-sass --include-path node_modules/ --include-path src/ src/assets/stylesheets/scss -o src/assets/stylesheets/css --watch --recursive",
     "start-js": "react-app-rewired start",
     "start": "npm-run-all -p watch-css start-js",
     "build": "npm run build-css && react-app-rewired build",
