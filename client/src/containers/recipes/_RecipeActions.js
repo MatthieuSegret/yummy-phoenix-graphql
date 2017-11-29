@@ -11,6 +11,7 @@ import RECIPES from 'graphql/recipes/recipesQuery.graphql';
 class RecipeActions extends Component {
   static propTypes = {
     recipe: PropTypes.object,
+    deletePost: PropTypes.func,
     notice: PropTypes.func
   };
 

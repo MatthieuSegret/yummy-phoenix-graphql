@@ -45,7 +45,7 @@ class Header extends Component {
             {currentUser.name}
           </Link>
           <a className="navbar-item" href="#logout" onClick={this.logout}>
-            Logout
+            Se déconnecter
           </a>
         </div>
       );

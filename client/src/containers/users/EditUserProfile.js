@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
+import { graphql, compose } from 'react-apollo';
+import withMutationState from 'apollo-mutation-state';
 import { Link } from 'react-router-dom';
-import { reduxForm, Field, SubmissionError } from 'redux-form';
-import { graphql } from 'react-apollo';
+import { Form, Field } from 'react-final-form';
 
 import withFlashMessage from 'components/flash/withFlashMessage';
 import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
+import { required } from 'components/form/validation';
 
 import USER_FOR_EDITING from 'graphql/users/userForEditingQuery.graphql';
 import UPDATE_USER from 'graphql/users/updateUserMutation.graphql';
@@ -19,27 +19,24 @@ class EditUserProfile extends Component {
     redirect: PropTypes.func,
     cancelAccount: PropTypes.func,
     updateUser: PropTypes.func,
-    handleSubmit: PropTypes.func
+    handleSubmit: PropTypes.func,
+    data: PropTypes.object,
+    mutation: PropTypes.object
   };
 
   constructor(props) {
     super(props);
-    this.state = { loading: false };
     this.submitForm = this.submitForm.bind(this);
     this.onCancelAccount = this.onCancelAccount.bind(this);
   }
 
-  submitForm(values) {
-    this.setState({ loading: true });
-    return this.props.updateUser(values).then(response => {
-      const errors = response.data.updateUser.errors;
-      if (!errors) {
-        this.props.redirect('/', { notice: 'Votre profil a bien été mis à jour' });
-      } else {
-        this.setState({ loading: false });
-        throw new SubmissionError(errors);
-      }
-    });
+  async submitForm(values) {
+    const { data: { updateUser: { errors } } } = await this.props.updateUser(values);
+    if (!errors) {
+      this.props.redirect('/', { notice: 'Votre profil a bien été mis à jour' });
+    } else {
+      return errors;
+    }
   }
 
   onCancelAccount() {
@@ -54,19 +51,24 @@ class EditUserProfile extends Component {
   }
 
   render() {
-    const { loading } = this.state;
-    const { handleSubmit, pristine, submitting } = this.props;
+    const { mutation: { loading }, data: { currentUser } } = this.props;
 
     return (
       <div className="edit-user-profile">
         <div className="columns">
           <div className="column is-offset-one-quarter is-half">
             <h1 className="title is-2">Modifier votre profile</h1>
-            <form onSubmit={handleSubmit(this.submitForm)}>
-              <Field name="name" label="Nom" component={RenderField} />
-              <Field name="email" label="Email" component={RenderField} />
-              <SubmitField loading={loading} disabled={pristine || submitting} value="Mise à jour" />
-            </form>
+            <Form
+              onSubmit={this.submitForm}
+              initialValues={currentUser}
+              render={({ handleSubmit, pristine }) => (
+                <form onSubmit={handleSubmit}>
+                  <Field name="name" label="Nom" component={RenderField} validate={required} />
+                  <Field name="email" label="Email" component={RenderField} validate={required} />
+                  <SubmitField loading={loading} disabled={pristine} value="Mise à jour" />
+                </form>
+              )}
+            />
 
             <div className="change-password">
               <h3 className="title is-4">Mot de passe</h3>
@@ -94,17 +96,6 @@ class EditUserProfile extends Component {
   }
 }
 
-function validate(values) {
-  const errors = {};
-  if (!values.name) {
-    errors.name = 'doit être rempli';
-  }
-  if (!values.email) {
-    errors.email = 'doit être rempli';
-  }
-  return errors;
-}
-
 const withUserForEditing = graphql(USER_FOR_EDITING, {
   options: ownProps => ({
     fetchPolicy: 'network-only'
@@ -112,9 +103,9 @@ const withUserForEditing = graphql(USER_FOR_EDITING, {
 });
 
 const withUpdateUser = graphql(UPDATE_USER, {
-  props: ({ mutate }) => ({
+  props: ({ mutate, ownProps: { wrapMutate } }) => ({
     updateUser(user) {
-      return mutate({ variables: { ...user } });
+      return wrapMutate(mutate({ variables: { ...user } }));
     }
   })
 });
@@ -129,15 +120,8 @@ const withCancelAccount = graphql(CANCEL_ACCOUNT, {
 
 export default compose(
   withUserForEditing,
-  connect((state, props) => {
-    const user = props.data.currentUser;
-    return user ? { initialValues: { ...user } } : {};
-  }),
-  reduxForm({
-    form: 'EditUserProfileForm',
-    validate
-  }),
   withFlashMessage,
   withCancelAccount,
+  withMutationState({ wrapper: true, propagateError: true }),
   withUpdateUser
 )(EditUserProfile);

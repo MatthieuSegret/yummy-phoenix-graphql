@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
+import withMutationState from 'apollo-mutation-state';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { reduxForm, Field, SubmissionError, change } from 'redux-form';
+import { Form, Field } from 'react-final-form';
 
 import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
+import { required } from 'components/form/validation';
 import withRecipes from 'queries/recipesQuery';
 import withFlashMessage from 'components/flash/withFlashMessage';
 
@@ -20,57 +21,60 @@ class SignUpUser extends Component {
     error: PropTypes.func,
     handleSubmit: PropTypes.func,
     signUp: PropTypes.func,
-    refetchRecipes: PropTypes.func
+    refetchRecipes: PropTypes.func,
+    mutation: PropTypes.object
   };
 
   constructor(props) {
     super(props);
-    this.state = { loading: false };
     this.submitForm = this.submitForm.bind(this);
   }
 
-  submitForm(values) {
-    const { signUp } = this.props;
-    this.setState({ loading: true });
-    return signUp(values).then(response => {
-      const payload = response.data.signUp;
-      if (!payload.errors) {
-        window.localStorage.setItem('yummy:token', payload.currentUser.token);
-        this.props.refetchRecipes();
-        this.props.redirect('/', { notice: 'Bienvenue sur Yummy ! Votre compte a bien été créé.' });
-      } else {
-        this.setState({ loading: false });
-        this.props.change('SignUpForm', 'password', '');
-        this.props.change('SignUpForm', 'passwordConfirmation', '');
-        throw new SubmissionError(payload.errors);
-      }
-    });
+  async submitForm(values) {
+    const { data: { signUp: payload } } = await this.props.signUp(values);
+    if (!payload.errors) {
+      window.localStorage.setItem('yummy:token', payload.currentUser.token);
+      await this.props.refetchRecipes();
+      this.props.redirect('/', { notice: 'Bienvenue sur Yummy ! Votre compte a bien été créé.' });
+    } else {
+      this.signUpForm.form.change('password', '');
+      this.signUpForm.form.change('passwordConfirmation', '');
+      return payload.errors;
+    }
   }
 
   render() {
-    const { loading } = this.state;
+    const { mutation: { loading } } = this.props;
 
     return (
       <div className="columns">
         <div className="column is-offset-2 is-8">
-          <form onSubmit={this.props.handleSubmit(this.submitForm)}>
-            <Field name="name" label="Nom" type="text" component={RenderField} />
-            <Field name="email" type="text" component={RenderField} />
-            <Field
-              name="password"
-              label="Mot de passe"
-              type="password"
-              hint="6 characters minimum"
-              component={RenderField}
-            />
-            <Field
-              name="passwordConfirmation"
-              label="Confirmer votre mot de passe"
-              type="password"
-              component={RenderField}
-            />
-            <SubmitField value="S'inscrire" cancel={false} loading={loading} />
-          </form>
+          <Form
+            onSubmit={this.submitForm}
+            ref={input => {
+              this.signUpForm = input;
+            }}
+            render={({ handleSubmit }) => (
+              <form onSubmit={handleSubmit}>
+                <Field name="name" label="Nom" type="text" component={RenderField} validate={required} />
+                <Field name="email" type="text" component={RenderField} validate={required} />
+                <Field
+                  name="password"
+                  label="Mot de passe"
+                  type="password"
+                  hint="6 characters minimum"
+                  component={RenderField}
+                />
+                <Field
+                  name="passwordConfirmation"
+                  label="Confirmer votre mot de passe"
+                  type="password"
+                  component={RenderField}
+                />
+                <SubmitField value="S'inscrire" cancel={false} loading={loading} />
+              </form>
+            )}
+          />
           <Link to="/users/signin">Se connecter</Link>
         </div>
       </div>
@@ -78,34 +82,27 @@ class SignUpUser extends Component {
   }
 }
 
-function validate(values) {
-  const errors = {};
-  if (!values.name) {
-    errors.name = 'doit être rempli';
-  }
-  if (!values.email) {
-    errors.email = 'doit être rempli';
-  }
-  return errors;
-}
-
 const withSignUp = graphql(SIGN_UP, {
-  props: ({ mutate }) => ({
+  props: ({ mutate, ownProps: { wrapMutate } }) => ({
     signUp(user) {
-      return mutate({
-        variables: { ...user },
-        update: (store, { data: { signUp: { currentUser } } }) => {
-          if (!currentUser) return false;
-          const data = store.readQuery({ query: CURRENT_USER });
-          data.currentUser = currentUser;
-          store.writeQuery({ query: CURRENT_USER, data });
-        }
-      });
+      return wrapMutate(
+        mutate({
+          variables: { ...user },
+          update: (store, { data: { signUp: { currentUser } } }) => {
+            if (!currentUser) return false;
+            const data = store.readQuery({ query: CURRENT_USER });
+            data.currentUser = currentUser;
+            store.writeQuery({ query: CURRENT_USER, data });
+          }
+        })
+      );
     }
   })
 });
 
-export default reduxForm({
-  form: 'SignUpForm',
-  validate
-})(connect(null, { change })(withSignUp(withFlashMessage(withRecipes(SignUpUser)))));
+export default compose(
+  withMutationState({ wrapper: true, propagateError: true }),
+  withSignUp,
+  withFlashMessage,
+  withRecipes
+)(SignUpUser);
