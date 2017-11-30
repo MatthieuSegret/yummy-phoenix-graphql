@@ -18,6 +18,7 @@
     "apollo-mutation-state": "^0.0.7",
     "bulma": "0.6.1",
     "classnames": "^2.2.5",
+    "compression-webpack-plugin": "^1.0.1",
     "extract-files": "^2.0.1",
     "final-form": "^1.0.0",
     "font-awesome": "^4.7.0",
