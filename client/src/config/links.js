@@ -4,9 +4,10 @@ import { onError } from 'apollo-link-error';
 
 import ROOT_URL from 'config/rootUrl';
 import { HttpLink } from 'config/httpWithUploadLink';
-import store from 'config/store';
-import { error } from 'components/flash/flashActions';
 import formatErrors from 'utils/errorsUtils';
+import client from 'config/apolloClient';
+
+import CREATE_FLASH_MESSAGE from 'graphql/flash/createFlashMessageMutation.graphql';
 
 export const httpLink = new HttpLink({
   uri: `${ROOT_URL}/graphql`,
@@ -23,8 +24,8 @@ export const authLink = setContext((_, { headers }) => {
   };
 });
 
-export const errorLink = onError(({ graphQLErrors, networkError }) => {
-  store.dispatch(error("Oups, nous sommes désolés, mais quelque chose s'est mal passé"));
+export const onErrorLink = onError(({ graphQLErrors, networkError }) => {
+  error("Oups, nous sommes désolés, mais quelque chose s'est mal passé");
 });
 
 export const formatErrorsLink = new ApolloLink((operation, forward) => {
@@ -35,14 +36,18 @@ export const formatErrorsLink = new ApolloLink((operation, forward) => {
       response.data[operationName].errors = formatErrors(payload.messages);
       const errors = response.data[operationName].errors;
       if (errors.base) {
-        store.dispatch(error(errors.base));
+        error(errors.base);
       } else {
-        store.dispatch(error('Des erreurs ont eu lieu, veuillez vérifier :'));
+        error('Des erreurs ont eu lieu, veuillez vérifier :');
       }
     }
     return response;
   });
 });
+
+const error = text => {
+  client.mutate({ mutation: CREATE_FLASH_MESSAGE, variables: { type: 'error', text } });
+};
 
 // export const processBatchResponseLink = new ApolloLink((operation, forward) => {
 //   return forward(operation).map(response => {

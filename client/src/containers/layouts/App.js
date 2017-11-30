@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { compose } from 'react-apollo';
 import { withRouter } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
 
@@ -19,8 +19,8 @@ import UserIsAuthenticated from 'components/UserIsAuthenticated';
 import NotFound from 'components/NotFound';
 import Header from 'containers/layouts/Header';
 
-import { deleteFlashMessage } from 'components/flash/flashActions';
 import FlashMessage from 'components/flash/FlashMessage';
+import withFlashMessage from 'components/flash/withFlashMessage';
 import withCurrentUser from 'queries/currentUserQuery';
 
 import 'assets/stylesheets/css/application.css';
@@ -82,4 +82,4 @@ class App extends Component {
   }
 }
 
-export default withCurrentUser(withRouter(connect(null, { deleteFlashMessage })(App)));
+export default compose(withCurrentUser, withFlashMessage, withRouter)(App);

@@ -14,7 +14,6 @@ web applications.
   create single-page React applications. It offers a modern build setup with no configuration.
 * [Bulma](https://bulma.io) - Bulma is a modern CSS framework based on Flexbox
 * [Apollo 2](http://dev.apollodata.com) - A flexible, fully-featured GraphQL client for every platform.
-* [Redux](https://github.com/reactjs/redux) - Redux is a predictable state container for JavaScript apps
 * [React Final Form](https://github.com/erikras/react-final-form) - High performance subscription-based form state
   management for React.
 
@@ -46,7 +45,8 @@ web applications.
 * Queries et mutations
 * FetchMore for pagination
 * Using `apollo-cache-inmemory`
-* Apollo Link (dedup, errors, custom)
+* Apollo Link (dedup, onError, auth)
+* [Managing local state](https://github.com/apollographql/apollo-link-state) with Apollo Link
 * Optimistic UI
 * [Static GraphQL queries](https://dev-blog.apollodata.com/5-benefits-of-static-graphql-queries-b7fa90b0b69a)
 * Validation management and integration with Final Form
@@ -98,7 +98,6 @@ web applications.
 ## Next step
 
 * [ ] Batch of GraphQL queries into one HTTP request
-* [ ] Remove Redux
 * [ ] Use Flow Type
 * [ ] Use subscription GraphQL feature
 * [ ] Create mobile app with React Native
