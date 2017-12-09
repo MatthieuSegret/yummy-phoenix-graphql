@@ -1,0 +1,49 @@
+import * as React from 'react';
+
+import withFlashMessage from 'components/flash/withFlashMessage';
+import withCurrentUser from 'queries/currentUserQuery';
+
+// typings
+import { User, FlashMessageVariables } from 'types';
+
+interface IProps {
+  redirect: (path: string, message: FlashMessageVariables) => void;
+  currentUser: User;
+  currentUserLoading: boolean;
+}
+
+export default function UserIsAuthenticated(WrappedComponent) {
+  class ComponentUserIsAuthenticated extends React.Component<IProps, {}> {
+    constructor(props) {
+      super(props);
+      this.redirectIfUserIsNotAuthenticated = this.redirectIfUserIsNotAuthenticated.bind(this);
+    }
+
+    public componentWillMount() {
+      this.redirectIfUserIsNotAuthenticated();
+    }
+
+    public componentWillReceiveProps(nextProps: IProps) {
+      this.redirectIfUserIsNotAuthenticated(nextProps);
+    }
+
+    private redirectIfUserIsNotAuthenticated(props?: IProps) {
+      const { currentUser, currentUserLoading } = props || this.props;
+      if (!currentUserLoading && !currentUser) {
+        this.props.redirect('/users/signin', {
+          error: 'Vous devez vous connecter ou vous inscrire avant de continuer.'
+        });
+      }
+    }
+
+    public render() {
+      const { currentUser, currentUserLoading } = this.props;
+      if (currentUserLoading || !currentUser) {
+        return null;
+      }
+      return <WrappedComponent {...this.props} />;
+    }
+  }
+
+  return withCurrentUser(withFlashMessage(ComponentUserIsAuthenticated));
+}

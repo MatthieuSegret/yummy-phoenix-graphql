@@ -8,6 +8,8 @@ web applications.
 
 ### Frontend
 
+* [TypeScript](https://github.com/Microsoft/TypeScript) - A superset of JavaScript that compiles to clean JavaScript
+  output.
 * [React](https://facebook.github.io/react) - A JavaScript library for building user interfaces. It introduces many
   great concepts, such as, Virtual DOM, Data flow, etc.
 * [Create React App](https://github.com/facebookincubator/create-react-app) - is a new officially supported way to
