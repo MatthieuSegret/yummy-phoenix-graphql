@@ -21,7 +21,7 @@ interface IProps {
 }
 
 class Recipe extends React.Component<IProps, {}> {
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.listComments = this.listComments.bind(this);
   }

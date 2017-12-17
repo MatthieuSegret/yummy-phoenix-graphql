@@ -18,6 +18,7 @@ import {
   CreateRecipeMutationVariables,
   RecipesQuery,
   RecipeWithDefaultValueQuery,
+  RecipeFragment,
   MutationState,
   MutationStateProps
 } from 'types';
@@ -30,12 +31,12 @@ interface IProps {
 }
 
 class NewRecipe extends React.Component<IProps, {}> {
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.action = this.action.bind(this);
   }
 
-  private async action(values) {
+  private async action(values: any) {
     return new Promise(async (_, reject) => {
       const { data: { createRecipe: { errors } } } = await this.props.createRecipe(values);
       if (!errors) {
@@ -67,7 +68,7 @@ const withCreateRecipe = graphql<CreateRecipeMutation, CreateRecipeMutationVaria
   CREATE_RECIPE,
   {
     props: ({ mutate, ownProps: { wrapMutate } }) => ({
-      createRecipe(recipe) {
+      createRecipe(recipe: RecipeFragment) {
         return wrapMutate(
           mutate!({
             variables: { ...recipe },

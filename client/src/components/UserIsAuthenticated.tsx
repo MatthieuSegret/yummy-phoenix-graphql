@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { compose } from 'react-apollo';
 
 import withFlashMessage from 'components/flash/withFlashMessage';
 import withCurrentUser from 'queries/currentUserQuery';
@@ -12,9 +13,9 @@ interface IProps {
   currentUserLoading: boolean;
 }
 
-export default function UserIsAuthenticated(WrappedComponent) {
+export default function UserIsAuthenticated(WrappedComponent: React.ComponentType<any>) {
   class ComponentUserIsAuthenticated extends React.Component<IProps, {}> {
-    constructor(props) {
+    constructor(props: IProps) {
       super(props);
       this.redirectIfUserIsNotAuthenticated = this.redirectIfUserIsNotAuthenticated.bind(this);
     }
@@ -45,5 +46,5 @@ export default function UserIsAuthenticated(WrappedComponent) {
     }
   }
 
-  return withCurrentUser(withFlashMessage(ComponentUserIsAuthenticated));
+  return compose(withCurrentUser, withFlashMessage)(ComponentUserIsAuthenticated);
 }

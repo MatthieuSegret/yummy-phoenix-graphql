@@ -154,9 +154,12 @@ const defaultHttpOptions = {
   includeExtensions: false
 };
 
-export const createHttpLink = (
-  { uri, fetch: fetcher, includeExtensions, ...requestOptions }: HttpLink.Options = {}
-) => {
+export const createHttpLink = ({
+  uri,
+  fetch: fetcher,
+  includeExtensions,
+  ...requestOptions
+}: HttpLink.Options = {}) => {
   // dev warnings to ensure fetch is present
   warnIfNoFetch(fetcher);
   if (fetcher) checkFetcher(fetcher);

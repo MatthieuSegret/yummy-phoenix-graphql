@@ -17,11 +17,11 @@ interface IProps {
   name: string;
 }
 
-interface IStates {
+interface IState {
   label: string;
 }
 
-export default class RenderField extends React.Component<IProps, IStates> {
+export default class RenderField extends React.Component<IProps, IState> {
   public static defaultProps = {
     type: 'text',
     label: '',
@@ -31,7 +31,7 @@ export default class RenderField extends React.Component<IProps, IStates> {
     }
   };
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     const { label, input: { name } } = this.props;
     this.state = { label: label || capitalize(name) };
@@ -51,7 +51,7 @@ export default class RenderField extends React.Component<IProps, IStates> {
         return <textarea id={input.name} {...input} {...inputHtml} className={inputClass} />;
       case 'file':
         const { onChange, onBlur, value, ...fileInput } = input;
-        const onFileChange = handler => ({ target: { files } }) => {
+        const onFileChange = (handler: any) => ({ target: { files } }: any) => {
           handler(files.length ? files[0] : null);
         };
         return (

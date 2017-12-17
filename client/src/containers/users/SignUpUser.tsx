@@ -23,7 +23,8 @@ import {
   RecipesQuery,
   CurrentUserQuery,
   MutationState,
-  MutationStateProps
+  MutationStateProps,
+  User
 } from 'types';
 
 interface IProps {
@@ -35,14 +36,14 @@ interface IProps {
 }
 
 class SignUpUser extends React.Component<IProps, {}> {
-  private signUpForm: Form;
+  private signUpForm: any;
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.submitForm = this.submitForm.bind(this);
   }
 
-  private async submitForm(values) {
+  private async submitForm(values: any) {
     const { data: { signUp: payload } } = await this.props.signUp(values);
     if (!payload.errors && payload.currentUser && payload.currentUser.token) {
       window.localStorage.setItem('yummy:token', payload.currentUser.token);
@@ -63,10 +64,10 @@ class SignUpUser extends React.Component<IProps, {}> {
         <div className="column is-offset-2 is-8">
           <Form
             onSubmit={this.submitForm}
-            ref={input => {
+            ref={(input: any) => {
               this.signUpForm = input;
             }}
-            render={({ handleSubmit }) => (
+            render={({ handleSubmit }: any) => (
               <form onSubmit={handleSubmit}>
                 <Field name="name" label="Nom" type="text" component={RenderField} validate={required} />
                 <Field name="email" type="text" component={RenderField} validate={required} />
@@ -96,7 +97,7 @@ class SignUpUser extends React.Component<IProps, {}> {
 
 const withSignUp = graphql<SignUpMutation, SignUpMutationVariables & MutationStateProps>(SIGN_UP, {
   props: ({ mutate, ownProps: { wrapMutate } }) => ({
-    signUp(user) {
+    signUp(user: User) {
       return wrapMutate(
         mutate!({
           variables: { ...user },

@@ -20,7 +20,7 @@ interface IProps {
 }
 
 class RecipeActions extends React.Component<IProps, {}> {
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.destroy = this.destroy.bind(this);
   }
@@ -58,7 +58,7 @@ class RecipeActions extends React.Component<IProps, {}> {
 
 const withDeleteRecipe = graphql<DeleteRecipeMutation, DeleteRecipeMutationVariables>(DELETE_RECIPE, {
   props: ({ mutate }) => ({
-    deleteRecipe(recipeID) {
+    deleteRecipe(recipeID: string) {
       return mutate!({
         variables: { id: recipeID },
         update: (store: DataProxy, { data: { deleteRecipe: { recipe: recipeDeleted } } }: any): void => {

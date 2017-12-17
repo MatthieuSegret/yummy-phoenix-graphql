@@ -10,12 +10,12 @@ interface IProps {
   history: History;
 }
 
-interface IStates {
+interface IState {
   keywords: string;
 }
 
-class SearchForm extends React.Component<IProps, IStates> {
-  constructor(props) {
+class SearchForm extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.onSearch = this.onSearch.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
@@ -25,11 +25,11 @@ class SearchForm extends React.Component<IProps, IStates> {
     this.setState({ keywords: this.props.initialKeywords });
   }
 
-  private onInputChange(event) {
+  private onInputChange(event: any) {
     this.setState({ keywords: event.target.value });
   }
 
-  private onSearch(event) {
+  private onSearch(event: any) {
     event.preventDefault();
     const { keywords } = this.state;
     const pathName = keywords ? `/recipes/search/${keywords}` : '/';

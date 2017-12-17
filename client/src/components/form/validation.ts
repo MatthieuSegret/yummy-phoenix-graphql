@@ -1,1 +1,1 @@
-export const required = value => (value ? undefined : 'doit être rempli');
+export const required = (value: any) => (value ? undefined : 'doit être rempli');

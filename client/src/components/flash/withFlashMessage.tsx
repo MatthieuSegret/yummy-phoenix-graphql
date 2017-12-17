@@ -15,9 +15,15 @@ interface IProps {
   history: History;
 }
 
-export default function withFlashMessage(WrappedComponent) {
+interface IWrapProps {
+  redirect: (path: string, message: FlashMessageVariables) => void;
+  notice: (text: string) => void;
+  error: (text: string) => void;
+}
+
+export default function withFlashMessage(WrappedComponent: React.ComponentType<IWrapProps>) {
   class ComponentWithFlashMessage extends React.Component<IProps, {}> {
-    constructor(props) {
+    constructor(props: IProps) {
       super(props);
       this.notice = this.notice.bind(this);
       this.error = this.error.bind(this);
@@ -53,7 +59,7 @@ export default function withFlashMessage(WrappedComponent) {
 
   const withCreateFlashMessage = graphql(CREATE_FLASH_MESSAGE, {
     props: ({ mutate }) => ({
-      createFlashMessage(message) {
+      createFlashMessage(message: FlashMessage) {
         return mutate!({ variables: { ...message } });
       }
     })

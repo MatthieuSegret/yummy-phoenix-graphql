@@ -15,6 +15,7 @@ import {
   UpdateRecipeMutation,
   UpdateRecipeMutationVariables,
   RecipeForEditingQuery,
+  RecipeFragment,
   MutationState,
   MutationStateProps
 } from 'types';
@@ -27,12 +28,12 @@ interface IProps {
 }
 
 class EditRecipe extends React.Component<IProps, {}> {
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.action = this.action.bind(this);
   }
 
-  private action(values) {
+  private action(values: any) {
     return new Promise(async (_, reject) => {
       const { data: { updateRecipe: { errors } } } = await this.props.updateRecipe(values);
       if (!errors) {
@@ -71,7 +72,7 @@ const withUpdateRecipe = graphql<UpdateRecipeMutation, UpdateRecipeMutationVaria
   UPDATE_RECIPE,
   {
     props: ({ mutate, ownProps: { wrapMutate } }) => ({
-      updateRecipe(recipe) {
+      updateRecipe(recipe: RecipeFragment) {
         return wrapMutate(mutate!({ variables: { ...recipe } }));
       }
     })

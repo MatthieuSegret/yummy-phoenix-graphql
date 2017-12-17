@@ -19,7 +19,7 @@ export type MutationState = {
 };
 
 export type MutationStateProps = {
-  wrapMutate: (Promise) => Promise<any>;
+  wrapMutate: (promise: Promise<any>) => Promise<any>;
 };
 
 export type RevokeTokenMutation = {
@@ -270,16 +270,7 @@ export type RecipeFragment = {
     id: string;
     name: string;
   };
-  comments: Array<{
-    __typename: string;
-    id: string;
-    body: string;
-    inserted_at: string;
-    author: {
-      __typename: string;
-      name: string;
-    };
-  }>;
+  comments: Array<CommentFragment>;
 };
 
 export type RecipePreviewFragment = {

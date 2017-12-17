@@ -19,19 +19,19 @@ interface IProps {
   mutation: MutationState;
 }
 
-interface IStates {
+interface IState {
   removeImage: boolean;
 }
 
-class RecipeForm extends React.Component<IProps, IStates> {
-  constructor(props) {
+class RecipeForm extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = { removeImage: false };
     this.submitForm = this.submitForm.bind(this);
     this.onRemoveImage = this.onRemoveImage.bind(this);
   }
 
-  private async submitForm(values) {
+  private async submitForm(values: any) {
     const { removeImage } = this.state;
     try {
       await this.props.action({ removeImage, ...values });
@@ -56,7 +56,7 @@ class RecipeForm extends React.Component<IProps, IStates> {
       <Form
         onSubmit={this.submitForm}
         initialValues={recipe}
-        render={({ handleSubmit }) => (
+        render={({ handleSubmit }: any) => (
           <form onSubmit={handleSubmit} className="recipe-form">
             <Field name="title" label="Titre" component={RenderField} validate={required} />
             <div className="columns">

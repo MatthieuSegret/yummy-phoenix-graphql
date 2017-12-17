@@ -19,7 +19,7 @@ interface IProps {
 }
 
 class Header extends React.Component<IProps, {}> {
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.logout = this.logout.bind(this);
   }

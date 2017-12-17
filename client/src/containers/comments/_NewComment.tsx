@@ -38,14 +38,14 @@ interface IProps {
 }
 
 class NewComment extends React.Component<IProps, {}> {
-  private createCommentForm: Form;
+  private createCommentForm: any;
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.submitForm = this.submitForm.bind(this);
   }
 
-  public async submitForm(values) {
+  public async submitForm(values: any) {
     const { createComment, recipeId } = this.props;
     const { data: { createComment: { errors } } } = await createComment(recipeId, values);
     if (!errors) {
@@ -72,10 +72,10 @@ class NewComment extends React.Component<IProps, {}> {
       <div className="new-comment">
         <Form
           onSubmit={this.submitForm}
-          ref={input => {
+          ref={(input: any) => {
             this.createCommentForm = input;
           }}
-          render={({ handleSubmit, pristine }) => (
+          render={({ handleSubmit, pristine }: any) => (
             <form onSubmit={handleSubmit}>
               <Field name="body" component={RenderField} type="textarea" rows={2} label="Nouveau commentaire" />
               <SubmitField loading={loading} cancel={false} disabled={pristine} value="Commenter" />

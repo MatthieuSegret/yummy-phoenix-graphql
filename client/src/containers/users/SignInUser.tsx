@@ -35,7 +35,7 @@ interface IProps {
 }
 
 class SignInUser extends React.Component<IProps, {}> {
-  private signInForm: Form;
+  private signInForm: any;
 
   constructor(props: IProps) {
     super(props);
@@ -58,7 +58,7 @@ class SignInUser extends React.Component<IProps, {}> {
     }
   }
 
-  private async submitForm(values) {
+  private async submitForm(values: any) {
     const { data: { signIn: payload } } = await this.props.signIn(values);
     if (!payload.errors && payload.result && payload.result.token) {
       window.localStorage.setItem('yummy:token', payload.result.token);
@@ -79,10 +79,10 @@ class SignInUser extends React.Component<IProps, {}> {
         <div className="column is-offset-one-quarter is-half">
           <Form
             onSubmit={this.submitForm}
-            ref={input => {
+            ref={(input: any) => {
               this.signInForm = input;
             }}
-            render={({ handleSubmit }) => (
+            render={({ handleSubmit }: any) => (
               <form onSubmit={handleSubmit}>
                 <Field name="email" component={RenderField} type="text" />
                 <Field name="password" label="Mot de passe" component={RenderField} type="password" />

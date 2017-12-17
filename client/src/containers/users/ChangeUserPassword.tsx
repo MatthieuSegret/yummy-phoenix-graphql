@@ -16,7 +16,8 @@ import {
   ChangePasswordMutation,
   ChangePasswordMutationVariables,
   MutationState,
-  MutationStateProps
+  MutationStateProps,
+  User
 } from 'types';
 
 interface IProps {
@@ -27,14 +28,14 @@ interface IProps {
 }
 
 class ChangeUserPassword extends React.Component<IProps, {}> {
-  private changePasswordForm: Form;
+  private changePasswordForm: any;
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.submitForm = this.submitForm.bind(this);
   }
 
-  private async submitForm(values) {
+  private async submitForm(values: any) {
     const { data: { changePassword: { errors } } } = await this.props.changePassword(values);
     if (!errors) {
       this.props.redirect('/', { notice: 'Votre mot de passe a bien été mis à jour' });
@@ -56,10 +57,10 @@ class ChangeUserPassword extends React.Component<IProps, {}> {
             <h1 className="title is-3">Changer votre mot de passe</h1>
             <Form
               onSubmit={this.submitForm}
-              ref={input => {
+              ref={(input: any) => {
                 this.changePasswordForm = input;
               }}
-              render={({ handleSubmit, pristine }) => (
+              render={({ handleSubmit, pristine }: any) => (
                 <form onSubmit={handleSubmit}>
                   <Field name="currentPassword" label="Mot de passe actuel" type="password" component={RenderField} />
                   <Field name="password" label="Nouveau mot de passe" type="password" component={RenderField} />
@@ -84,7 +85,7 @@ const withChangeUserPassword = graphql<ChangePasswordMutation, ChangePasswordMut
   CHANGE_USER_PASSWORD,
   {
     props: ({ mutate, ownProps: { wrapMutate } }) => ({
-      changePassword(user) {
+      changePassword(user: User) {
         return wrapMutate(mutate!({ variables: { ...user } }));
       }
     })

@@ -22,7 +22,8 @@ import {
   UpdateUserMutation,
   GetUserForEditingQuery,
   MutationState,
-  MutationStateProps
+  MutationStateProps,
+  User
 } from 'types';
 
 interface IProps {
@@ -35,13 +36,13 @@ interface IProps {
 }
 
 class EditUserProfile extends React.Component<IProps, {}> {
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.submitForm = this.submitForm.bind(this);
     this.onCancelAccount = this.onCancelAccount.bind(this);
   }
 
-  private async submitForm(values) {
+  private async submitForm(values: any) {
     const { data: { updateUser: { errors } } } = await this.props.updateUser(values);
     if (!errors) {
       this.props.redirect('/', { notice: 'Votre profil a bien été mis à jour' });
@@ -71,7 +72,7 @@ class EditUserProfile extends React.Component<IProps, {}> {
             <Form
               onSubmit={this.submitForm}
               initialValues={currentUser}
-              render={({ handleSubmit, pristine }) => (
+              render={({ handleSubmit, pristine }: any) => (
                 <form onSubmit={handleSubmit}>
                   <Field name="name" label="Nom" component={RenderField} validate={required} />
                   <Field name="email" label="Email" component={RenderField} validate={required} />
@@ -114,7 +115,7 @@ const withUserForEditing = graphql(USER_FOR_EDITING, {
 
 const withUpdateUser = graphql<UpdateUserMutation, UpdateUserMutationVariables & MutationStateProps>(UPDATE_USER, {
   props: ({ mutate, ownProps: { wrapMutate } }) => ({
-    updateUser(user) {
+    updateUser(user: User) {
       return wrapMutate(mutate!({ variables: { ...user } }));
     }
   })

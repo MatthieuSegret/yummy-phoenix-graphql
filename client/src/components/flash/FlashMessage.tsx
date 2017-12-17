@@ -14,7 +14,7 @@ interface IProps {
 }
 
 class FlashMessage extends React.Component<IProps, {}> {
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.onClick = this.onClick.bind(this);
   }

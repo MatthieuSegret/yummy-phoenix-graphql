@@ -100,7 +100,6 @@ web applications.
 ## Next step
 
 * [ ] Batch of GraphQL queries into one HTTP request
-* [ ] Use Flow Type
 * [ ] Use subscription GraphQL feature
 * [ ] Create mobile app with React Native
 
