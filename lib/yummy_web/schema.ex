@@ -4,6 +4,7 @@ defmodule YummyWeb.Graph.Schema do
   import Kronky.Payload
   alias YummyWeb.Schema.Middleware.TranslateMessages
 
+  import_types Absinthe.Type.Custom
   import_types Kronky.ValidationMessageTypes 
   import_types YummyWeb.Schema.OptionTypes
   import_types YummyWeb.Schema.AccountsTypes

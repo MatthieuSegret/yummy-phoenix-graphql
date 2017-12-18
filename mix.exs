@@ -52,7 +52,7 @@ defmodule Yummy.Mixfile do
       {:ex_aws, "~> 1.1.3"},
       {:hackney, "~> 1.8.0", override: true},
       {:sweet_xml, "~> 0.6"},
-      {:arc_ecto, "~> 0.7.0"},
+      {:arc_ecto, "~> 0.7.0"}
     ]
   end
 

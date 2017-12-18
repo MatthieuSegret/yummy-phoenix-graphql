@@ -24,7 +24,7 @@ defmodule YummyWeb.Schema.RecipesTypes do
         {:ok, ImageUploader.url({image_url, recipe}, String.to_atom(format))}
       end
     end
-    field :inserted_at, :string
+    field :inserted_at, :datetime
     field :author, :user, resolve: assoc(:author)
     field :comments, list_of(:comment), resolve: assoc(:comments)
   end
@@ -32,7 +32,7 @@ defmodule YummyWeb.Schema.RecipesTypes do
   object :comment do
     field :id, :id
     field :body, :string
-    field :inserted_at, :string
+    field :inserted_at, :datetime
     field :recipe, :recipe, resolve: assoc(:recipe)
     field :author, :user, resolve: assoc(:author)
   end

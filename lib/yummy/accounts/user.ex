@@ -13,7 +13,7 @@ defmodule Yummy.Accounts.User do
     field :access_token, :string
     has_many :recipes, Recipe
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   def changeset(%User{} = user, attrs \\ %{}) do

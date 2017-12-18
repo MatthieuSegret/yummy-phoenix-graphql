@@ -28,7 +28,7 @@ defmodule Yummy.Recipes.Recipe do
     belongs_to :author, User, foreign_key: :user_id
     has_many :comments, Comment
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

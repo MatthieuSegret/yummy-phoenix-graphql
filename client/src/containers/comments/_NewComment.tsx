@@ -106,7 +106,7 @@ const withCreateComment = graphql<
             const data = store.readQuery({ query: RECIPE, variables: { id } }) as RecipeQuery;
             if (!data || !data.recipe) return;
 
-            data.recipe.comments.unshift(newComment);
+            data.recipe.comments.push(newComment);
             store.writeQuery({ query: RECIPE, variables: { id }, data });
           },
           optimisticResponse: {
