@@ -7,4 +7,5 @@ fragment RecipeForEditingFragment on Recipe {
   level
   budget
   image_url
+  image_url(format: "thumb")
 }
