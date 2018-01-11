@@ -62,6 +62,7 @@ web applications.
 * Elixir 1.5 ([Installing Elixir](https://elixir-lang.org/install.html))
 * Phoenix 1.3 ([Installing Phoenix](https://hexdocs.pm/phoenix/installation.html))
 * Node 9.2 ([Installing Node](https://nodejs.org/en/download/package-manager))
+* ImageMagick 7
 * PostgreSQL
 
 ## Getting Started
