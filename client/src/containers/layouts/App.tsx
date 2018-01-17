@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import { compose } from 'react-apollo';
 import { withRouter } from 'react-router';
 import { Route, Switch } from 'react-router-dom';

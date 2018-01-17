@@ -24,7 +24,7 @@ class Header extends React.Component<IProps, {}> {
     this.logout = this.logout.bind(this);
   }
 
-  private logout(event: any) {
+  private logout(event: React.MouseEvent<HTMLElement>) {
     event.preventDefault();
     this.props.revokeToken().then(response => {
       const errors = response.data.revokeToken.errors;

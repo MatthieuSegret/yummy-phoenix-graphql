@@ -25,11 +25,11 @@ class SearchForm extends React.Component<IProps, IState> {
     this.setState({ keywords: this.props.initialKeywords });
   }
 
-  private onInputChange(event: any) {
-    this.setState({ keywords: event.target.value });
+  private onInputChange(event: React.FormEvent<HTMLInputElement>) {
+    this.setState({ keywords: (event.target as HTMLInputElement).value });
   }
 
-  private onSearch(event: any) {
+  private onSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const { keywords } = this.state;
     const pathName = keywords ? `/recipes/search/${keywords}` : '/';
