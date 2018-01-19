@@ -64,6 +64,7 @@ web applications.
 * Node 9.2 ([Installing Node](https://nodejs.org/en/download/package-manager))
 * ImageMagick 7
 * PostgreSQL
+* _Ruby only for integration tests with FakeS3_
 
 ## Getting Started
 
@@ -97,6 +98,17 @@ web applications.
 * Start client in development mode. You should be able to go to `http://localhost:3000` :
 
             yummy-phoenix-graphql/client$ yarn start
+
+## Testing
+
+Integration tests with [Wallaby](https://github.com/keathley/wallaby) and ChromeDriver. Instructions:
+
+1. Install **ChromeDriver** with `npm install -g chromedriver`
+2. Run **ChromeDriver** in a new terminal window with `chromedriver &`
+3. Install **FakeS3** with `gem install fakes3`. Fake S3 simulate Amazon S3. It minimize runtime dependencies and be more of a development tool to test S3 calls.
+4. Run **FakeS3** in a new terminal window with `fakes3 -r $HOME/.s3bucket -p 4567 &`
+5. Build your assets with `cd client && yarn build`
+6. Run tests with `mix test`
 
 ## Next step
 

@@ -1,6 +1,10 @@
 defmodule YummyWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :yummy
 
+  if Application.get_env(:yummy, :sql_sandbox) do
+    plug Phoenix.Ecto.SQL.Sandbox
+  end
+
   plug Plug.Static,
     at: "/", gzip: true,
     from: "client/build",

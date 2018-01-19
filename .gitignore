@@ -5,6 +5,7 @@
 /deps
 /client/build
 /client/src/assets/stylesheets/css
+/test/screenshots
 /*.ez
 .env
 .DS_Store

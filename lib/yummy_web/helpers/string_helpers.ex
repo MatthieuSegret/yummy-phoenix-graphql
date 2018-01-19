@@ -1,15 +1,13 @@
 defmodule YummyWeb.Helpers.StringHelpers do
   def description(text) do
     text
-    |> truncate(length: 180)
+    |> truncate(length: 150)
     |> String.replace(~r/\r|\n|\t/, " ")
     |> String.replace(~r/#|\*/, "")
   end
 
   def truncate(text, length: length) do
-    text
-    |> String.slice(0..length)
-    |> String.replace(~r/\s(.)*$/, "...")
+    "#{text |> String.slice(0..length)}..."
   end
 
   def present?(nil), do: false
