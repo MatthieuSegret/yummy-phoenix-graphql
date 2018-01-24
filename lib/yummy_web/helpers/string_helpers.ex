@@ -1,7 +1,7 @@
 defmodule YummyWeb.Helpers.StringHelpers do
   def description(text) do
     text
-    |> truncate(length: 150)
+    |> truncate(length: 180)
     |> String.replace(~r/\r|\n|\t/, " ")
     |> String.replace(~r/#|\*/, "")
   end
