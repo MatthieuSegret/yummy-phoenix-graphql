@@ -41,12 +41,12 @@ class RecipeActions extends React.Component<IProps, {}> {
 
     return (
       <div className="recipe-actions is-pulled-right">
-        <Link to={`/recipes/${recipe.id}/edit`}>
+        <Link to={`/recipes/${recipe.id}/edit`} className="edit-recipe-link">
           <span className="icon">
             <i className="fa fa-edit" />
           </span>
         </Link>
-        <a onClick={this.destroy}>
+        <a onClick={this.destroy} className="delete-recipe-link">
           <span className="icon">
             <i className="fa fa-trash-o" />
           </span>
