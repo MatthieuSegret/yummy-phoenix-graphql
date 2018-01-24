@@ -1,12 +1,12 @@
 defmodule YummyWeb.Integrations.SignInTest do
   use YummyWeb.IntegrationCase, async: true
 
-  describe "when user is sign in" do
-    setup do
-      user = insert(:user)
-      {:ok, %{user: user }}
-    end
+  setup do
+    user = insert(:user)
+    {:ok, %{user: user }}
+  end
 
+  describe "when user is sign in" do
     test "with successful", %{session: session, user: user} do
       path = session
       |> user_sign_in(user: user)
@@ -31,6 +31,15 @@ defmodule YummyWeb.Integrations.SignInTest do
       |> current_path()
 
       assert path == "/users/signin"
+    end
+  end
+
+  describe "when user is sign out" do
+    test "with successful", %{session: session, user: user} do
+      session
+      |> user_sign_in(user: user)
+      |> click(link("Se déconnecter"))
+      |> assert_eq(css(".header .navbar-end > .navbar-item:first-child"), text: "S'inscrire")
     end
   end
 end

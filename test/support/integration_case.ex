@@ -35,6 +35,7 @@ defmodule YummyWeb.IntegrationCase do
     |> fill_in(text_field("Email"), with: user.email)
     |> fill_in(text_field("Mot de passe"), with: user.password)
     |> click(button("Se connecter"))
+    |> assert_has(css(".notification.is-primary"))
   end
 
   def signed_in_user(), do: css(".header .navbar-end > .navbar-item:first-child")
