@@ -8,6 +8,7 @@ defmodule YummyWeb.IntegrationCase do
       use Wallaby.DSL
 
       alias Yummy.Repo
+      alias Yummy.Accounts.User
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
@@ -47,7 +48,22 @@ defmodule YummyWeb.IntegrationCase do
     session
   end
 
+  def assert_eq(session, query, value: expected_value) do
+    assert find_value(session, query) == expected_value
+    session
+  end
+
   def find_text(session, query) do
     find(session, query) |> Element.text()
+  end
+
+  def find_value(session, query) do
+    find(session, query) |> Element.value()
+  end
+
+  def disable_alert(session) do
+    execute_script(session, "window.confirm = () => { return true; };")
+    execute_script(session, "window.alert = () => { return true; };")
+    session
   end
 end
