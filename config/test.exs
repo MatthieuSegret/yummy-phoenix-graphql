@@ -18,8 +18,8 @@ config :logger, level: :warn
 # Configure your database
 config :yummy, Yummy.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: System.get_env("DATABASE_POSTGRESQL_USERNAME") || "postgres",
+  password: System.get_env("DATABASE_POSTGRESQL_PASSWORD") || "postgres",
   database: "yummy_graphql_test",
   hostname: "localhost",
   port: System.get_env("DATABASE_PORT") || 5432,
