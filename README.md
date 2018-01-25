@@ -1,5 +1,7 @@
 # Yummy Phoenix GraphQL
 
+[![Build Status](https://semaphoreci.com/api/v1/matthieusegret/yummy-phoenix-graphql/branches/master/badge.svg)](https://semaphoreci.com/matthieusegret/yummy-phoenix-graphql)
+
 This application can be used as **starter kit** if you want to get started building an app with **Phoenix**, **React**,
 and **GraphQL**. This is a simple cooking recipe sharing application using ordinary features which can be found in most
 web applications.
