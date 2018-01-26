@@ -1,7 +1,7 @@
-import YummyWeb.Helpers.ValidationMessageHelpers
-
 defmodule YummyWeb.Schema.Middleware.Authorize do
   @behaviour Absinthe.Middleware
+
+  import YummyWeb.Helpers.ValidationMessageHelpers
   alias Yummy.Accounts.User
 
   def call(resolution, _config) do 

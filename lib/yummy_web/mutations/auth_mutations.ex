@@ -1,13 +1,10 @@
 defmodule YummyWeb.Mutations.AuthMutations do
   use Absinthe.Schema.Notation
   
-  import Kronky.Payload
   import YummyWeb.Helpers.ValidationMessageHelpers
 
   alias YummyWeb.Schema.Middleware
   alias Yummy.Accounts
-
-  payload_object(:session_payload, :session)
 
   object :auth_mutations do
 

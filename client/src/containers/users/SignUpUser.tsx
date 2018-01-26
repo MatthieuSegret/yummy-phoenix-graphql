@@ -8,6 +8,7 @@ import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
 import { required } from 'components/form/validation';
 import withRecipes from 'queries/recipesQuery';
+import { fetchCurrentUser } from 'queries/currentUserQuery';
 import withFlashMessage from 'components/flash/withFlashMessage';
 
 import SIGN_UP from 'graphql/users/signUpMutation.graphql';
@@ -45,8 +46,9 @@ class SignUpUser extends React.Component<IProps, {}> {
 
   private async submitForm(values: any) {
     const { data: { signUp: payload } } = await this.props.signUp(values);
-    if (!payload.errors && payload.currentUser && payload.currentUser.token) {
-      window.localStorage.setItem('yummy:token', payload.currentUser.token);
+    if (!payload.errors && payload.result && payload.result.token) {
+      window.localStorage.setItem('yummy:token', payload.result.token);
+      await fetchCurrentUser();
       await this.props.refetchRecipes();
       this.props.redirect('/', { notice: 'Bienvenue sur Yummy ! Votre compte a bien été créé.' });
     } else {
