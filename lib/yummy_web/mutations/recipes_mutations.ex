@@ -1,16 +1,12 @@
 defmodule YummyWeb.Mutations.RecipesMutations do
   use Absinthe.Schema.Notation
   import Ecto.Query, warn: false  
-  import Kronky.Payload
   import YummyWeb.Helpers.ValidationMessageHelpers
 
   alias YummyWeb.Schema.Middleware
   alias Yummy.Repo
   alias Yummy.Recipes
   alias Yummy.Recipes.Recipe
-
-  payload_object(:recipe_payload, :recipe)
-  payload_object(:comment_payload, :comment)
 
   input_object :recipe_input do
     field :title, :string

@@ -199,12 +199,9 @@ export type SignUpMutationVariables = {
 
 export type SignUpMutation = {
   signUp: {
-    __typename: 'UserPayload';
-    currentUser: {
-      __typename: 'User';
-      id: string;
-      name: string;
-      email: string;
+    __typename: 'SessionPayload';
+    result: {
+      __typename: 'Session';
       token: string;
     } | null;
     errors: any;

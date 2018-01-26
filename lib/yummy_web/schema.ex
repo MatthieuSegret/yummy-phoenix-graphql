@@ -16,6 +16,11 @@ defmodule YummyWeb.Schema do
   import_types YummyWeb.Mutations.RecipesMutations
   import_types Absinthe.Plug.Types
 
+  payload_object(:session_payload, :session)
+  payload_object(:user_payload, :user)
+  payload_object(:recipe_payload, :recipe)
+  payload_object(:comment_payload, :comment)
+
   query do
     import_fields :accounts_queries
     import_fields :recipes_queries

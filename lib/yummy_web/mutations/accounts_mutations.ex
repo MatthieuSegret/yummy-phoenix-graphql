@@ -1,18 +1,15 @@
 defmodule YummyWeb.Mutations.AccountsMutations do
   use Absinthe.Schema.Notation
 
-  import Kronky.Payload
   import YummyWeb.Helpers.ValidationMessageHelpers
 
   alias YummyWeb.Schema.Middleware  
   alias Yummy.Accounts
 
-  payload_object(:user_payload, :user)
-
   object :accounts_mutations do
 
     @desc "Sign up"
-    field :sign_up, :user_payload do
+    field :sign_up, :session_payload do
       arg :name, :string
       arg :email, :string
       arg :password, :string
@@ -20,9 +17,9 @@ defmodule YummyWeb.Mutations.AccountsMutations do
 
       resolve fn (args, _) ->
         with {:ok, user} <- Accounts.create_user(args),
-          {:ok, _token, user_with_token} <- Accounts.generate_access_token(user)
+          {:ok, token, _user_with_token} <- Accounts.generate_access_token(user)
         do
-          {:ok, user_with_token}
+          {:ok, %{token: token}}
         else
           {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
           _ -> {:error, "Oups, nous sommes désolés, mais quelque chose s'est mal passé"}
