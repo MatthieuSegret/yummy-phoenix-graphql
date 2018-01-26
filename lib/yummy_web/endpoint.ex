@@ -1,5 +1,8 @@
 defmodule YummyWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :yummy
+  use Absinthe.Phoenix.Endpoint
+
+  socket "/socket", YummyWeb.UserSocket
 
   if Application.get_env(:yummy, :sql_sandbox) do
     plug Phoenix.Ecto.SQL.Sandbox

@@ -1,4 +1,4 @@
-defmodule YummyWeb.Graph.Schema do
+defmodule YummyWeb.Schema do
   use Absinthe.Schema
 
   import Kronky.Payload

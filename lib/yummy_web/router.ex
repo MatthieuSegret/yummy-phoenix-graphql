@@ -14,10 +14,10 @@ defmodule YummyWeb.Router do
   scope "/" do
     pipe_through :api
 
-    forward "/graphql", Absinthe.Plug, schema: YummyWeb.Graph.Schema
+    forward "/graphql", Absinthe.Plug, schema: YummyWeb.Schema
 
     if Mix.env == :dev do
-      forward "/graphiql", Absinthe.Plug.GraphiQL, schema: YummyWeb.Graph.Schema
+      forward "/graphiql", Absinthe.Plug.GraphiQL, schema: YummyWeb.Schema, socket: YummyWeb.UserSocket
     end
   end
 

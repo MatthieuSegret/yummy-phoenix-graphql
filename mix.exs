@@ -41,6 +41,7 @@ defmodule Yummy.Mixfile do
       {:cowboy, "~> 1.1.2"},
       {:absinthe, "~> 1.4.5", override: true},
       {:absinthe_plug, "~> 1.4.2"},
+      {:absinthe_phoenix, "~> 1.4.2"},
       {:absinthe_ecto, "~> 0.1.3"},
       {:poison, "~> 3.1.0"},
       {:cors_plug, "~> 1.5.0"},

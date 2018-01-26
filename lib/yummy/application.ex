@@ -14,6 +14,7 @@ defmodule Yummy.Application do
       supervisor(YummyWeb.Endpoint, []),
       # Start your own worker by calling: Yummy.Worker.start_link(arg1, arg2, arg3)
       # worker(Yummy.Worker, [arg1, arg2, arg3]),
+      supervisor(Absinthe.Subscription, [YummyWeb.Endpoint]),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
