@@ -3,6 +3,7 @@ defmodule YummyWeb.Schema do
 
   import Kronky.Payload
   alias YummyWeb.Schema.Middleware.TranslateMessages
+  alias Yummy.Recipes.{Recipe, Comment}
 
   import_types Absinthe.Type.Custom
   import_types Kronky.ValidationMessageTypes 
@@ -30,6 +31,29 @@ defmodule YummyWeb.Schema do
     import_fields :auth_mutations
     import_fields :accounts_mutations
     import_fields :recipes_mutations
+  end
+
+  subscription do
+    field :new_recipe, :recipe do
+      trigger :create_recipe, topic: fn
+        %Recipe{} -> ["*"]
+        _ -> []
+      end
+      config fn _args, _info ->
+        {:ok, topic: "*"}
+      end
+    end
+
+    field :new_comment, :comment do
+      arg :recipe_id, non_null(:id)
+      trigger :create_comment, topic: fn
+        %Comment{} = comment -> ["new_comment:#{comment.recipe.id}"]
+        _ -> []
+      end
+      config fn args, _info ->
+        {:ok, topic: "new_comment:#{args.recipe_id}"}
+      end
+    end
   end
 
   def middleware(middleware, _field, %Absinthe.Type.Object{identifier: :mutation}) do
