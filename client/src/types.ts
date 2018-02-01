@@ -235,6 +235,7 @@ export type CommentFragment = {
   inserted_at: string;
   author: {
     __typename: string;
+    id: string;
     name: string;
   };
 };

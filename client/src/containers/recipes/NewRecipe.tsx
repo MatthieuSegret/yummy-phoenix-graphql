@@ -14,6 +14,7 @@ import { ApolloQueryResult } from 'apollo-client/core/types';
 import { DataProxy } from 'apollo-cache';
 import {
   FlashMessageVariables,
+  RecipePreviewFragment,
   CreateRecipeMutation,
   CreateRecipeMutationVariables,
   RecipesQuery,
@@ -76,6 +77,9 @@ const withCreateRecipe = graphql<CreateRecipeMutation, CreateRecipeMutationVaria
               if (!newRecipe) return;
               const data = store.readQuery({ query: RECIPES }) as RecipesQuery;
               if (!data.recipes) return;
+              // To prevent duplicates, we add an extra check to verify that we did not already add the recipe to our store
+              // because when we create a new recipe we might be notified of creation through the subscription before the query returns data
+              if (data.recipes.find((r: RecipePreviewFragment) => r.id === newRecipe.id)) return;
               data.recipes.unshift(newRecipe);
               data.recipesCount += 1;
               store.writeQuery({ query: RECIPES, data });

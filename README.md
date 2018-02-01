@@ -42,6 +42,7 @@ web applications.
 * Authentication with token
 * Creating user account
 * Update user profile and changing password
+* Display comments and recipes in real-time
 * Application ready for production
 
 ## GraphQL Using
@@ -50,6 +51,7 @@ web applications.
 * FetchMore for pagination
 * Using `apollo-cache-inmemory`
 * Apollo Link (dedup, onError, auth)
+* Subscription
 * [Managing local state](https://github.com/apollographql/apollo-link-state) with Apollo Link
 * Optimistic UI
 * [Static GraphQL queries](https://dev-blog.apollodata.com/5-benefits-of-static-graphql-queries-b7fa90b0b69a)
@@ -115,7 +117,6 @@ Integration tests with [Wallaby](https://github.com/keathley/wallaby) and Chrome
 ## Next step
 
 * [ ] Batch of GraphQL queries into one HTTP request
-* [ ] Use subscription GraphQL feature
 * [ ] Create mobile app with React Native
 
 ## Screens

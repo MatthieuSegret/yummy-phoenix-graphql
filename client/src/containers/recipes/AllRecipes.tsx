@@ -13,9 +13,14 @@ interface IProps {
   data: RecipesQuery;
   match: any;
   loadMoreRecipes: () => ApolloQueryResult<RecipesQuery>;
+  subscribeToNewRecipe: () => ApolloQueryResult<RecipesQuery>;
 }
 
 class AllRecipes extends React.Component<IProps, {}> {
+  public componentWillMount() {
+    this.props.subscribeToNewRecipe();
+  }
+
   public render() {
     const { data: { recipes, recipesCount }, loadMoreRecipes } = this.props;
     const { params: { keywords } } = this.props.match;

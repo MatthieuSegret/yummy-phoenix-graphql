@@ -7,6 +7,7 @@
     "npm": "5.5.1"
   },
   "dependencies": {
+    "@absinthe/socket-apollo-link": "^0.1.11",
     "apollo-cache-inmemory": "1.1.5",
     "apollo-client": "2.2.0",
     "apollo-link": "1.0.7",

@@ -3,6 +3,7 @@ fragment CommentFragment on Comment {
   body
   inserted_at
   author {
+    id
     name
   }
 }

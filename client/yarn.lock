@@ -2,6 +2,53 @@
 # yarn lockfile v1
 
 
+"@absinthe/socket-apollo-link@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@absinthe/socket-apollo-link/-/socket-apollo-link-0.1.11.tgz#8dde213db3cf6e73419693c409ba00c96214a0e6"
+  dependencies:
+    "@absinthe/socket" "0.1.10"
+    apollo-link "1.0.0"
+    babel-runtime "6.26.0"
+    flow-static-land "0.2.8"
+    graphql "0.11.7"
+    zen-observable "0.6.0"
+
+"@absinthe/socket@0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@absinthe/socket/-/socket-0.1.10.tgz#657f7b32cd6161bdc20b28c1377dc3596ea25432"
+  dependencies:
+    "@jumpn/utils-array" "0.3.4"
+    "@jumpn/utils-composite" "0.5.0"
+    "@jumpn/utils-graphql" "0.5.3"
+    babel-runtime "6.26.0"
+    phoenix "1.3.0"
+    zen-observable "0.6.0"
+
+"@jumpn/utils-array@0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@jumpn/utils-array/-/utils-array-0.3.4.tgz#fb4310120108f659dab54075ef93abc56137de5e"
+  dependencies:
+    babel-polyfill "6.26.0"
+    babel-runtime "6.26.0"
+    flow-static-land "0.2.7"
+
+"@jumpn/utils-composite@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@jumpn/utils-composite/-/utils-composite-0.5.0.tgz#83580d470d0042f756889d2d057c2675fa1ebac6"
+  dependencies:
+    "@jumpn/utils-array" "0.3.4"
+    babel-polyfill "6.26.0"
+    babel-runtime "6.26.0"
+    fast-deep-equal "1.0.0"
+    flow-static-land "0.2.8"
+
+"@jumpn/utils-graphql@0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@jumpn/utils-graphql/-/utils-graphql-0.5.3.tgz#a7b41b0bec34d8dc1873981be0a718190673f430"
+  dependencies:
+    babel-runtime "6.26.0"
+    graphql "0.11.7"
+
 "@types/async@2.0.46":
   version "2.0.46"
   resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.46.tgz#f13a6c336a6582b95d0c0269e796b709488fd54d"
@@ -241,6 +288,13 @@ apollo-link-state@0.3.1:
     apollo-utilities "^1.0.1"
     graphql-anywhere "^4.1.0-alpha.0"
 
+apollo-link@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.0.0.tgz#3d334285789c217f95712ebce434d56ce7f3e991"
+  dependencies:
+    apollo-utilities "^0.2.0-beta.0"
+    zen-observable "^0.6.0"
+
 apollo-link@1.0.7, apollo-link@^1.0.0, apollo-link@^1.0.6, apollo-link@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.0.7.tgz#42cd38a7378332fc3e41a214ff6a6e5e703a556f"
@@ -254,6 +308,10 @@ apollo-mutation-state@^0.0.7:
   resolved "https://registry.yarnpkg.com/apollo-mutation-state/-/apollo-mutation-state-0.0.7.tgz#53bfffbcd96c54b25048a51bcf120d9279bf7d82"
   dependencies:
     hoist-non-react-statics "^2.3.1"
+
+apollo-utilities@^0.2.0-beta.0:
+  version "0.2.0-rc.3"
+  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-0.2.0-rc.3.tgz#7bd93be0f587f20c5b46e21880272e305759fdc2"
 
 apollo-utilities@^1.0.0:
   version "1.0.3"
@@ -529,6 +587,14 @@ babel-plugin-transform-strict-mode@^6.24.1:
     babel-runtime "^6.22.0"
     babel-types "^6.24.1"
 
+babel-polyfill@6.26.0:
+  version "6.26.0"
+  resolved "https://registry.yarnpkg.com/babel-polyfill/-/babel-polyfill-6.26.0.tgz#379937abc67d7895970adc621f284cd966cf2153"
+  dependencies:
+    babel-runtime "^6.26.0"
+    core-js "^2.5.0"
+    regenerator-runtime "^0.10.5"
+
 babel-preset-jest@^20.0.3:
   version "20.0.3"
   resolved "https://registry.yarnpkg.com/babel-preset-jest/-/babel-preset-jest-20.0.3.tgz#cbacaadecb5d689ca1e1de1360ebfc66862c178a"
@@ -547,7 +613,7 @@ babel-register@^6.26.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-runtime@^6.22.0, babel-runtime@^6.25.0, babel-runtime@^6.26.0:
+babel-runtime@6.26.0, babel-runtime@^6.22.0, babel-runtime@^6.25.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   dependencies:
@@ -2031,7 +2097,7 @@ extsprintf@^1.2.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
 
-fast-deep-equal@^1.0.0:
+fast-deep-equal@1.0.0, fast-deep-equal@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-1.0.0.tgz#96256a3bc975595eb36d82e9929d060d893439ff"
 
@@ -2164,6 +2230,14 @@ find-up@^2.0.0, find-up@^2.1.0:
 flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
+
+flow-static-land@0.2.7:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/flow-static-land/-/flow-static-land-0.2.7.tgz#937f9dcb2780889a609155e5d1a55a993bc2ffb3"
+
+flow-static-land@0.2.8:
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/flow-static-land/-/flow-static-land-0.2.8.tgz#49617e531396928bae6eb5d8ba32e7071637e5b9"
 
 flush-write-stream@^1.0.0:
   version "1.0.2"
@@ -2481,6 +2555,12 @@ graphql-anywhere@^4.1.0-alpha.0, graphql-anywhere@^4.1.1:
 graphql-tag@2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.6.1.tgz#4788d509f6e29607d947fc47a40c4e18f736d34a"
+
+graphql@0.11.7:
+  version "0.11.7"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.11.7.tgz#e5abaa9cb7b7cccb84e9f0836bf4370d268750c6"
+  dependencies:
+    iterall "1.1.3"
 
 graphql@0.12.3:
   version "0.12.3"
@@ -4515,6 +4595,10 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
 
+phoenix@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/phoenix/-/phoenix-1.3.0.tgz#1df2c27f986ee295e37c9983ec28ebac1d7f4a3e"
+
 pify@^2.0.0, pify@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
@@ -5293,6 +5377,10 @@ reduce-function-call@^1.0.1:
 regenerate@^1.2.1:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.3.3.tgz#0c336d3980553d755c39b586ae3b20aa49c82b7f"
+
+regenerator-runtime@^0.10.5:
+  version "0.10.5"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz#336c3efc1220adcedda2c9fab67b5a7955a33658"
 
 regenerator-runtime@^0.11.0:
   version "0.11.1"
@@ -6918,6 +7006,10 @@ yargs@~3.10.0:
     cliui "^2.1.0"
     decamelize "^1.0.0"
     window-size "0.1.0"
+
+zen-observable@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.6.0.tgz#8a6157ed15348d185d948cfc4a59d90a2c0f70ee"
 
 zen-observable@^0.6.0:
   version "0.6.1"

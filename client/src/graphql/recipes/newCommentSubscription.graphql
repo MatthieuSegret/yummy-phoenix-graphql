@@ -1,0 +1,7 @@
+#import "graphql/fragments/commentFragment.graphql"
+
+subscription newComment($recipeId: ID!) {
+  newComment(recipeId: $recipeId) {
+    ...CommentFragment
+  }
+}

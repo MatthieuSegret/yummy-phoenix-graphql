@@ -17,6 +17,7 @@ import RECIPE from 'graphql/recipes/recipeQuery.graphql';
 import { ApolloQueryResult } from 'apollo-client/core/types';
 import { DataProxy } from 'apollo-cache';
 import {
+  CommentFragment,
   CreateCommentMutation,
   CreateCommentMutationVariables,
   RecipeQuery,
@@ -105,6 +106,9 @@ const withCreateComment = graphql<
             const id = ownProps.recipeId;
             const data = store.readQuery({ query: RECIPE, variables: { id } }) as RecipeQuery;
             if (!data || !data.recipe) return;
+            // To prevent duplicates, we add an extra check to verify that we did not already add the comment to our store
+            // because when we create a new comment we might be notified of creation through the subscription before the query returns data
+            if (data.recipe.comments.find((c: CommentFragment) => c.id === newComment.id)) return;
 
             data.recipe.comments.push(newComment);
             store.writeQuery({ query: RECIPE, variables: { id }, data });
@@ -121,6 +125,7 @@ const withCreateComment = graphql<
                 pending: true,
                 author: {
                   __typename: 'User',
+                  id: ownProps.currentUser.id,
                   name: ownProps.currentUser.name
                 }
               },

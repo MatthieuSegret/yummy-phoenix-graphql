@@ -1,18 +1,23 @@
 import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 import { onError } from 'apollo-link-error';
+import * as AbsintheSocket from '@absinthe/socket';
+import { createAbsintheSocketLink } from '@absinthe/socket-apollo-link';
+import { Socket as PhoenixSocket } from 'phoenix';
 
-import ROOT_URL from 'config/rootUrl';
+import ROOT_URL, { WS_ROOT_URL } from 'config/rootUrl';
 import { HttpLink } from 'config/httpWithUploadLink';
 import formatErrors from 'utils/errorsUtils';
 import client from 'config/apolloClient';
 
 import CREATE_FLASH_MESSAGE from 'graphql/flash/createFlashMessageMutation.graphql';
 
-export const httpLink = new HttpLink({
+export const httpWithUploadLink = new HttpLink({
   uri: `${ROOT_URL}/graphql`,
   credentials: process.env.NODE_ENV === 'development' ? 'include' : 'same-origin'
 });
+
+export const wsLink = createAbsintheSocketLink(AbsintheSocket.create(new PhoenixSocket(`${WS_ROOT_URL}/socket`)));
 
 export const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('yummy:token');

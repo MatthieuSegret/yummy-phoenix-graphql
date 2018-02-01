@@ -5,7 +5,7 @@
 // This file come from Apollo link
 // From https://github.com/apollographql/apollo-link/blob/master/packages/apollo-link-http/src/httpLink.ts
 
-import { ApolloLink, Observable, RequestHandler, Operation } from 'apollo-link';
+import { ApolloLink, Observable, Operation } from 'apollo-link';
 import { print } from 'graphql/language/printer';
 import { extractFiles } from 'extract-files';
 
@@ -270,7 +270,7 @@ export const createHttpLink = ({
 };
 
 export class HttpLink extends ApolloLink {
-  public requester: RequestHandler;
+  // public requester: RequestHandler;
   constructor(opts?: HttpLink.Options) {
     super(createHttpLink(opts).request);
   }

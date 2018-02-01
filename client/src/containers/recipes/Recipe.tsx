@@ -11,19 +11,27 @@ import NewComment from 'containers/comments/_NewComment';
 import withCurrentUser from 'queries/currentUserQuery';
 
 import RECIPE from 'graphql/recipes/recipeQuery.graphql';
+import NEW_COMMENT_SUBSCRIPTION from 'graphql/recipes/newCommentSubscription.graphql';
 
 // typings
+import { ApolloQueryResult } from 'apollo-client/core/types';
 import { RecipeQuery, User, RecipeFragment, CommentFragment } from 'types';
 
 interface IProps {
   data: RecipeQuery;
   currentUser: User;
+  match: any;
+  subscribeToNewComment: (recipeId: number) => ApolloQueryResult<RecipeQuery>;
 }
 
 class Recipe extends React.Component<IProps, {}> {
   constructor(props: IProps) {
     super(props);
     this.listComments = this.listComments.bind(this);
+  }
+
+  public componentWillMount() {
+    this.props.subscribeToNewComment(this.props.match.params.id);
   }
 
   private listComments(recipe: RecipeFragment) {
@@ -76,12 +84,59 @@ class Recipe extends React.Component<IProps, {}> {
   }
 }
 
+// Pending element has a temporary id. Unlike a classic id, it's not a number
+function isPending(el: any): boolean {
+  return isNaN(parseInt(el.id, 10));
+}
+
+function isSameComment(comment1: CommentFragment, comment2: CommentFragment): boolean {
+  return comment1.body === comment2.body && comment1.author.id === comment2.author.id;
+}
+
+function isAlreadyPresent(comments: Array<CommentFragment>, newComment: CommentFragment): boolean {
+  if (comments.find((c: CommentFragment) => c.id === newComment.id)) return true;
+  // A new comment is created with optimistic UI.
+  // The new comment is perhaps already present as pending comment with temporary id
+  const pendingComment: CommentFragment | undefined = comments.find((c: CommentFragment) => isPending(c));
+  if (pendingComment && isSameComment(pendingComment, newComment)) return true;
+  return false;
+}
+
 const withRecipe = graphql(RECIPE, {
   options: (ownProps: any) => ({
     variables: {
       id: ownProps.match.params.id
     }
-  })
+  }),
+  props: ({ data }) => {
+    return {
+      data,
+      subscribeToNewComment(recipeId: number) {
+        return (
+          data &&
+          data.subscribeToMore({
+            document: NEW_COMMENT_SUBSCRIPTION,
+            variables: {
+              recipeId
+            },
+            updateQuery(state: any, { subscriptionData }) {
+              if (!subscriptionData.data || !subscriptionData.data.newComment) return false;
+              const newComment: CommentFragment = subscriptionData.data.newComment as CommentFragment;
+              // To prevent duplicates, we add an extra check to verify that we did not already add the comment to our store
+              if (isAlreadyPresent(state.recipe.comments, newComment)) return false;
+
+              return {
+                recipe: {
+                  ...state.recipe,
+                  comments: [...state.recipe.comments, newComment]
+                }
+              };
+            }
+          })
+        );
+      }
+    };
+  }
 });
 
 export default compose(withCurrentUser, withRecipe)(Recipe);
