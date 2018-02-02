@@ -1,7 +1,9 @@
 defmodule YummyWeb.Schema.RecipesTypes do
   use Absinthe.Schema.Notation
-  use Absinthe.Ecto, repo: Yummy.Repo  
+  import Absinthe.Resolution.Helpers
+
   alias YummyWeb.Helpers.StringHelpers
+  alias Yummy.Recipes
   alias Yummy.Recipes.Recipe
   alias Yummy.ImageUploader
 
@@ -25,15 +27,15 @@ defmodule YummyWeb.Schema.RecipesTypes do
       end
     end
     field :inserted_at, :datetime
-    field :author, :user, resolve: assoc(:author)
-    field :comments, list_of(:comment), resolve: assoc(:comments)
+    field :author, :user, resolve: dataloader(Recipes)
+    field :comments, list_of(:comment), resolve: dataloader(Recipes)
   end
 
   object :comment do
     field :id, :id
     field :body, :string
     field :inserted_at, :datetime
-    field :recipe, :recipe, resolve: assoc(:recipe)
-    field :author, :user, resolve: assoc(:author)
+    field :recipe, :recipe, resolve: dataloader(Recipes)
+    field :author, :user, resolve: dataloader(Recipes)
   end
 end

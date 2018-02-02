@@ -63,4 +63,12 @@ defmodule Yummy.Recipes do
     |> put_assoc(:recipe, recipe)
     |> Repo.insert()
   end
+
+  def data() do
+    Dataloader.Ecto.new(Repo, query: &query/2)
+  end
+
+  def query(queryable, _) do
+    queryable
+  end
 end

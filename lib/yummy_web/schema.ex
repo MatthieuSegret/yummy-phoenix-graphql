@@ -63,4 +63,18 @@ defmodule YummyWeb.Schema do
   def middleware(middleware, _field, _object) do
     middleware
   end
+
+  def plugins do
+    [Absinthe.Middleware.Dataloader | Absinthe.Plugin.defaults]
+  end
+
+  def dataloader() do
+    alias Yummy.Recipes
+    Dataloader.new
+    |> Dataloader.add_source(Recipes, Recipes.data())
+  end
+
+  def context(ctx) do
+    Map.put(ctx, :loader, dataloader())
+  end
 end
