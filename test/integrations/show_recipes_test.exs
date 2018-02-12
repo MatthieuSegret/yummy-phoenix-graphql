@@ -1,10 +1,13 @@
 defmodule YummyWeb.Integrations.ShowRecipesTest do
   use YummyWeb.IntegrationCase, async: true
+  alias Yummy.Recipes.Recipe
 
   @search_input css("form[role='search'] .input[name='keywords']")
 
   setup do
-    user = insert(:user) |> with_recipes() |> Repo.preload(:recipes)
+    user = insert(:user)
+      |> with_recipes()
+      |> Repo.preload(recipes: from(r in Recipe, order_by: [desc: r.inserted_at]))
 
     {:ok, %{user: user}}
   end

@@ -1,5 +1,6 @@
 defmodule YummyWeb.Integrations.SubscriptionTest do
-  use YummyWeb.IntegrationCase, async: true
+  # Turn async to false to avoid disruption between tests because of subscription to new recipe
+  use YummyWeb.IntegrationCase, async: false
 
   setup do
     user = insert(:user)
@@ -18,17 +19,17 @@ defmodule YummyWeb.Integrations.SubscriptionTest do
     navigation2
     |> user_sign_in(user: user)
     |> visit("/recipes/new")
-    |> fill_in(text_field("Titre"), with: "Un super gâteau")
-    |> fill_in(text_field("Recette"), with: "Une recette facile")
+    |> fill_in(text_field("Titre"), with: "Un autre super gâteau")
+    |> fill_in(text_field("Recette"), with: "Une autre recette facile")
     |> click(button("Soumettre"))
     |> find(css(".recipes .recipe", count: 1))
-    |> assert_has(css(".recipe:first-child .title > a", text: "Un super gâteau"))
-    |> assert_has(css(".recipe:first-child .recipe-begin", text: "Une recette facile"))
+    |> assert_has(css(".recipe:first-child .title > a", text: "Un autre super gâteau"))
+    |> assert_has(css(".recipe:first-child .recipe-begin", text: "Une autre recette facile"))
 
     navigation1
     |> find(css(".recipes .recipe", count: 1))
-    |> assert_has(css(".recipe:first-child .title > a", text: "Un super gâteau"))
-    |> assert_has(css(".recipe:first-child .recipe-begin", text: "Une recette facile"))
+    |> assert_has(css(".recipe:first-child .title > a", text: "Un autre super gâteau"))
+    |> assert_has(css(".recipe:first-child .recipe-begin", text: "Une autre recette facile"))
   end
 
   test "Display comments in real-time", %{user: user, metadata: metadata} do

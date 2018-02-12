@@ -1,19 +1,18 @@
-defmodule YummyWeb.Integrations.ChangeRecipeTest do
-  use YummyWeb.IntegrationCase, async: true
+defmodule YummyWeb.Integrations.CreateRecipeTest do
+  # Turn async to false to avoid disruption between tests because of subscription to new recipe
+  use YummyWeb.IntegrationCase, async: false
 
   setup do
     user = insert(:user)
     {:ok, %{user: user }}
   end
 
-  describe "when user edit a recipe" do
+  describe "when user create a recipe" do
     test "with successful", %{session: session, user: user} do
-      recipe = insert(:recipe, author: user)
-
       path = session
       |> user_sign_in(user: user)
 
-      |> visit("/recipes/#{recipe.id}/edit")
+      |> visit("/recipes/new")
       |> fill_in(text_field("Titre"), with: "Un super gâteau")
       |> fill_in(select("Temps"), with: "10 min")
       |> fill_in(select("Niveau"), with: "Très facile")
@@ -22,7 +21,7 @@ defmodule YummyWeb.Integrations.ChangeRecipeTest do
       |> attach_file(css("#image"), path: "priv/repo/images/panna-cotta.jpg")
       |> click(button("Soumettre"))
 
-      |> assert_eq(notice_msg(), text: "La recette a bien été éditée.")
+      |> assert_eq(notice_msg(), text: "La recette a bien été créée.")
       |> assert_has(css(".recipe:first-child .title > a", text: "Un super gâteau"))
       |> assert_has(css(".recipe:first-child .recipe-total-time", text: "10 min"))
       |> assert_has(css(".recipe:first-child .recipe-level", text: "Très facile"))
@@ -33,7 +32,7 @@ defmodule YummyWeb.Integrations.ChangeRecipeTest do
 
       assert path == "/"
 
-      recipe = Yummy.Recipes.Recipe |> Repo.get(recipe.id)
+      recipe = Yummy.Recipes.Recipe |> last(:inserted_at) |> Repo.one()
       assert recipe.title == "Un super gâteau"
       assert recipe.total_time == "10 min"
       assert recipe.level == "Très facile"
@@ -43,12 +42,11 @@ defmodule YummyWeb.Integrations.ChangeRecipeTest do
     end
 
     test "with invalid input", %{session: session, user: user} do
-      recipe = insert(:recipe, author: user)
-
       path = session
       |> user_sign_in(user: user)
 
-      |> visit("/recipes/#{recipe.id}/edit")
+      |> visit("/recipes/new")
+      |> fill_in(text_field("Titre"), with: "Un super gâteau")
       |> fill_in(text_field("Recette"), with: "123")
       |> click(button("Soumettre"))
 
@@ -56,23 +54,7 @@ defmodule YummyWeb.Integrations.ChangeRecipeTest do
       |> assert_eq(css(".label[for='content'] ~ p.help.is-danger"), text: "est trop court (au moins 10 caractères)")
       |> current_path()
 
-      assert path == "/recipes/#{recipe.id}/edit"
+      assert path == "/recipes/new"
     end
-  end
-
-  test "when user delete a recipe", %{session: session, user: user} do
-    recipe = insert(:recipe, author: user)
-
-    session
-    |> user_sign_in(user: user)
-
-    |> visit("/")
-    |> assert_has(css(".recipe:first-child .title > a", text: recipe.title))
-
-    |> disable_alert()
-    |> click(css(".recipe:first-child .delete-recipe-link"))
-    |> assert_eq(notice_msg(), text: "La recette a bien été supprimé.")
-
-    assert Yummy.Recipes.Recipe |> Repo.get(recipe.id) == nil
   end
 end

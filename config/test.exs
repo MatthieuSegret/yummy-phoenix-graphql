@@ -9,7 +9,7 @@ config :yummy, YummyWeb.Endpoint,
 config :yummy, :sql_sandbox, true
 config :wallaby,
         driver: Wallaby.Experimental.Chrome,
-        screenshot_on_failure: true,
+        # screenshot_on_failure: true,
         screenshot_dir: "test/screenshots"
 
 # Print only warnings and errors during test

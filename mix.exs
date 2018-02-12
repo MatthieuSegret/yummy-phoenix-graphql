@@ -42,7 +42,7 @@ defmodule Yummy.Mixfile do
       {:absinthe, "~> 1.4.7", override: true},
       {:absinthe_plug, "~> 1.4.2"},
       {:absinthe_phoenix, "~> 1.4.2"},
-      {:dataloader, "~> 1.0.0"},
+      {:dataloader, "~> 1.0.1"},
       {:poison, "~> 3.1.0"},
       {:cors_plug, "~> 1.5.0"},
       {:kronky, "~> 0.4.0"},

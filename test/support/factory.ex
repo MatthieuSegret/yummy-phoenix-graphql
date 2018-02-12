@@ -17,8 +17,8 @@ defmodule Yummy.Factory do
   
   def recipe_factory do
     %Yummy.Recipes.Recipe{
-      title: Faker.Lorem.sentence(%Range{first: 1, last: 6}),
-      content: Faker.Lorem.paragraph(%Range{first: 1, last: 20}),
+      title: sequence(:email, &"title#{&1}"),
+      content: sequence(:email, &"content#{&1}"),
       total_time: "30 min",
       level: "Facile",
       budget: "Bon marché",
