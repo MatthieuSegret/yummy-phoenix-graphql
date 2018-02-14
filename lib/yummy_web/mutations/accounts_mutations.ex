@@ -15,10 +15,11 @@ defmodule YummyWeb.Mutations.AccountsMutations do
       arg :password, :string
       arg :password_confirmation, :string
 
-      resolve fn (args, _) ->
+      resolve fn (args, %{context: context}) ->
         with {:ok, user} <- Accounts.create_user(args),
           {:ok, token, _user_with_token} <- Accounts.generate_access_token(user)
         do
+          user |> Accounts.update_tracked_fields(context[:remote_ip])
           {:ok, %{token: token}}
         else
           {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}

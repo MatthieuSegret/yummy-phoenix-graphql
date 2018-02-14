@@ -14,13 +14,26 @@ defmodule YummyWeb.Plugs.Context do
   end
 
   defp build_context(conn) do
+    %{}
+    |> add_remote_ip_to_context(conn)
+    |> add_user_to_context(conn)
+  end
+
+  defp add_remote_ip_to_context(%{} = context, conn) do
+    case conn.remote_ip do
+      remote_ip when is_tuple(remote_ip) -> Map.put(context, :remote_ip, get_string_ip(remote_ip))
+      _ -> context
+    end
+  end
+
+  defp add_user_to_context(%{} = context, conn) do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
       true <- StringHelpers.present?(token),
       {:ok, user} <- get_user(token)
     do
-      %{current_user: user}
+      Map.put(context, :current_user, user)
     else
-      _ -> %{}
+      _ -> context
     end
   end
 
@@ -28,5 +41,9 @@ defmodule YummyWeb.Plugs.Context do
   defp get_user(token) do
     user = User |> Repo.get_by(access_token: token)
     {:ok, user}
+  end
+
+  defp get_string_ip(address) when is_tuple(address) do
+    :inet_parse.ntoa(address) |> IO.iodata_to_binary
   end
 end

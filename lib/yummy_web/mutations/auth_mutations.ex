@@ -13,10 +13,11 @@ defmodule YummyWeb.Mutations.AuthMutations do
       arg :email, :string
       arg :password, :string
 
-      resolve fn (args, _) ->
+      resolve fn (args, %{context: context}) ->
         with {:ok, user} <- Accounts.authenticate(args[:email], args[:password]),
           {:ok, token, _} <- Accounts.generate_access_token(user)
         do
+          user |> Accounts.update_tracked_fields(context[:remote_ip])
           {:ok, %{token: token}}
         else
           {:error, msg} -> {:ok, generic_message(msg)}

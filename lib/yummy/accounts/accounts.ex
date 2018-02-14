@@ -63,4 +63,26 @@ defmodule Yummy.Accounts do
       _ -> Comeonin.Bcrypt.checkpw(password, user.password_hash)
     end
   end
+
+
+  @doc """
+  Update tracked fields
+  """
+  def update_tracked_fields(%User{} = user, remote_ip) do
+    attrs = %{
+      current_sign_in_at: DateTime.utc_now(),
+      last_sign_in_at: user.current_sign_in_at,
+      current_sign_in_ip: remote_ip,
+      sign_in_count: user.sign_in_count + 1
+    }
+
+    attrs = case user.current_sign_in_ip != remote_ip do
+      true -> Map.put(attrs, :last_sign_in_ip, user.current_sign_in_ip)
+      _ -> attrs
+    end
+
+    user
+    |> User.changeset(attrs, :tracked_fields)
+    |> Repo.update
+  end
 end
