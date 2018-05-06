@@ -19,7 +19,10 @@ defmodule YummyWeb.Mutations.AccountsMutations do
         with {:ok, user} <- Accounts.create_user(args),
           {:ok, token, _user_with_token} <- Accounts.generate_access_token(user)
         do
-          user |> Accounts.update_tracked_fields(context[:remote_ip])
+          user
+          |> Accounts.send_confirmation()
+          |> Accounts.update_tracked_fields(context[:remote_ip])
+
           {:ok, %{token: token}}
         else
           {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}

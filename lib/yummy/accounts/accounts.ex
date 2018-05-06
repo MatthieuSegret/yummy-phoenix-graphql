@@ -84,5 +84,16 @@ defmodule Yummy.Accounts do
     user
     |> User.changeset(attrs, :tracked_fields)
     |> Repo.update
+
+    user
+  end
+
+  @doc """
+  Send confirmation email
+  """
+  def send_confirmation(%User{} = user) do
+    # TODO: send email
+    IO.inspect("Send confirmation email to #{user.email}")
+    user
   end
 end

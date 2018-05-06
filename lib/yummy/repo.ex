@@ -18,4 +18,11 @@ defmodule Yummy.Repo do
   def paginate(query, offset) do
     from r in query, offset: ^offset, limit: @per_page
   end
+
+  def fetch(query) do
+    case all(query) do
+      [] -> {:error, query}
+      [obj] -> {:ok, obj}
+    end
+  end
 end
