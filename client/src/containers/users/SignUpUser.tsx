@@ -29,7 +29,7 @@ import {
 } from 'types';
 
 interface IProps {
-  redirect: (path: string, message: FlashMessageVariables) => void;
+  redirect: (path: string, message?: FlashMessageVariables) => void;
   handleSubmit: (event: any) => void;
   signUp: ({  }: SignUpMutationVariables) => Promise<ApolloQueryResult<SignUpMutation>>;
   refetchRecipes: () => Promise<ApolloQueryResult<RecipesQuery>>;

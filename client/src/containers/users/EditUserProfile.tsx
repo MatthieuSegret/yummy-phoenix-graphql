@@ -27,7 +27,7 @@ import {
 } from 'types';
 
 interface IProps {
-  redirect: (path: string, message: FlashMessageVariables) => void;
+  redirect: (path: string, message?: FlashMessageVariables) => void;
   handleSubmit: (event: any) => void;
   cancelAccount: () => Promise<ApolloQueryResult<CancelAccountMutation>>;
   updateUser: ({  }: UpdateUserMutationVariables) => Promise<ApolloQueryResult<UpdateUserMutation>>;

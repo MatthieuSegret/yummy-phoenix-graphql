@@ -21,7 +21,7 @@ import {
 } from 'types';
 
 interface IProps {
-  redirect: (path: string, message: FlashMessageVariables) => void;
+  redirect: (path: string, message?: FlashMessageVariables) => void;
   handleSubmit: (event: any) => void;
   changePassword: ({  }: ChangePasswordMutationVariables) => Promise<ApolloQueryResult<ChangePasswordMutation>>;
   mutation: MutationState;

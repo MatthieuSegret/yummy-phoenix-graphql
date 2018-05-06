@@ -25,7 +25,7 @@ import {
 } from 'types';
 
 interface IProps {
-  redirect: (path: string, message: FlashMessageVariables) => void;
+  redirect: (path: string, message?: FlashMessageVariables) => void;
   handleSubmit: (event: any) => void;
   signIn: ({ email, password }: SignInMutationVariables) => Promise<ApolloQueryResult<SignInMutation>>;
   currentUser: User;

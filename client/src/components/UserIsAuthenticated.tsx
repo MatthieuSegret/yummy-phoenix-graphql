@@ -8,7 +8,7 @@ import withCurrentUser from 'queries/currentUserQuery';
 import { User, FlashMessageVariables } from 'types';
 
 interface IProps {
-  redirect: (path: string, message: FlashMessageVariables) => void;
+  redirect: (path: string, message?: FlashMessageVariables) => void;
   currentUser: User;
   currentUserLoading: boolean;
 }

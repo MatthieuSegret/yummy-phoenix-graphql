@@ -21,7 +21,7 @@ import {
 } from 'types';
 
 interface IProps {
-  redirect: (path: string, message: FlashMessageVariables) => void;
+  redirect: (path: string, message?: FlashMessageVariables) => void;
   updateRecipe: ({  }: UpdateRecipeMutationVariables) => Promise<ApolloQueryResult<UpdateRecipeMutation>>;
   data: RecipeForEditingQuery;
   mutation: MutationState;

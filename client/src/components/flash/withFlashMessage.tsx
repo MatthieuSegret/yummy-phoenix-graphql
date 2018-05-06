@@ -16,7 +16,7 @@ interface IProps {
 }
 
 interface IWrapProps {
-  redirect: (path: string, message: FlashMessageVariables) => void;
+  redirect: (path: string, message?: FlashMessageVariables) => void;
   notice: (text: string) => void;
   error: (text: string) => void;
 }
@@ -42,7 +42,7 @@ export default function withFlashMessage(WrappedComponent: React.ComponentType<I
       this.props.deleteFlashMessage();
     }
 
-    public redirect(path: string, message: FlashMessageVariables) {
+    public redirect(path: string, message?: FlashMessageVariables) {
       this.props.history.push(path);
       if (message && message.error) {
         this.error(message.error);

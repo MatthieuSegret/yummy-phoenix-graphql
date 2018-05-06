@@ -12,7 +12,7 @@ import { User, FlashMessageVariables, RevokeTokenMutation } from 'types';
 import { ApolloQueryResult } from 'apollo-client/core/types';
 
 interface IProps {
-  redirect: (path: string, message: FlashMessageVariables) => void;
+  redirect: (path: string, message?: FlashMessageVariables) => void;
   revokeToken: () => Promise<ApolloQueryResult<RevokeTokenMutation>>;
   currentUser: User;
   currentUserLoading: boolean;
