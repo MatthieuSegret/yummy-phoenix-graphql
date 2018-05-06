@@ -7,15 +7,22 @@ defmodule Yummy.Accounts.User do
   schema "users" do
     field :email, :string
     field :name, :string
+
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
     field :password_hash, :string
     field :access_token, :string
+
     field :current_sign_in_at, :utc_datetime
     field :last_sign_in_at, :utc_datetime
     field :sign_in_count, :integer, default: 0
     field :current_sign_in_ip, :string
     field :last_sign_in_ip, :string
+
+    field :confirmation_code, :string
+    field :confirmed_at, :utc_datetime
+    field :confirmation_sent_at, :utc_datetime
+
     has_many :recipes, Recipe
 
     timestamps(type: :utc_datetime)
@@ -33,6 +40,11 @@ defmodule Yummy.Accounts.User do
   def changeset(%User{} = user, attrs, :tracked_fields) do
     user
     |> cast(attrs, [:current_sign_in_at, :last_sign_in_at, :current_sign_in_ip, :last_sign_in_ip, :sign_in_count])
+  end
+
+  def changeset(%User{} = user, attrs, :confirmation) do
+    user
+    |> cast(attrs, [:confirmation_code, :confirmed_at, :confirmation_sent_at])
   end
  
   def changeset(%User{} = user, attrs, :password) do
