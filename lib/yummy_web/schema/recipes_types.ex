@@ -27,7 +27,7 @@ defmodule YummyWeb.Schema.RecipesTypes do
       end
     end
     field :inserted_at, :datetime
-    field :author, :user, resolve: dataloader(Recipes)
+    field :author, :author, resolve: dataloader(Recipes)
     field :comments, list_of(:comment), resolve: dataloader(Recipes)
   end
 
@@ -36,6 +36,12 @@ defmodule YummyWeb.Schema.RecipesTypes do
     field :body, :string
     field :inserted_at, :datetime
     field :recipe, :recipe, resolve: dataloader(Recipes)
-    field :author, :user, resolve: dataloader(Recipes)
+    field :author, :author, resolve: dataloader(Recipes)
+  end
+
+  @desc "author"
+  object :author do
+    field :id, :id
+    field :name, :string
   end
 end

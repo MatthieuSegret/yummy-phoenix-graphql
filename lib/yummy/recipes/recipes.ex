@@ -12,10 +12,10 @@ defmodule Yummy.Recipes do
            ilike(r.content, ^("%#{keywords}%"))
   end
 
-  def create(user, attrs) do
+  def create(author, attrs) do
     %Recipe{}
     |> Recipe.changeset(attrs)
-    |> put_assoc(:author, user)
+    |> put_assoc(:author, author)
     |> Repo.insert()
   end
 
@@ -25,8 +25,8 @@ defmodule Yummy.Recipes do
     |> Repo.update()
   end
 
-  def is_author(%User{} = author, %Recipe{} = recipe) do
-    if recipe.author.id == author.id do
+  def is_author(%User{} = user, %Recipe{} = recipe) do
+    if recipe.author.id == user.id do
       true
     else
       {:error, "Vous ne pouvez pas modifier la recette de quelqu'un d'autre"}
@@ -56,10 +56,10 @@ defmodule Yummy.Recipes do
     recipe
   end
 
-  def create_comment(user, recipe, attrs) do
+  def create_comment(author, recipe, attrs) do
     %Comment{}
     |> Comment.changeset(attrs)
-    |> put_assoc(:author, user)
+    |> put_assoc(:author, author)
     |> put_assoc(:recipe, recipe)
     |> Repo.insert()
   end
