@@ -7,6 +7,7 @@ defmodule Yummy.Factory do
       email: sequence(:email, &"#{&1}#{Faker.Internet.email}"),
       password: "12341234",
       password_hash: Comeonin.Bcrypt.hashpwsalt("12341234"),
+      confirmed_at: Timex.now
     }
   end
 

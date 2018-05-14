@@ -14,6 +14,8 @@ import SignUpUser from 'containers/users/SignUpUser';
 import EditUserProfile from 'containers/users/EditUserProfile';
 import ChangeUserPassword from 'containers/users/ChangeUserPassword';
 
+import ConfirmationNeeded from 'containers/users/ConfirmationNeeded';
+
 import UserIsAuthenticated from 'components/UserIsAuthenticated';
 import NotFound from 'components/NotFound';
 import Header from 'containers/layouts/Header';
@@ -73,6 +75,8 @@ class App extends React.Component<IProps, {}> {
                     <Route path="/recipes/:id" component={Recipe} />
                     <Route path="/users/signin" component={SignInUser} />
                     <Route path="/users/signup" component={SignUpUser} />
+                    <Route path="/users/welcome/:email" component={ConfirmationNeeded} />
+                    <Route path="/users/confirmation-needed/:email" component={ConfirmationNeeded} />
                     <Route path="/users/profile/edit" component={UserIsAuthenticated(EditUserProfile)} />
                     <Route path="/users/password/edit" component={UserIsAuthenticated(ChangeUserPassword)} />
                     <Route component={NotFound} />

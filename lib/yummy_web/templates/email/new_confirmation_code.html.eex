@@ -1,0 +1,5 @@
+<p>Bonjour <%=@user.name%>,</p>
+
+<p>Voici un nouveau code qui vous permettra de valider votre compte :</p>
+<p><%=@user.confirmation_code%></p>
+<p>Attention, ce code expirera dans <%=Application.fetch_env!(:yummy, :confirmation_code_expire_hours)%> heures.</p>

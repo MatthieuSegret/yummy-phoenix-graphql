@@ -240,6 +240,7 @@ export const createHttpLink = ({
 
         const { controller, signal } = createSignalIfSupported();
         if (controller) fetcherOptions.signal = signal;
+        if (!fetcher) throw new Error('No fetcher');
 
         fetcher(contextURI || uri, fetcherOptions)
           // attach the raw response to the context for usage

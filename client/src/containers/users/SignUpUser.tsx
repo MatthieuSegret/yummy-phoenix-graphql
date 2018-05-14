@@ -7,22 +7,16 @@ import { Form, Field } from 'react-final-form';
 import RenderField from 'components/form/RenderField';
 import SubmitField from 'components/form/SubmitField';
 import { required } from 'components/form/validation';
-import withRecipes from 'queries/recipesQuery';
-import { fetchCurrentUser } from 'queries/currentUserQuery';
 import withFlashMessage from 'components/flash/withFlashMessage';
 
 import SIGN_UP from 'graphql/users/signUpMutation.graphql';
-import CURRENT_USER from 'graphql/users/currentUserQuery.graphql';
 
 // typings
 import { ApolloQueryResult } from 'apollo-client/core/types';
-import { DataProxy } from 'apollo-cache';
 import {
   FlashMessageVariables,
   SignUpMutation,
   SignUpMutationVariables,
-  RecipesQuery,
-  CurrentUserQuery,
   MutationState,
   MutationStateProps,
   User
@@ -32,7 +26,6 @@ interface IProps {
   redirect: (path: string, message?: FlashMessageVariables) => void;
   handleSubmit: (event: any) => void;
   signUp: ({  }: SignUpMutationVariables) => Promise<ApolloQueryResult<SignUpMutation>>;
-  refetchRecipes: () => Promise<ApolloQueryResult<RecipesQuery>>;
   mutation: MutationState;
 }
 
@@ -46,11 +39,9 @@ class SignUpUser extends React.Component<IProps, {}> {
 
   private async submitForm(values: any) {
     const { data: { signUp: payload } } = await this.props.signUp(values);
-    if (!payload.errors && payload.result && payload.result.token) {
-      window.localStorage.setItem('yummy:token', payload.result.token);
-      await fetchCurrentUser();
-      await this.props.refetchRecipes();
-      this.props.redirect('/', { notice: 'Bienvenue sur Yummy ! Votre compte a bien été créé.' });
+    if (!payload.errors && payload.user && payload.user.email) {
+      const emailURIEncoded = encodeURIComponent(payload.user.email);
+      this.props.redirect(`/users/welcome/${emailURIEncoded}`);
     } else {
       this.signUpForm.form.change('password', '');
       this.signUpForm.form.change('passwordConfirmation', '');
@@ -100,24 +91,11 @@ class SignUpUser extends React.Component<IProps, {}> {
 const withSignUp = graphql<SignUpMutation, SignUpMutationVariables & MutationStateProps>(SIGN_UP, {
   props: ({ mutate, ownProps: { wrapMutate } }) => ({
     signUp(user: User) {
-      return wrapMutate(
-        mutate!({
-          variables: { ...user },
-          update: (store: DataProxy, { data: { signUp: { currentUser } } }: any): void => {
-            if (!currentUser) return;
-            const data = store.readQuery({ query: CURRENT_USER }) as CurrentUserQuery;
-            data.currentUser = currentUser;
-            store.writeQuery({ query: CURRENT_USER, data });
-          }
-        })
-      );
+      return wrapMutate(mutate!({ variables: { ...user } }));
     }
   })
 });
 
-export default compose(
-  withMutationState({ wrapper: true, propagateError: true }),
-  withSignUp,
-  withFlashMessage,
-  withRecipes
-)(SignUpUser);
+export default compose(withMutationState({ wrapper: true, propagateError: true }), withSignUp, withFlashMessage)(
+  SignUpUser
+);

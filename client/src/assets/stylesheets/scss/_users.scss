@@ -5,3 +5,35 @@
     margin-bottom: 0.5rem;
   }
 }
+
+.confirmation-needed {
+  .Wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4rem;
+  }
+  .confirmation-form {
+    margin-top: 1.5rem;
+    .field {
+      margin-left: auto;
+      margin-right: auto;
+      width: 300px;
+    }
+
+    input {
+      letter-spacing: 5px;
+    }
+  }
+  .confirmation-instruction {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .resend-confirmation {
+    margin-top: 4rem;
+    .resend-confirmation-button {
+      vertical-align: inherit;
+      margin-top: 0.5rem;
+    }
+  }
+}

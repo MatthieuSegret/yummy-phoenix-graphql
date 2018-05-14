@@ -17,6 +17,7 @@ defmodule YummyWeb.Schema do
   import_types YummyWeb.Mutations.RecipesMutations
   import_types Absinthe.Plug.Types
 
+  payload_object(:boolean_payload, :boolean) 
   payload_object(:session_payload, :session)
   payload_object(:user_payload, :user)
   payload_object(:recipe_payload, :recipe)

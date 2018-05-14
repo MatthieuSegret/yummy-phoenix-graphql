@@ -20,7 +20,7 @@ defmodule Yummy.Mixfile do
   def application do
     [
       mod: {Yummy.Application, []},
-      extra_applications: [:logger, :runtime_tools, :absinthe, :absinthe_plug]
+      extra_applications: [:logger, :runtime_tools, :bamboo, :absinthe, :absinthe_plug]
     ]
   end
 
@@ -36,6 +36,7 @@ defmodule Yummy.Mixfile do
       {:phoenix, "~> 1.3.0"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.2"},
+      {:phoenix_html, "~> 2.10"},
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.14.0"},
       {:cowboy, "~> 1.1.2"},
@@ -49,12 +50,14 @@ defmodule Yummy.Mixfile do
       {:comeonin, "~> 4.0.3"},
       {:bcrypt_elixir, "~> 1.0.5"},
       {:secure_random, "~> 0.5"},
+      {:timex, "~> 3.1"},
+      {:bamboo, "~> 0.8"},
       {:arc, "~> 0.8.0"},
       {:ex_aws, "~> 1.1.3"},
       {:hackney, "~> 1.8.0", override: true},
       {:sweet_xml, "~> 0.6"},
       {:arc_ecto, "~> 0.7.0"},
-      {:wallaby, "~> 0.19.2", [runtime: false, only: :test]},
+      {:wallaby, "~> 0.20.0", [runtime: false, only: :test]},
       {:ex_machina, "~> 2.1", only: :test},
       {:faker, "~> 0.9", only: :test}
     ]

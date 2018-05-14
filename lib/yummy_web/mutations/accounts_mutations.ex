@@ -3,27 +3,26 @@ defmodule YummyWeb.Mutations.AccountsMutations do
 
   import YummyWeb.Helpers.ValidationMessageHelpers
 
-  alias YummyWeb.Schema.Middleware  
-  alias Yummy.Accounts
+  alias YummyWeb.Schema.Middleware
+  alias YummyWeb.Email
+  alias Yummy.{Accounts, Confirmations, Mailer}
 
   object :accounts_mutations do
 
     @desc "Sign up"
-    field :sign_up, :session_payload do
+    field :sign_up, :user_payload do
       arg :name, :string
       arg :email, :string
       arg :password, :string
       arg :password_confirmation, :string
 
-      resolve fn (args, %{context: context}) ->
-        with {:ok, user} <- Accounts.create_user(args),
-          {:ok, token, _user_with_token} <- Accounts.generate_access_token(user)
+      resolve fn (args, _) ->
+        with {:ok, created_user} <- Accounts.create_user(args),
+          {:ok, _code, user_with_code} <- Confirmations.generate_confirmation_code(created_user),
+          %Bamboo.Email{} = welcome_email <- Email.welcome(user_with_code)
         do
-          user
-          |> Accounts.send_confirmation()
-          |> Accounts.update_tracked_fields(context[:remote_ip])
-
-          {:ok, %{token: token}}
+          Mailer.deliver_now(welcome_email)
+          {:ok, user_with_code}
         else
           {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
           _ -> {:error, "Oups, nous sommes désolés, mais quelque chose s'est mal passé"}
@@ -70,6 +69,44 @@ defmodule YummyWeb.Mutations.AccountsMutations do
       resolve fn (_, %{context: context}) ->
         context[:current_user] |> Accounts.cancel_account()
         {:ok, true}
+      end
+    end
+
+    @desc "confirm account"
+    field :confirm_account, :session_payload do
+      arg :email, non_null(:string)
+      arg :code, non_null(:string)
+
+      resolve fn (args, %{context: context}) ->
+        with {:ok, user} <- Accounts.user_by_email(args[:email]),
+          {:ok, confirmed_user} <- Confirmations.confirm_account(user, args[:code] |> String.trim()),
+          {:ok, token, user_with_token} <- Accounts.generate_access_token(confirmed_user),
+          {:ok, _tracked_user} <- Accounts.update_tracked_fields(user_with_token, context[:remote_ip])
+        do
+          {:ok, %{token: token}} 
+        else
+          {:error, %Ecto.Query{} = _query} -> {:ok,  generic_message("L'email #{args[:email]} n'a pas été trouvé")}
+          {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
+          _ -> {:error, "Oups, nous sommes désolés, mais quelque chose s'est mal passé"}
+        end
+      end
+    end
+
+    @desc "Resend confirmation"
+    field :resend_confirmation, :boolean_payload do
+      arg :email, non_null(:string)
+      resolve fn (args, _) ->
+        with {:ok, user} <- Accounts.user_by_email(args[:email]),
+          {:ok, _code, user_with_code} <- Confirmations.generate_confirmation_code(user),
+          %Bamboo.Email{} = confirmation_email <- Email.new_confirmation_code(user_with_code)
+        do
+          Mailer.deliver_now(confirmation_email)
+          {:ok, true}
+        else
+          {:error, %Ecto.Query{}} -> {:ok,  generic_message("L'email #{args[:email]} n'a pas été trouvé")}
+          {:error, %Ecto.Changeset{} = changeset} -> {:ok, changeset}
+          _ -> {:error, "Oups, nous sommes désolés, mais quelque chose s'est mal passé"}
+        end
       end
     end
   end

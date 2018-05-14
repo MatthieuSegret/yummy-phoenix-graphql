@@ -20,6 +20,7 @@ defmodule Yummy.Accounts.User do
     field :last_sign_in_ip, :string
 
     field :confirmation_code, :string
+    field :inputed_code, :string, virtual: true
     field :confirmed_at, :utc_datetime
     field :confirmation_sent_at, :utc_datetime
 
@@ -40,11 +41,6 @@ defmodule Yummy.Accounts.User do
   def changeset(%User{} = user, attrs, :tracked_fields) do
     user
     |> cast(attrs, [:current_sign_in_at, :last_sign_in_at, :current_sign_in_ip, :last_sign_in_ip, :sign_in_count])
-  end
-
-  def changeset(%User{} = user, attrs, :confirmation) do
-    user
-    |> cast(attrs, [:confirmation_code, :confirmed_at, :confirmation_sent_at])
   end
  
   def changeset(%User{} = user, attrs, :password) do

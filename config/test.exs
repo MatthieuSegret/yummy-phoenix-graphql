@@ -25,6 +25,10 @@ config :yummy, Yummy.Repo,
   port: System.get_env("DATABASE_PORT") || 5432,
   pool: Ecto.Adapters.SQL.Sandbox
 
+# Configures Bamboo
+config :yummy, Yummy.Mailer,
+  adapter: Bamboo.TestAdapter
+
 config :ex_aws,
   access_key_id: ["fake", :instance_role],
   secret_access_key: ["fake", :instance_role],

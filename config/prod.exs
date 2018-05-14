@@ -24,6 +24,11 @@ config :yummy, YummyWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+# Configures Bamboo
+config :yummy, Yummy.Mailer,
+  adapter: Bamboo.SendGridAdapter,
+  api_key: {:system, "SENDGRID_API_KEY"}
+
 config :ex_aws,
   access_key_id: [{:system, "S3_KEY"}, :instance_role],
   secret_access_key: [{:system, "S3_SECRET"}, :instance_role],

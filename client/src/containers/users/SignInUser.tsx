@@ -67,7 +67,12 @@ class SignInUser extends React.Component<IProps, {}> {
       this.props.redirect('/', { notice: 'Vous êtes bien connecté(e)' });
     } else {
       window.localStorage.removeItem('yummy:token');
-      this.signInForm.form.change('password', '');
+      if (payload.errors.noYetConfirmed) {
+        const emailURIEncoded = encodeURIComponent(values.email);
+        this.props.redirect(`/users/confirmation-needed/${emailURIEncoded}`);
+      } else {
+        this.signInForm.form.change('password', '');
+      }
     }
   }
 

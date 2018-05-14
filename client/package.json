@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "9.2.0",
-    "npm": "5.5.1"
+    "node": "9.6.1",
+    "npm": "5.7.1"
   },
   "dependencies": {
     "@absinthe/socket-apollo-link": "^0.1.11",
@@ -29,6 +29,7 @@
     "react-apollo": "2.0.4",
     "react-dom": "16.2.0",
     "react-final-form": "3.0.3",
+    "react-kawaii": "^0.3.0",
     "react-markdown": "3.1.4",
     "react-router-dom": "^4.2.2",
     "react-scripts-ts": "2.12.0",

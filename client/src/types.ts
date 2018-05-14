@@ -199,11 +199,8 @@ export type SignUpMutationVariables = {
 
 export type SignUpMutation = {
   signUp: {
-    __typename: 'SessionPayload';
-    result: {
-      __typename: 'Session';
-      token: string;
-    } | null;
+    __typename: 'UserPayload';
+    user: UserForEditingFragment | null;
     errors: any;
     messages: Array<ValidationMessage> | null;
   };
@@ -218,6 +215,35 @@ export type UpdateUserMutation = {
   updateUser: {
     __typename: 'UserPayload';
     user: UserForEditingFragment | null;
+    errors: any;
+    messages: Array<ValidationMessage> | null;
+  };
+};
+
+export type ConfirmAccountMutationVariables = {
+  email: string;
+  code: string;
+};
+
+export type ConfirmAccountMutation = {
+  confirmAccount: {
+    __typename: 'SessionPayload';
+    result: {
+      __typename: 'Session';
+      token: string;
+    } | null;
+    errors: any;
+    messages: Array<ValidationMessage> | null;
+  };
+};
+
+export type ResendConfirmationMutationVariables = {
+  email: string;
+};
+
+export type ResendConfirmationMutation = {
+  resendConfirmation: {
+    __typename: 'BooleanPayload';
     errors: any;
     messages: Array<ValidationMessage> | null;
   };

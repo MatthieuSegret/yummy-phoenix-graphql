@@ -4,6 +4,7 @@ mutation signIn($email: String, $password: String) {
       token
     }
     messages {
+      field
       message
     }
   }

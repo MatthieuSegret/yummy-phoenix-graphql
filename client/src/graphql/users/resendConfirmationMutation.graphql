@@ -1,0 +1,8 @@
+mutation resendConfirmation($email: String!) {
+  resendConfirmation(email: $email) {
+    messages {
+      field
+      message
+    }
+  }
+}

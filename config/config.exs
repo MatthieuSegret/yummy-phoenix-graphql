@@ -7,7 +7,8 @@ use Mix.Config
 
 # General application configuration
 config :yummy,
-  ecto_repos: [Yummy.Repo]
+  ecto_repos: [Yummy.Repo],
+  confirmation_code_expire_hours: 6
 
 # Configures the endpoint
 config :yummy, YummyWeb.Endpoint,
@@ -24,6 +25,10 @@ config :logger, :console,
 
 config :yummy, YummyWeb.Gettext,
   default_locale: "fr"
+
+# Configures Bamboo
+config :yummy, Yummy.Mailer,
+  adapter: Bamboo.LocalAdapter
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

@@ -1,7 +1,9 @@
+#import "graphql/fragments/userFragment.graphql"
+
 mutation signUp($name: String, $email: String, $password: String, $passwordConfirmation: String) {
   signUp(name: $name, email: $email, password: $password, password_confirmation: $passwordConfirmation) {
-    result {
-      token
+    user: result {
+      ...UserForEditingFragment
     }
     messages {
       field

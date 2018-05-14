@@ -1,0 +1,4 @@
+Bonjour  <%=@user.name%>,
+
+Bienvenue sur Yummy ! Votre compte est désormais créé.
+Il ne vous reste plus qu'à le valider à l'aide du code suivant : <%=@user.confirmation_code%>

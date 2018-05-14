@@ -70,7 +70,7 @@ defmodule Yummy.Accounts do
   """
   def update_tracked_fields(%User{} = user, remote_ip) do
     attrs = %{
-      current_sign_in_at: DateTime.utc_now(),
+      current_sign_in_at: Timex.now,
       last_sign_in_at: user.current_sign_in_at,
       current_sign_in_ip: remote_ip,
       sign_in_count: user.sign_in_count + 1
@@ -84,16 +84,14 @@ defmodule Yummy.Accounts do
     user
     |> User.changeset(attrs, :tracked_fields)
     |> Repo.update
-
-    user
   end
 
   @doc """
-  Send confirmation email
+  Get user by email
   """
-  def send_confirmation(%User{} = user) do
-    # TODO: send email
-    IO.inspect("Send confirmation email to #{user.email}")
-    user
+  def user_by_email(email) do
+    User
+    |> Ecto.Query.where(email: ^String.downcase(email)) 
+    |> Repo.fetch()
   end
 end
