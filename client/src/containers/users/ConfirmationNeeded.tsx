@@ -144,7 +144,8 @@ class ConfirmationNeeded extends React.Component<IProps, IState> {
         />
 
         <p className="resend-confirmation is-size-6 has-text-centered has-text-grey">
-          Vous ne l'avez pas reçu ?<br />Besoin d'un nouveau code ?<br />
+          L'email peut prendre une minute ou deux pour arriver.<br />Vous ne l'avez pas reçu ?<br />Besoin d'un nouveau
+          code ?<br />
           <button
             className={classnames('resend-confirmation-button button is-small is-outlined has-text-grey')}
             onClick={this.onResendConfirmation}

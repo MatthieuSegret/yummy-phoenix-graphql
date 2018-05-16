@@ -29,6 +29,11 @@ config :yummy, Yummy.Repo,
 config :yummy, Yummy.Mailer,
   adapter: Bamboo.TestAdapter
 
+config :rollbax,
+  access_token: "",
+  environment: "test",
+  enabled: false
+
 config :ex_aws,
   access_key_id: ["fake", :instance_role],
   secret_access_key: ["fake", :instance_role],

@@ -20,7 +20,7 @@ defmodule Yummy.Mixfile do
   def application do
     [
       mod: {Yummy.Application, []},
-      extra_applications: [:logger, :runtime_tools, :bamboo, :absinthe, :absinthe_plug]
+      extra_applications: [:logger, :runtime_tools, :absinthe, :absinthe_plug]
     ]
   end
 
@@ -52,6 +52,7 @@ defmodule Yummy.Mixfile do
       {:secure_random, "~> 0.5"},
       {:timex, "~> 3.1"},
       {:bamboo, "~> 0.8"},
+      {:rollbax, "~> 0.8.2"},
       {:arc, "~> 0.8.0"},
       {:ex_aws, "~> 1.1.3"},
       {:hackney, "~> 1.8.0", override: true},

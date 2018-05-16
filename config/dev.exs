@@ -46,5 +46,14 @@ config :yummy, Yummy.Repo,
   port: System.get_env("DATABASE_PORT") || 5432,
   pool_size: 10
 
+# Configures Bamboo
+config :yummy, Yummy.Mailer,
+  adapter: Bamboo.LocalAdapter
+
+config :rollbax,
+  access_token: "",
+  environment: "development",
+  enabled: :log
+
 config :arc,
   storage: Arc.Storage.Local

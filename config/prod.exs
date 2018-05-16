@@ -26,8 +26,12 @@ config :logger, level: :info
 
 # Configures Bamboo
 config :yummy, Yummy.Mailer,
-  adapter: Bamboo.SendGridAdapter,
-  api_key: {:system, "SENDGRID_API_KEY"}
+  adapter: Bamboo.SendgridAdapter,
+  api_key: System.get_env("SENDGRID_API_KEY")
+
+config :rollbax,
+  access_token: {:system, "ROLLBAR_ACCESS_TOKEN"},
+  environment: "production"
 
 config :ex_aws,
   access_key_id: [{:system, "S3_KEY"}, :instance_role],
