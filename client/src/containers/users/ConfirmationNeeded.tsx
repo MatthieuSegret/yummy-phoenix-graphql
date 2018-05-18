@@ -73,7 +73,7 @@ class ConfirmationNeeded extends React.Component<IProps, IState> {
     } else {
       if (payload.errors.alreadyConfirmed) {
         this.props.redirect('/users/signin', {
-          error: 'Ce compte a déjà été validé. Vous pouvez vous connecter'
+          error: 'Ce compte a déjà été validé. Vous pouvez vous connecter.'
         });
       } else {
         this.props.error(Object.values(payload.errors)[0] as string);
@@ -90,7 +90,7 @@ class ConfirmationNeeded extends React.Component<IProps, IState> {
     } else {
       if (errors.alreadyConfirmed) {
         this.props.redirect('/users/signin', {
-          error: 'Ce compte a déjà été validé. Vous pouvez vous connecter'
+          error: 'Ce compte a déjà été validé. Vous pouvez vous connecter.'
         });
       } else {
         this.props.error(Object.values(errors)[0] as string);
@@ -110,7 +110,7 @@ class ConfirmationNeeded extends React.Component<IProps, IState> {
         <div className="confirmation-instruction">
           <p className="is-size-5 has-text-centered">
             Un code à 6 chiffres vous a été envoyé à votre adresse :
-            <strong>{` ${email}`}.</strong> Entrez le ci-dessous pour valider votre compte.
+            <strong>{` ${email}`}</strong>. Entrez le ci-dessous pour valider votre compte.
           </p>
         </div>
 

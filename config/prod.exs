@@ -26,7 +26,7 @@ config :logger, level: :info
 
 # Configures Bamboo
 config :yummy, Yummy.Mailer,
-  adapter: Bamboo.SendgridAdapter,
+  adapter: Bamboo.SendGridAdapter,
   api_key: System.get_env("SENDGRID_API_KEY")
 
 config :rollbax,

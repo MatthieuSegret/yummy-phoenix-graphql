@@ -51,7 +51,7 @@ defmodule Yummy.Mixfile do
       {:bcrypt_elixir, "~> 1.0.5"},
       {:secure_random, "~> 0.5"},
       {:timex, "~> 3.1"},
-      {:bamboo, "~> 0.8"},
+      {:bamboo, github: "thoughtbot/bamboo"},
       {:rollbax, "~> 0.8.2"},
       {:arc, "~> 0.8.0"},
       {:ex_aws, "~> 1.1.3"},

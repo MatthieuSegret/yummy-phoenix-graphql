@@ -19,7 +19,7 @@ defmodule YummyWeb.Router do
 
     if Mix.env == :dev do
       forward "/graphiql", Absinthe.Plug.GraphiQL, schema: YummyWeb.Schema, socket: YummyWeb.UserSocket
-      forward "/emails", Bamboo.EmailPreviewPlug
+      forward "/emails", Bamboo.SentEmailViewerPlug
     end
   end
 

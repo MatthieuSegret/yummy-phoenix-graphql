@@ -7,7 +7,7 @@ defmodule Yummy.Confirmations do
   alias Yummy.Accounts.User
 
   @code_format ~r/^[0-9]{6}$/
-  @msg_code_format "Le code doit être composé de 6 chiffres"
+  @msg_code_format "Le code doit être composé de 6 chiffres."
 
   @doc """
   Generate confirmation code

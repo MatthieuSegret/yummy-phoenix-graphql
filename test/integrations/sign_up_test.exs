@@ -1,9 +1,12 @@
 defmodule YummyWeb.Integrations.SignUpTest do
-  use YummyWeb.IntegrationCase, async: true
+  use YummyWeb.IntegrationCase, async: false
+  use Bamboo.Test, shared: :true
+
+  alias Yummy.Accounts.User
 
   describe "when user is sign up" do
     test "with successful", %{session: session} do
-      path = session
+      current_session = session
       |> visit("/users/signup")
 
       |> fill_in(text_field("Nom"), with: "Jose")
@@ -12,7 +15,23 @@ defmodule YummyWeb.Integrations.SignUpTest do
       |> fill_in(text_field("Confirmer votre mot de passe"), with: "12341234")
       |> click(button("S'inscrire"))
 
-      |> assert_eq(notice_msg(), text: "Bienvenue sur Yummy ! Votre compte a bien été créé.")
+      |> assert_eq(css("h1.title"), text: "Bienvenue sur Yummy !")
+      |> assert_eq(css(".confirmation-instruction > p > strong"), text: "jose@yummy.com")
+
+      user = User |> last() |> Repo.one()
+
+      assert current_path(current_session) == "/users/welcome/jose%40yummy.com"
+      assert_email_delivered_with(
+        subject: "Bienvenue sur Yummy !",
+        text_body: ~r/#{user.confirmation_code}/,
+        html_body: ~r/#{user.confirmation_code}/
+      )
+
+      path = current_session
+      |> fill_in(css("input[name='code']"), with: user.confirmation_code)
+      |> click(button("Valider"))
+
+      |> assert_eq(notice_msg(), text: "Votre compte a été validé.")
       |> assert_eq(signed_in_user(), text: "Jose")
       |> current_path()
 
