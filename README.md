@@ -42,6 +42,7 @@ web applications.
 * Authentication with token
 * Creating user account
 * Update user profile and changing password
+* Confirm user account with a code sends by email
 * Display comments and recipes in real-time
 * Application ready for production
 
@@ -107,12 +108,12 @@ web applications.
 
 Integration tests with [Wallaby](https://github.com/keathley/wallaby) and ChromeDriver. Instructions:
 
-1. Install **ChromeDriver** with `npm install -g chromedriver`
-2. Run **ChromeDriver** in a new terminal window with `chromedriver &`
-3. Install **FakeS3** with `gem install fakes3`. Fake S3 simulate Amazon S3. It minimize runtime dependencies and be more of a development tool to test S3 calls.
-4. Run **FakeS3** in a new terminal window with `fakes3 -r $HOME/.s3bucket -p 4567 &`
-5. Build your assets with `cd client && yarn build`
-6. Run tests with `mix test`
+1.  Install **ChromeDriver** with `npm install -g chromedriver`
+2.  Run **ChromeDriver** in a new terminal window with `chromedriver &`
+3.  Install **FakeS3** with `gem install fakes3`. Fake S3 simulate Amazon S3. It minimize runtime dependencies and be more of a development tool to test S3 calls.
+4.  Run **FakeS3** in a new terminal window with `fakes3 -r $HOME/.s3bucket -p 4567 &`
+5.  Build your assets with `cd client && yarn build`
+6.  Run tests with `mix test`
 
 ## Next step
 
@@ -132,6 +133,10 @@ Integration tests with [Wallaby](https://github.com/keathley/wallaby) and Chrome
 #### Recipe page
 
 <img alt="Recipe page" src="http://documents.matthieusegret.com/recipe-page.png" width="500">
+
+#### Account confirmation
+
+<img alt="Account confirmation" src="http://documents.matthieusegret.com/confirmation.png" width="500">
 
 ## License
 
