@@ -3,7 +3,7 @@ defmodule YummyWeb.Schema.Middleware.IsAccountOwner do
   alias Yummy.Accounts.User
 
   def call(%{context: %{current_user: user = %User{}}, source: source} = resolution, _config) do
-    if (user.id == source.id) do
+    if user.id == source.id do
       resolution
     else
       unauthorize(resolution)

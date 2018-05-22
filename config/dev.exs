@@ -47,8 +47,7 @@ config :yummy, Yummy.Repo,
   pool_size: 10
 
 # Configures Bamboo
-config :yummy, Yummy.Mailer,
-  adapter: Bamboo.LocalAdapter
+config :yummy, Yummy.Mailer, adapter: Bamboo.LocalAdapter
 
 config :rollbax,
   access_token: "",

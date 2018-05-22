@@ -10,12 +10,13 @@ defmodule YummyWeb.Integrations.SubscriptionTest do
   end
 
   test "Display recipes in real-time", %{user: user, metadata: metadata} do
-
     {:ok, navigation1} = Wallaby.start_session(metadata: metadata)
+
     navigation1
     |> visit("/")
 
     {:ok, navigation2} = Wallaby.start_session(metadata: metadata)
+
     navigation2
     |> user_sign_in(user: user)
     |> visit("/recipes/new")
@@ -36,10 +37,12 @@ defmodule YummyWeb.Integrations.SubscriptionTest do
     recipe = insert(:recipe, author: user)
 
     {:ok, navigation1} = Wallaby.start_session(metadata: metadata)
+
     navigation1
     |> visit("/recipes/#{recipe.id}")
 
     {:ok, navigation2} = Wallaby.start_session(metadata: metadata)
+
     navigation2
     |> user_sign_in(user: user)
     |> visit("/recipes/#{recipe.id}")

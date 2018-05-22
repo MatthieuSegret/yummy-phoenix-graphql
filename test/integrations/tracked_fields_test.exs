@@ -23,6 +23,7 @@ defmodule YummyWeb.Integrations.TrackedFieldsTest do
       |> user_sign_in(user: user)
       |> click(link("Se déconnecter"))
       |> user_sign_in(user: user)
+
       u = User |> Repo.get(user.id)
 
       assert u.current_sign_in_at
@@ -33,14 +34,15 @@ defmodule YummyWeb.Integrations.TrackedFieldsTest do
     end
 
     test "with sign up", %{session: session} do
-      current_session = session
-      |> visit("/users/signup")
-      |> fill_in(text_field("Nom"), with: "Jose")
-      |> fill_in(text_field("Email"), with: "jose@yummy.com")
-      |> fill_in(text_field("Mot de passe"), with: "12341234")
-      |> fill_in(text_field("Confirmer votre mot de passe"), with: "12341234")
-      |> click(button("S'inscrire"))
-      |> assert_eq(css("h1.title"), text: "Bienvenue sur Yummy !")
+      current_session =
+        session
+        |> visit("/users/signup")
+        |> fill_in(text_field("Nom"), with: "Jose")
+        |> fill_in(text_field("Email"), with: "jose@yummy.com")
+        |> fill_in(text_field("Mot de passe"), with: "12341234")
+        |> fill_in(text_field("Confirmer votre mot de passe"), with: "12341234")
+        |> click(button("S'inscrire"))
+        |> assert_eq(css("h1.title"), text: "Bienvenue sur Yummy !")
 
       user = User |> Repo.get_by(email: "jose@yummy.com")
 
@@ -48,7 +50,7 @@ defmodule YummyWeb.Integrations.TrackedFieldsTest do
       |> fill_in(css("input[name='code']"), with: user.confirmation_code)
       |> click(button("Valider"))
       |> assert_eq(notice_msg(), text: "Votre compte a été validé.")
-      
+
       u = User |> Repo.get_by(email: "jose@yummy.com")
 
       assert u.current_sign_in_at

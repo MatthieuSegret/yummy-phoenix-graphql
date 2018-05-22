@@ -16,7 +16,7 @@ defmodule Yummy.ImageUploader do
   def transform(:mini_thumb, _) do
     {:convert, "-strip -thumbnail 200x200^ -gravity center -extent 200x200"}
   end
-  
+
   def filename(version, {_file, _scope}) do
     "#{version}"
   end

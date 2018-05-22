@@ -11,6 +11,7 @@ defmodule YummyWeb.Helpers.StringHelpers do
   end
 
   def present?(nil), do: false
+
   def present?(string) do
     string |> String.trim() |> String.length() > 0
   end

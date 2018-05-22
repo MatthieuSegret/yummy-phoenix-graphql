@@ -5,7 +5,8 @@ defmodule YummyWeb.Integrations.ShowRecipesTest do
   @search_input css("form[role='search'] .input[name='keywords']")
 
   setup do
-    user = insert(:user)
+    user =
+      insert(:user)
       |> with_recipes()
       |> Repo.preload(recipes: from(r in Recipe, order_by: [desc: r.inserted_at]))
 
@@ -13,28 +14,32 @@ defmodule YummyWeb.Integrations.ShowRecipesTest do
   end
 
   test "list recipes", %{session: session, user: user} do
-    titles = session
-    |> visit("/")
-    |> find(css(".recipes .recipe", count: 5))
-    |> Enum.map(& find(&1, css(".title > a")) |> Element.text())
+    titles =
+      session
+      |> visit("/")
+      |> find(css(".recipes .recipe", count: 5))
+      |> Enum.map(&(find(&1, css(".title > a")) |> Element.text()))
 
-    expected_titles = user.recipes
-    |> Enum.take(5)
-    |> Enum.map(& &1.title)
+    expected_titles =
+      user.recipes
+      |> Enum.take(5)
+      |> Enum.map(& &1.title)
 
     assert titles == expected_titles
   end
 
   test "show next recipes", %{session: session, user: user} do
-    titles = session
-    |> visit("/")
-    |> click(button("Plus de recettes"))
-    |> find(css(".recipes .recipe", count: 10))
-    |> Enum.map(& find(&1, css(".title > a")) |> Element.text())
+    titles =
+      session
+      |> visit("/")
+      |> click(button("Plus de recettes"))
+      |> find(css(".recipes .recipe", count: 10))
+      |> Enum.map(&(find(&1, css(".title > a")) |> Element.text()))
 
-    expected_titles = user.recipes
-    |> Enum.take(10)
-    |> Enum.map(& &1.title)
+    expected_titles =
+      user.recipes
+      |> Enum.take(10)
+      |> Enum.map(& &1.title)
 
     assert titles == expected_titles
   end

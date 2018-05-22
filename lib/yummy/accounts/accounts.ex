@@ -36,7 +36,7 @@ defmodule Yummy.Accounts do
   end
 
   defp generate_token(user) do
-    Base.encode64(:erlang.md5("#{:os.system_time(:milli_seconds)}-#{user.id}-#{SecureRandom.hex}"))
+    Base.encode64(:erlang.md5("#{:os.system_time(:milli_seconds)}-#{user.id}-#{SecureRandom.hex()}"))
   end
 
   def revoke_access_token(user) do
@@ -49,8 +49,10 @@ defmodule Yummy.Accounts do
   """
   def authenticate(nil, _password), do: {:error, "L'email n'est pas valide"}
   def authenticate(_email, nil), do: {:error, "Le mot de passe n'est pas valide"}
+
   def authenticate(email, password) do
     user = User |> Repo.get_by(email: String.downcase(email))
+
     case check_password(user, password) do
       true -> {:ok, user}
       _ -> {:error, "Email ou mot de passe invalide"}
@@ -64,26 +66,26 @@ defmodule Yummy.Accounts do
     end
   end
 
-
   @doc """
   Update tracked fields
   """
   def update_tracked_fields(%User{} = user, remote_ip) do
     attrs = %{
-      current_sign_in_at: Timex.now,
+      current_sign_in_at: Timex.now(),
       last_sign_in_at: user.current_sign_in_at,
       current_sign_in_ip: remote_ip,
       sign_in_count: user.sign_in_count + 1
     }
 
-    attrs = case user.current_sign_in_ip != remote_ip do
-      true -> Map.put(attrs, :last_sign_in_ip, user.current_sign_in_ip)
-      _ -> attrs
-    end
+    attrs =
+      case user.current_sign_in_ip != remote_ip do
+        true -> Map.put(attrs, :last_sign_in_ip, user.current_sign_in_ip)
+        _ -> attrs
+      end
 
     user
     |> User.changeset(attrs, :tracked_fields)
-    |> Repo.update
+    |> Repo.update()
   end
 
   @doc """
@@ -91,7 +93,7 @@ defmodule Yummy.Accounts do
   """
   def user_by_email(email) do
     User
-    |> Ecto.Query.where(email: ^String.downcase(email)) 
+    |> Ecto.Query.where(email: ^String.downcase(email))
     |> Repo.fetch()
   end
 end

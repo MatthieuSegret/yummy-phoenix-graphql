@@ -23,9 +23,9 @@ web applications.
 
 ### Backend
 
-* Elixir 1.5
+* Elixir 1.6
 * Phoenix 1.3
-* Erlang 20.0
+* Erlang 20.3
 * [Absinthe](https://github.com/absinthe-graphql/absinthe) - The [GraphQL](http://graphql.org) toolkit for Elixir.
 * [Graphiql](https://github.com/graphql/graphiql) - Graphiql is an in-browser IDE for exploring GraphQL.
 * [Arc](https://github.com/stavro/arc) - Flexible file upload and attachment library for Elixir.
@@ -64,7 +64,7 @@ web applications.
 ## Prerequisites
 
 * Erlang 20 ([Installing Erlang](https://github.com/asdf-vm/asdf)
-* Elixir 1.5 ([Installing Elixir](https://elixir-lang.org/install.html))
+* Elixir 1.6 ([Installing Elixir](https://elixir-lang.org/install.html))
 * Phoenix 1.3 ([Installing Phoenix](https://hexdocs.pm/phoenix/installation.html))
 * Node 9.2 ([Installing Node](https://nodejs.org/en/download/package-manager))
 * ImageMagick 7

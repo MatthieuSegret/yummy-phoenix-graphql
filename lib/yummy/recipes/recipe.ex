@@ -17,26 +17,27 @@ defmodule Yummy.Recipes.Recipe do
   }
 
   schema "recipes" do
-    field :content, :string
-    field :title, :string
-    field :total_time, :string
-    field :level, :string
-    field :budget, :string
-    field :image_url, Yummy.ImageUploader.Type
-    field :remove_image, :boolean, virtual: true
-    field :uuid, :string
-    belongs_to :author, User, foreign_key: :user_id
-    has_many :comments, Comment
+    field(:content, :string)
+    field(:title, :string)
+    field(:total_time, :string)
+    field(:level, :string)
+    field(:budget, :string)
+    field(:image_url, Yummy.ImageUploader.Type)
+    field(:remove_image, :boolean, virtual: true)
+    field(:uuid, :string)
+    belongs_to(:author, User, foreign_key: :user_id)
+    has_many(:comments, Comment)
 
     timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(%Recipe{} = recipe, attrs) do
-    attributes = case attrs[:image] do
-      %Plug.Upload{} -> Map.merge(attrs, %{image_url: attrs[:image]})
-      _ -> attrs
-    end
+    attributes =
+      case attrs[:image] do
+        %Plug.Upload{} -> Map.merge(attrs, %{image_url: attrs[:image]})
+        _ -> attrs
+      end
 
     recipe
     |> cast(attributes, [:title, :content, :total_time, :level, :budget, :uuid, :remove_image])

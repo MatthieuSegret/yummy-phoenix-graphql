@@ -7,6 +7,7 @@
 /client/src/assets/stylesheets/css
 /test/screenshots
 /*.ez
+/.elixir_ls
 .env
 .DS_Store
 

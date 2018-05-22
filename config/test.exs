@@ -7,10 +7,11 @@ config :yummy, YummyWeb.Endpoint,
   server: true
 
 config :yummy, :sql_sandbox, true
+
 config :wallaby,
-        driver: Wallaby.Experimental.Chrome,
-        # screenshot_on_failure: true,
-        screenshot_dir: "test/screenshots"
+  driver: Wallaby.Experimental.Chrome,
+  # screenshot_on_failure: true,
+  screenshot_dir: "test/screenshots"
 
 # Print only warnings and errors during test
 config :logger, level: :warn
@@ -26,8 +27,7 @@ config :yummy, Yummy.Repo,
   pool: Ecto.Adapters.SQL.Sandbox
 
 # Configures Bamboo
-config :yummy, Yummy.Mailer,
-  adapter: Bamboo.TestAdapter
+config :yummy, Yummy.Mailer, adapter: Bamboo.TestAdapter
 
 config :rollbax,
   access_token: "",

@@ -4,11 +4,10 @@ defmodule Yummy.Recipes.Comment do
   alias Yummy.Recipes.{Comment, Recipe}
   alias Yummy.Accounts.User
 
-
   schema "comments" do
-    field :body, :string
-    belongs_to :recipe, Recipe
-    belongs_to :author, User, foreign_key: :user_id
+    field(:body, :string)
+    belongs_to(:recipe, Recipe)
+    belongs_to(:author, User, foreign_key: :user_id)
 
     timestamps(type: :utc_datetime)
   end

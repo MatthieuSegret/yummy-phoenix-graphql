@@ -13,9 +13,8 @@ defmodule Yummy.Confirmations do
   Generate confirmation code
   """
   def generate_confirmation_code(%User{} = user) do
-    with {:ok, code } <- generate_code(),
-      {:ok, user } <- save_code(user, %{confirmation_code: code, confirmation_sent_at: Timex.now})
-    do
+    with {:ok, code} <- generate_code(),
+         {:ok, user} <- save_code(user, %{confirmation_code: code, confirmation_sent_at: Timex.now()}) do
       {:ok, code, user}
     else
       {:error, reason} -> {:error, reason}
@@ -26,7 +25,7 @@ defmodule Yummy.Confirmations do
   Confirm account
   """
   def confirm_account(%User{} = user, code) do
-    attr = %{inputed_code: code, confirmed_at: Timex.now ,confirmation_code: nil, confirmation_sent_at: nil}
+    attr = %{inputed_code: code, confirmed_at: Timex.now(), confirmation_code: nil, confirmation_sent_at: nil}
 
     user
     |> cast(attr, [:inputed_code, :confirmed_at, :confirmation_code, :confirmation_sent_at])
@@ -45,8 +44,8 @@ defmodule Yummy.Confirmations do
     {:ok, _code, user_with_code} = generate_confirmation_code(user)
     {:error, :no_yet_confirmed, user_with_code}
   end
-  def confirmed?(%User{}), do: true
 
+  def confirmed?(%User{}), do: true
 
   defp save_code(%User{} = user, attr) do
     user
@@ -58,12 +57,14 @@ defmodule Yummy.Confirmations do
   end
 
   defp generate_code(length \\ 6) do
-    code = 10
+    code =
+      10
       |> :math.pow(length)
       |> round()
       |> :rand.uniform()
       |> Integer.to_string()
       |> String.pad_leading(length, "0")
+
     {:ok, code}
   end
 
@@ -77,6 +78,7 @@ defmodule Yummy.Confirmations do
 
   defp validate_expiration(changeset, _field) do
     confirmation_code_expire_hours = Application.fetch_env!(:yummy, :confirmation_code_expire_hours)
+
     if changeset.valid? && expired?(changeset.data.confirmation_sent_at, hours: confirmation_code_expire_hours) do
       add_error(changeset, :expired_code, "Ce code est expiré. Veuillez en redemander un nouveau.")
     else

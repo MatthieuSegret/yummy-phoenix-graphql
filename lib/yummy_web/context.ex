@@ -1,7 +1,7 @@
 defmodule YummyWeb.Plugs.Context do
   @behaviour Plug
 
-  alias YummyWeb.Helpers.StringHelpers  
+  alias YummyWeb.Helpers.StringHelpers
   alias Yummy.Accounts.User
   alias Yummy.Repo
   import Plug.Conn
@@ -28,9 +28,8 @@ defmodule YummyWeb.Plugs.Context do
 
   defp add_user_to_context(%{} = context, conn) do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
-      true <- StringHelpers.present?(token),
-      {:ok, user} <- get_user(token)
-    do
+         true <- StringHelpers.present?(token),
+         {:ok, user} <- get_user(token) do
       Map.put(context, :current_user, user)
     else
       _ -> context
@@ -38,12 +37,13 @@ defmodule YummyWeb.Plugs.Context do
   end
 
   defp get_user(nil), do: :error
+
   defp get_user(token) do
     user = User |> Repo.get_by(access_token: token)
     {:ok, user}
   end
 
   defp get_string_ip(address) when is_tuple(address) do
-    :inet_parse.ntoa(address) |> IO.iodata_to_binary
+    :inet_parse.ntoa(address) |> IO.iodata_to_binary()
   end
 end

@@ -6,11 +6,12 @@ defmodule YummyWeb.Schema.Middleware.TranslateMessages do
     Absinthe.Resolution.put_result(resolution, {:ok, result})
   end
 
-  defp do_translate_messages(%Kronky.Payload{} = payload) do    
-    Map.update!(payload, :messages, fn(messages) ->
+  defp do_translate_messages(%Kronky.Payload{} = payload) do
+    Map.update!(payload, :messages, fn messages ->
       Enum.map(messages, &translate_message/1)
     end)
   end
+
   defp do_translate_messages(value), do: value
 
   defp translate_message(%Kronky.ValidationMessage{} = validation_message) do

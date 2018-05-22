@@ -1,7 +1,7 @@
 defmodule YummyWeb.IntegrationCase do
   use ExUnit.CaseTemplate
   use Wallaby.DSL
-  import Wallaby.Query, only: [css: 1, text_field: 1, button: 1] 
+  import Wallaby.Query, only: [css: 1, text_field: 1, button: 1]
 
   using do
     quote do

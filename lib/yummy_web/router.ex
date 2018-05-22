@@ -3,34 +3,34 @@ defmodule YummyWeb.Router do
   use Plug.ErrorHandler
 
   pipeline :browser do
-    plug :accepts, ["html"]
+    plug(:accepts, ["html"])
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
-    plug YummyWeb.Plugs.Context
+    plug(:accepts, ["json"])
+    plug(YummyWeb.Plugs.Context)
   end
 
-
   scope "/" do
-    pipe_through :api
+    pipe_through(:api)
 
-    forward "/graphql", Absinthe.Plug, schema: YummyWeb.Schema
+    forward("/graphql", Absinthe.Plug, schema: YummyWeb.Schema)
 
-    if Mix.env == :dev do
-      forward "/graphiql", Absinthe.Plug.GraphiQL, schema: YummyWeb.Schema, socket: YummyWeb.UserSocket
-      forward "/emails", Bamboo.SentEmailViewerPlug
+    if Mix.env() == :dev do
+      forward("/graphiql", Absinthe.Plug.GraphiQL, schema: YummyWeb.Schema, socket: YummyWeb.UserSocket)
+      forward("/emails", Bamboo.SentEmailViewerPlug)
     end
   end
 
   scope "/", YummyWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
-    get "/*path", PageController, :index
+    get("/*path", PageController, :index)
   end
 
   defp handle_errors(_conn, %{reason: %Ecto.NoResultsError{}}), do: true
   defp handle_errors(_conn, %{reason: %Phoenix.Router.NoRouteError{}}), do: true
+
   defp handle_errors(conn, %{kind: kind, reason: reason, stack: stacktrace}) do
     headers = Enum.into(conn.req_headers, %{})
     reason = Map.delete(reason, :assigns)

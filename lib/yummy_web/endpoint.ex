@@ -2,41 +2,39 @@ defmodule YummyWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :yummy
   use Absinthe.Phoenix.Endpoint
 
-  socket "/socket", YummyWeb.UserSocket
+  socket("/socket", YummyWeb.UserSocket)
 
   if Application.get_env(:yummy, :sql_sandbox) do
-    plug Phoenix.Ecto.SQL.Sandbox
+    plug(Phoenix.Ecto.SQL.Sandbox)
   end
 
-  plug Plug.Static,
-    at: "/", gzip: true,
-    from: "client/build",
-    only: ~w(static favicon.ico robots.txt)
+  plug(Plug.Static, at: "/", gzip: true, from: "client/build", only: ~w(static favicon.ico robots.txt))
 
-  if Mix.env == :dev do
-    plug Plug.Static,
-      at: "/uploads", from: Path.expand('./uploads'), gzip: false
+  if Mix.env() == :dev do
+    plug(Plug.Static, at: "/uploads", from: Path.expand('./uploads'), gzip: false)
   end
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
-    plug Phoenix.CodeReloader
+    plug(Phoenix.CodeReloader)
   end
 
-  plug Plug.RequestId
-  plug Plug.Logger
+  plug(Plug.RequestId)
+  plug(Plug.Logger)
 
-  plug Plug.Parsers,
+  plug(
+    Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json, Absinthe.Plug.Parser],
     pass: ["*/*"],
     json_decoder: Poison
+  )
 
-  plug Plug.MethodOverride
-  plug Plug.Head
+  plug(Plug.MethodOverride)
+  plug(Plug.Head)
 
-  if Mix.env == :dev do
-    plug CORSPlug, origin: "http://localhost:3000"
+  if Mix.env() == :dev do
+    plug(CORSPlug, origin: "http://localhost:3000")
   end
 
   # The session will be stored in the cookie and signed,
@@ -47,7 +45,7 @@ defmodule YummyWeb.Endpoint do
   #   key: "_yummy_key",
   #   signing_salt: "63bcqiEc"
 
-  plug YummyWeb.Router
+  plug(YummyWeb.Router)
 
   @doc """
   Callback invoked for dynamically configuring the endpoint.

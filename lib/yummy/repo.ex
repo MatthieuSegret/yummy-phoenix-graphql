@@ -12,11 +12,11 @@ defmodule Yummy.Repo do
   end
 
   def count(query) do
-    one(from r in query, select: count("*"))
+    one(from(r in query, select: count("*")))
   end
 
   def paginate(query, offset) do
-    from r in query, offset: ^offset, limit: @per_page
+    from(r in query, offset: ^offset, limit: @per_page)
   end
 
   def fetch(query) do

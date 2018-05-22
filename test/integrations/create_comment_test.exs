@@ -11,11 +11,9 @@ defmodule YummyWeb.Integrations.CreateCommentTest do
 
     session
     |> user_sign_in(user: user)
-
     |> visit("/recipes/#{recipe.id}")
     |> fill_in(text_field("Nouveau commentaire"), with: "A new comment")
     |> click(button("Commenter"))
-
     |> assert_has(css(".comment .comment-content", text: "A new comment"))
     |> assert_has(css(".comment .comment-author em", text: user.name))
   end

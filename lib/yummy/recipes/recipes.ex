@@ -1,15 +1,17 @@
 defmodule Yummy.Recipes do
   import Ecto.Query, warn: false
-  import Ecto.Changeset, only: [put_assoc: 3] 
+  import Ecto.Changeset, only: [put_assoc: 3]
   alias Yummy.{Repo, ImageUploader}
   alias Yummy.Recipes.{Comment, Recipe}
   alias Yummy.Accounts.User
 
-  def search(query, nil), do: query 
+  def search(query, nil), do: query
+
   def search(query, keywords) do
-    from r in query,
-    where: ilike(r.title, ^("%#{keywords}%")) or
-           ilike(r.content, ^("%#{keywords}%"))
+    from(
+      r in query,
+      where: ilike(r.title, ^"%#{keywords}%") or ilike(r.content, ^"%#{keywords}%")
+    )
   end
 
   def create(author, attrs) do
@@ -40,18 +42,23 @@ defmodule Yummy.Recipes do
   end
 
   def delete_image(%Recipe{} = recipe) do
-    {:ok, recipe} = recipe
-    |> delete_image_files
-    |> Recipe.changeset(%{image_url: nil})
-    |> Repo.update()
+    {:ok, recipe} =
+      recipe
+      |> delete_image_files
+      |> Recipe.changeset(%{image_url: nil})
+      |> Repo.update()
+
     recipe
   end
 
   defp delete_image_files(%Recipe{image_url: nil} = recipe), do: recipe
+
   defp delete_image_files(%Recipe{} = recipe) do
-    path = ImageUploader.url({recipe.image_url, recipe})
+    path =
+      ImageUploader.url({recipe.image_url, recipe})
       |> String.split("?")
-      |> List.first 
+      |> List.first()
+
     :ok = ImageUploader.delete({path, recipe})
     recipe
   end

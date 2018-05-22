@@ -3,7 +3,7 @@ defmodule YummyWeb.Schema.OptionTypes do
 
   @desc "A option for select field in a form"
   object :option do
-    field :value, :string
-    field :label, :string
+    field(:value, :string)
+    field(:label, :string)
   end
 end
