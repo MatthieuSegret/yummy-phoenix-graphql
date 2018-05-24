@@ -27,6 +27,7 @@ defmodule Yummy.Recipes do
     |> Repo.update()
   end
 
+  @spec is_author(User.t(), Recipe.t()) :: true | {:error, String.t()}
   def is_author(%User{} = user, %Recipe{} = recipe) do
     if recipe.author.id == user.id do
       true
@@ -41,6 +42,7 @@ defmodule Yummy.Recipes do
     {:ok, recipe}
   end
 
+  @spec delete_image(Recipe.t()) :: Recipe.t()
   def delete_image(%Recipe{} = recipe) do
     {:ok, recipe} =
       recipe
@@ -51,9 +53,11 @@ defmodule Yummy.Recipes do
     recipe
   end
 
+  @spec delete_image_files(Recipe.t()) :: Recipe.t()
   defp delete_image_files(%Recipe{image_url: nil} = recipe), do: recipe
 
   defp delete_image_files(%Recipe{} = recipe) do
+    # credo:disable-for-lines:3
     path =
       ImageUploader.url({recipe.image_url, recipe})
       |> String.split("?")
@@ -63,6 +67,7 @@ defmodule Yummy.Recipes do
     recipe
   end
 
+  @spec create_comment(User.t(), Recipe.t(), map()) :: {:ok, Comment.t()} | {:error, any()}
   def create_comment(author, recipe, attrs) do
     %Comment{}
     |> Comment.changeset(attrs)

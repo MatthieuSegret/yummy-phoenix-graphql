@@ -31,7 +31,7 @@ defmodule Yummy.Recipes.Recipe do
     timestamps(type: :utc_datetime)
   end
 
-  @doc false
+  @dialyzer {:no_match, changeset: 2}
   def changeset(%Recipe{} = recipe, attrs) do
     attributes =
       case attrs[:image] do

@@ -12,6 +12,7 @@ defmodule Yummy.Confirmations do
   @doc """
   Generate confirmation code
   """
+  @spec generate_confirmation_code(User.t()) :: {:ok, String.t(), User.t()} | {:error, any()}
   def generate_confirmation_code(%User{} = user) do
     with {:ok, code} <- generate_code(),
          {:ok, user} <- save_code(user, %{confirmation_code: code, confirmation_sent_at: Timex.now()}) do
@@ -24,6 +25,7 @@ defmodule Yummy.Confirmations do
   @doc """
   Confirm account
   """
+  @spec confirm_account(User.t(), String.t()) :: {:ok, User.t()} | {:error, any()}
   def confirm_account(%User{} = user, code) do
     attr = %{inputed_code: code, confirmed_at: Timex.now(), confirmation_code: nil, confirmation_sent_at: nil}
 
@@ -40,6 +42,7 @@ defmodule Yummy.Confirmations do
   @doc """
   Account is confirmed ?
   """
+  @spec confirmed?(User.t()) :: boolean() | {:error, String.t(), User.t()}
   def confirmed?(%User{confirmed_at: nil} = user) do
     {:ok, _code, user_with_code} = generate_confirmation_code(user)
     {:error, :no_yet_confirmed, user_with_code}
@@ -47,6 +50,7 @@ defmodule Yummy.Confirmations do
 
   def confirmed?(%User{}), do: true
 
+  @spec save_code(User.t(), map()) :: {:ok, User.t()} | {:error, any()}
   defp save_code(%User{} = user, attr) do
     user
     |> cast(attr, [:confirmation_code, :confirmation_sent_at])
@@ -56,6 +60,7 @@ defmodule Yummy.Confirmations do
     |> Repo.update()
   end
 
+  @spec generate_code(integer()) :: {:ok, String.t()}
   defp generate_code(length \\ 6) do
     code =
       10

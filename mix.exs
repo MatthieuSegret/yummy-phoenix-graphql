@@ -33,34 +33,52 @@ defmodule Yummy.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.3.0"},
+      # Framework
+      {:phoenix, "~> 1.3.2"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.2"},
       {:phoenix_html, "~> 2.10"},
-      {:postgrex, ">= 0.0.0"},
-      {:gettext, "~> 0.14.0"},
       {:cowboy, "~> 1.1.2"},
-      {:absinthe, "~> 1.4.7", override: true},
-      {:absinthe_plug, "~> 1.4.2"},
+      {:postgrex, "~> 0.13"},
+
+      # Plugs
+      {:cors_plug, "~> 1.5.2"},
+
+      # GraphQL
+      {:absinthe, "~> 1.4.12", override: true},
+      {:absinthe_plug, "~> 1.4.4"},
       {:absinthe_phoenix, "~> 1.4.2"},
       {:dataloader, "~> 1.0.1"},
+      {:kronky, "~> 0.5.0"},
+
+      # Utils
+      {:bcrypt_elixir, "~> 1.0.7"},
+      {:comeonin, "~> 4.1.1"},
+      {:gettext, "~> 0.15.0"},
       {:poison, "~> 3.1.0"},
-      {:cors_plug, "~> 1.5.0"},
-      {:kronky, "~> 0.4.0"},
-      {:comeonin, "~> 4.0.3"},
-      {:bcrypt_elixir, "~> 1.0.5"},
+      {:hackney, "~> 1.12.1", override: true},
       {:secure_random, "~> 0.5"},
-      {:timex, "~> 3.1"},
-      {:bamboo, github: "thoughtbot/bamboo"},
-      {:rollbax, "~> 0.8.2"},
-      {:arc, "~> 0.8.0"},
-      {:ex_aws, "~> 1.1.3"},
-      {:hackney, "~> 1.8.0", override: true},
       {:sweet_xml, "~> 0.6"},
-      {:arc_ecto, "~> 0.7.0"},
+      {:timex, "~> 3.1"},
+
+      # Mails
+      {:bamboo, github: "thoughtbot/bamboo"},
+
+      # Upload
+      {:arc, "~> 0.8.0"},
+      {:arc_ecto, "~> 0.8.0"},
+      {:ex_aws, "~> 1.1.3"},
+
+      # Errors
+      {:rollbax, "~> 0.8.2"},
+
+      # Dev
+      {:credo, "~> 0.9.1", only: :dev, runtime: false},
+
+      # Tests
       {:wallaby, "~> 0.20.0", [runtime: false, only: :test]},
-      {:ex_machina, "~> 2.1", only: :test},
-      {:faker, "~> 0.9", only: :test}
+      {:ex_machina, "~> 2.2", only: :test},
+      {:faker, "~> 0.10", only: :test}
     ]
   end
 

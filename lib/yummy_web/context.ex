@@ -36,14 +36,15 @@ defmodule YummyWeb.Plugs.Context do
     end
   end
 
-  defp get_user(nil), do: :error
-
+  @spec get_user(String.t()) :: {:ok, User}
   defp get_user(token) do
     user = User |> Repo.get_by(access_token: token)
     {:ok, user}
   end
 
   defp get_string_ip(address) when is_tuple(address) do
-    :inet_parse.ntoa(address) |> IO.iodata_to_binary()
+    address
+    |> :inet_parse.ntoa()
+    |> IO.iodata_to_binary()
   end
 end

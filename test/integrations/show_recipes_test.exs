@@ -13,6 +13,7 @@ defmodule YummyWeb.Integrations.ShowRecipesTest do
     {:ok, %{user: user}}
   end
 
+  # credo:disable-for-lines:10
   test "list recipes", %{session: session, user: user} do
     titles =
       session
@@ -28,6 +29,7 @@ defmodule YummyWeb.Integrations.ShowRecipesTest do
     assert titles == expected_titles
   end
 
+  # credo:disable-for-lines:10
   test "show next recipes", %{session: session, user: user} do
     titles =
       session

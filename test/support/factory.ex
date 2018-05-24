@@ -1,4 +1,5 @@
 defmodule Yummy.Factory do
+  @dialyzer {:nowarn_function, fields_for: 1}
   use ExMachina.Ecto, repo: Yummy.Repo
 
   def user_factory do

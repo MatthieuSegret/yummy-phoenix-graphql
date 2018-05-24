@@ -30,6 +30,8 @@ defmodule YummyWeb.IntegrationCase do
     {:ok, session: session}
   end
 
+  @dialyzer {:nowarn_function, user_sign_in: 2}
+  @spec user_sign_in(Session.t(), user: User) :: Session.t()
   def user_sign_in(session, user: user) do
     session
     |> visit("/users/signin")
@@ -54,11 +56,15 @@ defmodule YummyWeb.IntegrationCase do
   end
 
   def find_text(session, query) do
-    find(session, query) |> Element.text()
+    session
+    |> find(query)
+    |> Element.text()
   end
 
   def find_value(session, query) do
-    find(session, query) |> Element.value()
+    session
+    |> find(query)
+    |> Element.value()
   end
 
   def disable_alert(session) do

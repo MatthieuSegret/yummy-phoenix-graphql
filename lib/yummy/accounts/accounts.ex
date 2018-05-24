@@ -28,6 +28,7 @@ defmodule Yummy.Accounts do
   @doc """
   Generate an access token and associates it with the user
   """
+  @spec generate_access_token(User.t()) :: {:ok, String.t(), User.t()}
   def generate_access_token(user) do
     access_token = generate_token(user)
     user_modified = Ecto.Changeset.change(user, access_token: access_token)
@@ -35,10 +36,12 @@ defmodule Yummy.Accounts do
     {:ok, access_token, user}
   end
 
+  @spec generate_token(User.t()) :: String.t()
   defp generate_token(user) do
     Base.encode64(:erlang.md5("#{:os.system_time(:milli_seconds)}-#{user.id}-#{SecureRandom.hex()}"))
   end
 
+  @spec revoke_access_token(User.t()) :: {:ok, User.t()} | {:error, any()}
   def revoke_access_token(user) do
     user_modified = Ecto.Changeset.change(user, access_token: nil)
     {:ok, _user} = Repo.update(user_modified)
@@ -47,6 +50,7 @@ defmodule Yummy.Accounts do
   @doc """
   Authenticate user with email and password
   """
+  @spec authenticate(User.t(), String.t()) :: {:ok, User.t()} | {:error, String.t()}
   def authenticate(nil, _password), do: {:error, "L'email n'est pas valide"}
   def authenticate(_email, nil), do: {:error, "Le mot de passe n'est pas valide"}
 
@@ -59,6 +63,7 @@ defmodule Yummy.Accounts do
     end
   end
 
+  @spec check_password(User.t(), String.t()) :: boolean()
   defp check_password(user, password) do
     case user do
       nil -> false
@@ -69,6 +74,7 @@ defmodule Yummy.Accounts do
   @doc """
   Update tracked fields
   """
+  @spec update_tracked_fields(User.t(), String.t()) :: {:ok, User.t()} | {:error, any()}
   def update_tracked_fields(%User{} = user, remote_ip) do
     attrs = %{
       current_sign_in_at: Timex.now(),
@@ -91,6 +97,7 @@ defmodule Yummy.Accounts do
   @doc """
   Get user by email
   """
+  @spec user_by_email(String.t()) :: {:ok, any()} | {:error, Ecto.Query}
   def user_by_email(email) do
     User
     |> Ecto.Query.where(email: ^String.downcase(email))
