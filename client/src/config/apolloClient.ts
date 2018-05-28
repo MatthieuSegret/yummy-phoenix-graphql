@@ -30,7 +30,7 @@ export default new ApolloClient({
   link: ApolloLink.split(
     // split based on operation type
     ({ query }) => {
-      const { kind, operation }: any = getMainDefinition(query);
+      const { kind, operation }: any = getMainDefinition(query as any);
       return kind === 'OperationDefinition' && operation === 'subscription';
     },
     wsLink,

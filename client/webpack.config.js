@@ -11,8 +11,7 @@ let config = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'js/[name].[chunkhash].js',
-    publicPath: '/',
-    pathinfo: false
+    publicPath: '/'
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
@@ -24,15 +23,7 @@ let config = {
   },
   module: {
     rules: [
-      {
-        test: /\.tsx?$/,
-        loader: 'ts-loader',
-        exclude: /node_modules/,
-        options: {
-          transpileOnly: true,
-          experimentalWatchApi: true
-        }
-      },
+      { test: /\.tsx?$/, loader: 'ts-loader', exclude: /node_modules/ },
       { test: /\.(graphql|gql)$/, loader: 'graphql-tag/loader', exclude: /node_modules/ },
       {
         test: /\.scss$/,
