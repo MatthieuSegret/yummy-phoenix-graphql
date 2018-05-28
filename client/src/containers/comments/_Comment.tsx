@@ -1,5 +1,6 @@
 import * as React from 'react';
-import moment from 'moment';
+
+import formatDate from 'utils/dateUtils';
 
 // typings
 import { CommentFragment } from 'types';
@@ -19,7 +20,7 @@ export default class Comment extends React.Component<IProps, {}> {
           <span className="comment-author">
             Commenté par: <em>{comment.author.name}</em>
           </span>
-          <span className="date">{moment(new Date(comment.inserted_at)).fromNow()}</span>
+          <span className="date">{formatDate(comment.inserted_at)}</span>
         </div>
       </div>
     );

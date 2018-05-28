@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { graphql, compose } from 'react-apollo';
 import ReactMarkdown from 'react-markdown';
-import moment from 'moment';
 
+import formatDate from 'utils/dateUtils';
 import ROOT_URL from 'config/rootUrl';
 import RecipeInfos from 'containers/recipes/_RecipeInfos';
 import RecipeActions from 'containers/recipes/_RecipeActions';
@@ -47,7 +47,10 @@ class Recipe extends React.Component<IProps, {}> {
   }
 
   public render() {
-    const { data: { recipe }, currentUser } = this.props;
+    const {
+      data: { recipe },
+      currentUser
+    } = this.props;
     if (!recipe) {
       return null;
     }
@@ -62,7 +65,7 @@ class Recipe extends React.Component<IProps, {}> {
 
           <div className="recipe-info-second">
             <span className="recipe-author">Par {recipe.author.name}</span> -
-            <span className="recipe-date"> {moment(new Date(recipe.inserted_at)).fromNow()}</span>
+            <span className="recipe-date"> {formatDate(recipe.inserted_at)}</span>
           </div>
           <hr />
         </div>
