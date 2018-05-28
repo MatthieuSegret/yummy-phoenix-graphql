@@ -1,38 +1,25 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
-    "rootDir": "src",
     "outDir": "build",
     "module": "esnext",
     "target": "es5",
-    "lib": [
-      "es6",
-      "dom",
-      "esnext"
-    ],
-    "sourceMap": true,
-    "allowJs": true,
+    "lib": ["es6", "dom", "esnext"],
     "jsx": "react",
     "moduleResolution": "node",
+    "sourceMap": true,
+    "allowJs": true,
     "pretty": true,
-    "forceConsistentCasingInFileNames": false,
-    "removeComments": true,
-    "skipLibCheck": true,
     "strict": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "removeComments": true,
     "noImplicitReturns": true,
     "traceResolution": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "allowSyntheticDefaultImports": true
+    "forceConsistentCasingInFileNames": false
   },
-  "include": [
-    "./typings/*",
-    "./src/**/*.ts",
-    "./src/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "build",
-    "config-overrides"
-  ]
+  "include": ["./typings/*", "./src/**/*.ts", "./src/**/*.tsx"],
+  "exclude": ["node_modules", "build"]
 }

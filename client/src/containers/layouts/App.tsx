@@ -24,7 +24,7 @@ import FlashMessage from 'components/flash/FlashMessage';
 import withFlashMessage from 'components/flash/withFlashMessage';
 import withCurrentUser from 'queries/currentUserQuery';
 
-import 'assets/stylesheets/css/application.css';
+import 'assets/stylesheets/application.scss';
 
 // typings
 import { User } from 'types';

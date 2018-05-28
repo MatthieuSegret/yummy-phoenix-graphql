@@ -8,7 +8,7 @@ defmodule YummyWeb.Endpoint do
     plug(Phoenix.Ecto.SQL.Sandbox)
   end
 
-  plug(Plug.Static, at: "/", gzip: true, from: "client/build", only: ~w(static favicon.ico robots.txt))
+  plug(Plug.Static, at: "/", gzip: true, from: "client/build", only: ~w(css js fonts  medias favicon.ico robots.txt))
 
   if Mix.env() == :dev do
     plug(Plug.Static, at: "/uploads", from: Path.expand('./uploads'), gzip: false)

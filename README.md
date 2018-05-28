@@ -14,8 +14,7 @@ web applications.
   output.
 * [React](https://facebook.github.io/react) - A JavaScript library for building user interfaces. It introduces many
   great concepts, such as, Virtual DOM, Data flow, etc.
-* [Create React App](https://github.com/facebookincubator/create-react-app) - is a new officially supported way to
-  create single-page React applications. It offers a modern build setup with no configuration.
+* [Webpack 4](https://github.com/webpack/webpack) - A bundler for javascript and friends. Packs many modules into a few bundled assets.
 * [Bulma](https://bulma.io) - Bulma is a modern CSS framework based on Flexbox
 * [Apollo 2](http://dev.apollodata.com) - A flexible, fully-featured GraphQL client for every platform.
 * [React Final Form](https://github.com/erikras/react-final-form) - High performance subscription-based form state
@@ -95,14 +94,14 @@ web applications.
 
           yummy-phoenix-graphql$ mix phx.server
 
-* Run Yarn to install javascript package in other terminal:
+* Run npm to install javascript package in other terminal:
 
           yummy-phoenix-graphql$ cd client
-          yummy-phoenix-graphql/client$ yarn
+          yummy-phoenix-graphql/client$ npm install
 
 * Start client in development mode. You should be able to go to `http://localhost:3000` :
 
-            yummy-phoenix-graphql/client$ yarn start
+            yummy-phoenix-graphql/client$ npm start
 
 ## Testing
 
@@ -112,7 +111,7 @@ Integration tests with [Wallaby](https://github.com/keathley/wallaby) and Chrome
 2.  Run **ChromeDriver** in a new terminal window with `chromedriver &`
 3.  Install **FakeS3** with `gem install fakes3`. Fake S3 simulate Amazon S3. It minimize runtime dependencies and be more of a development tool to test S3 calls.
 4.  Run **FakeS3** in a new terminal window with `fakes3 -r $HOME/.s3bucket -p 4567 &`
-5.  Build your assets with `cd client && yarn build`
+5.  Build your assets with `cd client && npm run build`
 6.  Run tests with `mix test`
 
 ## Next step
