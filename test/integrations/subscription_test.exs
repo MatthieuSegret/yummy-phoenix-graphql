@@ -9,30 +9,6 @@ defmodule YummyWeb.Integrations.SubscriptionTest do
     {:ok, %{user: user, metadata: metadata}}
   end
 
-  test "Display recipes in real-time", %{user: user, metadata: metadata} do
-    {:ok, navigation1} = Wallaby.start_session(metadata: metadata)
-
-    navigation1
-    |> visit("/")
-
-    {:ok, navigation2} = Wallaby.start_session(metadata: metadata)
-
-    navigation2
-    |> user_sign_in(user: user)
-    |> visit("/recipes/new")
-    |> fill_in(text_field("Titre"), with: "Un autre super gâteau")
-    |> fill_in(text_field("Recette"), with: "Une autre recette facile")
-    |> click(button("Soumettre"))
-    |> find(css(".recipes .recipe", count: 1))
-    |> assert_has(css(".recipe:first-child .title > a", text: "Un autre super gâteau"))
-    |> assert_has(css(".recipe:first-child .recipe-begin", text: "Une autre recette facile"))
-
-    navigation1
-    |> find(css(".recipes .recipe", count: 1))
-    |> assert_has(css(".recipe:first-child .title > a", text: "Un autre super gâteau"))
-    |> assert_has(css(".recipe:first-child .recipe-begin", text: "Une autre recette facile"))
-  end
-
   test "Display comments in real-time", %{user: user, metadata: metadata} do
     recipe = insert(:recipe, author: user)
 

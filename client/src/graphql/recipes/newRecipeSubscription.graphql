@@ -1,7 +1,0 @@
-#import "graphql/fragments/recipePreviewFragment.graphql"
-
-subscription newRecipe {
-  newRecipe {
-    ...RecipePreviewFragment
-  }
-}

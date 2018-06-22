@@ -1,5 +1,5 @@
 defmodule YummyWeb.Integrations.ShowRecipesTest do
-  use YummyWeb.IntegrationCase, async: true
+  use YummyWeb.IntegrationCase, async: false
   alias Yummy.Recipes.Recipe
 
   @search_input css("form[role='search'] .input[name='keywords']")

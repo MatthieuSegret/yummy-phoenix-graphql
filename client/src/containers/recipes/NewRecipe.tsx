@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { graphql, compose } from 'react-apollo';
-import withMutationState from 'apollo-mutation-state';
+import { Query, Mutation, MutationResult, compose } from 'react-apollo';
 
 import RecipeForm from 'containers/recipes/_RecipeForm';
 import withFlashMessage from 'components/flash/withFlashMessage';
@@ -10,90 +9,79 @@ import CREATE_RECIPE from 'graphql/recipes/createRecipeMutation.graphql';
 import RECIPES from 'graphql/recipes/recipesQuery.graphql';
 
 // typings
-import { ApolloQueryResult } from 'apollo-client/core/types';
 import { DataProxy } from 'apollo-cache';
 import {
   FlashMessageVariables,
-  RecipePreviewFragment,
-  CreateRecipeMutation,
-  CreateRecipeMutationVariables,
-  RecipesQuery,
-  RecipeWithDefaultValueQuery,
-  RecipeFragment,
-  MutationState,
-  MutationStateProps
+  CreateRecipeData,
+  CreateRecipeVariables,
+  RecipesData,
+  RecipeWithDefaultValueData
 } from 'types';
+class RecipeWithDefaultValueQuery extends Query<RecipeWithDefaultValueData> {}
+class CreateRecipeMutation extends Mutation<CreateRecipeData, CreateRecipeVariables> {}
 
 interface IProps {
   redirect: (path: string, message?: FlashMessageVariables) => void;
-  createRecipe: ({  }: CreateRecipeMutationVariables) => Promise<ApolloQueryResult<CreateRecipeMutation>>;
-  data: RecipeWithDefaultValueQuery;
-  mutation: MutationState;
 }
 
 class NewRecipe extends React.Component<IProps, {}> {
   constructor(props: IProps) {
     super(props);
     this.action = this.action.bind(this);
+    this.updateCache = this.updateCache.bind(this);
   }
 
-  private async action(values: any) {
-    return new Promise(async (_, reject) => {
-      const { data: { createRecipe: { errors } } } = await this.props.createRecipe(values);
-      if (!errors) {
-        this.props.redirect('/', { notice: 'La recette a bien été créée.' });
-      } else {
-        reject(errors);
-      }
-    });
+  private action(createRecipe: Function): (values: any) => Promise<any> {
+    return async (values: CreateRecipeVariables) => {
+      return new Promise(async (_, reject) => {
+        const response: MutationResult<CreateRecipeData> = await createRecipe({ variables: values });
+        const {
+          createRecipe: { errors }
+        } = response.data!;
+        if (!errors) {
+          this.props.redirect('/', { notice: 'La recette a bien été créée.' });
+        } else {
+          reject(errors);
+        }
+      });
+    };
+  }
+
+  private updateCache(cache: DataProxy, { data: { createRecipe } }: any) {
+    const newRecipe = createRecipe.newRecipe;
+    if (!newRecipe) return;
+    const data = cache.readQuery({ query: RECIPES }) as RecipesData;
+    if (!data.recipes) return;
+    data.recipes.unshift(newRecipe);
+    data.recipesCount += 1;
+    cache.writeQuery({ query: RECIPES, data });
   }
 
   public render() {
-    const { recipeWithDefaultValue } = this.props.data;
-    if (!recipeWithDefaultValue) {
-      return null;
-    }
-
     return (
-      <div>
-        <h1 className="title">Nouvelle recette</h1>
-        <RecipeForm action={this.action} initialValues={{ ...recipeWithDefaultValue }} mutation={this.props.mutation} />
-      </div>
+      <RecipeWithDefaultValueQuery query={RECIPE_WITH_DEFAULT_VALUE}>
+        {({ data }) => {
+          if (!data || !data.recipeWithDefaultValue) return null;
+          const recipeWithDefaultValue = data.recipeWithDefaultValue;
+
+          return (
+            <CreateRecipeMutation mutation={CREATE_RECIPE} update={this.updateCache}>
+              {(createRecipe, { loading }) => (
+                <div>
+                  <h1 className="title">Nouvelle recette</h1>
+                  <RecipeForm
+                    action={this.action(createRecipe)}
+                    initialValues={recipeWithDefaultValue}
+                    loading={loading}
+                  />
+                </div>
+              )}
+            </CreateRecipeMutation>
+          );
+        }}
+      </RecipeWithDefaultValueQuery>
     );
   }
 }
 
-const withRecipeWithDefaultValue = graphql<RecipeWithDefaultValueQuery>(RECIPE_WITH_DEFAULT_VALUE);
-
-const withCreateRecipe = graphql<CreateRecipeMutation, CreateRecipeMutationVariables & MutationStateProps>(
-  CREATE_RECIPE,
-  {
-    props: ({ mutate, ownProps: { wrapMutate } }) => ({
-      createRecipe(recipe: RecipeFragment) {
-        return wrapMutate(
-          mutate!({
-            variables: { ...recipe },
-            update: (store: DataProxy, { data: { createRecipe: { newRecipe } } }: any): void => {
-              if (!newRecipe) return;
-              const data = store.readQuery({ query: RECIPES }) as RecipesQuery;
-              if (!data.recipes) return;
-              // To prevent duplicates, we add an extra check to verify that we did not already add the recipe to our store
-              // because when we create a new recipe we might be notified of creation through the subscription before the query returns data
-              if (data.recipes.find((r: RecipePreviewFragment) => r.id === newRecipe.id)) return;
-              data.recipes.unshift(newRecipe);
-              data.recipesCount += 1;
-              store.writeQuery({ query: RECIPES, data });
-            }
-          })
-        );
-      }
-    })
-  }
-);
-
-export default compose(
-  withRecipeWithDefaultValue,
-  withMutationState({ wrapper: true, propagateError: true }),
-  withCreateRecipe,
-  withFlashMessage
-)(NewRecipe);
+export default compose(withFlashMessage)(NewRecipe);

@@ -8,32 +8,22 @@ export type FlashMessage = {
   text: string;
 };
 
-export type FlashMessageQuery = {
+export type FlashMessageData = {
   message: FlashMessage;
 };
 
-export type MutationState = {
-  loading: boolean;
-  error: any;
-  success: boolean;
-};
-
-export type MutationStateProps = {
-  wrapMutate: (promise: Promise<any>) => Promise<any>;
-};
-
-export type RevokeTokenMutation = {
+export type RevokeTokenData = {
   revokeToken: {
     errors: any;
   };
 };
 
-export type SignInMutationVariables = {
+export type SignInVariables = {
   email: string;
   password: string;
 };
 
-export type SignInMutation = {
+export type SignInData = {
   signIn: {
     __typename: 'SessionPayload';
     result: {
@@ -45,12 +35,12 @@ export type SignInMutation = {
   };
 };
 
-export type CreateCommentMutationVariables = {
+export type CreateCommentVariables = {
   recipeId: string;
   body: string;
 };
 
-export type CreateCommentMutation = {
+export type CreateCommentData = {
   createComment: {
     __typename: 'CommentPayload';
     newComment: CommentFragment | null;
@@ -59,7 +49,7 @@ export type CreateCommentMutation = {
   };
 };
 
-export type CreateRecipeMutationVariables = {
+export type CreateRecipeVariables = {
   title: string;
   content: string;
   totalTime: string;
@@ -68,7 +58,7 @@ export type CreateRecipeMutationVariables = {
   image?: string;
 };
 
-export type CreateRecipeMutation = {
+export type CreateRecipeData = {
   createRecipe: {
     __typename: 'RecipePayload';
     newRecipe: RecipeForEditingFragment | null;
@@ -77,11 +67,11 @@ export type CreateRecipeMutation = {
   };
 };
 
-export type DeleteRecipeMutationVariables = {
+export type DeleteRecipeVariables = {
   id: string;
 };
 
-export type DeleteRecipeMutation = {
+export type DeleteRecipeData = {
   deleteRecipe: {
     __typename: 'RecipePayload';
     recipe: {
@@ -93,15 +83,15 @@ export type DeleteRecipeMutation = {
   };
 };
 
-export type RecipeForEditingQueryVariables = {
+export type RecipeForEditingVariables = {
   id: string;
 };
 
-export type RecipeForEditingQuery = {
+export type RecipeForEditingData = {
   recipe: RecipeForEditingFragment | null;
 };
 
-export type RecipeOptionsQuery = {
+export type RecipeOptionsData = {
   totalTimeOptions: Array<{
     __typename: 'Option';
     label: string;
@@ -119,15 +109,15 @@ export type RecipeOptionsQuery = {
   }> | null;
 };
 
-export type RecipeQueryVariables = {
+export type RecipeVariables = {
   id: string;
 };
 
-export type RecipeQuery = {
+export type RecipeData = {
   recipe: RecipeFragment | null;
 };
 
-export type RecipeWithDefaultValueQuery = {
+export type RecipeWithDefaultValueData = {
   recipeWithDefaultValue: {
     __typename: 'Recipe';
     totalTime: string;
@@ -136,17 +126,17 @@ export type RecipeWithDefaultValueQuery = {
   } | null;
 };
 
-export type RecipesQueryVariables = {
+export type RecipesVariables = {
   offset?: number | null;
   keywords?: string | null;
 };
 
-export type RecipesQuery = {
+export type RecipesData = {
   recipesCount: number;
   recipes: Array<RecipePreviewFragment> | null;
 };
 
-export type UpdateRecipeMutationVariables = {
+export type UpdateRecipeVariables = {
   id: string;
   title?: string | null;
   content?: string | null;
@@ -157,7 +147,7 @@ export type UpdateRecipeMutationVariables = {
   image?: string | null;
 };
 
-export type UpdateRecipeMutation = {
+export type UpdateRecipeData = {
   updateRecipe: {
     __typename: 'RecipePayload';
     recipe: RecipeForEditingFragment | null;
@@ -166,19 +156,19 @@ export type UpdateRecipeMutation = {
   };
 };
 
-export type CancelAccountMutation = {
+export type CancelAccountData = {
   cancelAccount: {
     errors: any;
   };
 };
 
-export type ChangePasswordMutationVariables = {
+export type ChangePasswordVariables = {
   password: string;
   passwordConfirmation: string;
   currentPassword: string;
 };
 
-export type ChangePasswordMutation = {
+export type ChangePasswordData = {
   changePassword: {
     __typename: 'UserPayload';
     errors: any;
@@ -186,18 +176,18 @@ export type ChangePasswordMutation = {
   };
 };
 
-export type CurrentUserQuery = {
+export type CurrentUserData = {
   currentUser: User | null;
 };
 
-export type SignUpMutationVariables = {
+export type SignUpVariables = {
   name: string;
   email: string;
   password: string;
   passwordConfirmation: string;
 };
 
-export type SignUpMutation = {
+export type SignUpData = {
   signUp: {
     __typename: 'UserPayload';
     user: UserForEditingFragment | null;
@@ -206,12 +196,12 @@ export type SignUpMutation = {
   };
 };
 
-export type UpdateUserMutationVariables = {
+export type UpdateUserVariables = {
   name?: string | null;
   email?: string | null;
 };
 
-export type UpdateUserMutation = {
+export type UpdateUserData = {
   updateUser: {
     __typename: 'UserPayload';
     user: UserForEditingFragment | null;
@@ -220,12 +210,12 @@ export type UpdateUserMutation = {
   };
 };
 
-export type ConfirmAccountMutationVariables = {
+export type ConfirmAccountVariables = {
   email: string;
   code: string;
 };
 
-export type ConfirmAccountMutation = {
+export type ConfirmAccountData = {
   confirmAccount: {
     __typename: 'SessionPayload';
     result: {
@@ -237,11 +227,11 @@ export type ConfirmAccountMutation = {
   };
 };
 
-export type ResendConfirmationMutationVariables = {
+export type ResendConfirmationVariables = {
   email: string;
 };
 
-export type ResendConfirmationMutation = {
+export type ResendConfirmationData = {
   resendConfirmation: {
     __typename: 'BooleanPayload';
     errors: any;
@@ -249,7 +239,7 @@ export type ResendConfirmationMutation = {
   };
 };
 
-export type GetUserForEditingQuery = {
+export type GetUserForEditingData = {
   // Fetch the current user
   currentUser: UserForEditingFragment | null;
 };

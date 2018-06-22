@@ -1,5 +1,5 @@
 defmodule YummyWeb.Integrations.ChangeRecipeTest do
-  use YummyWeb.IntegrationCase, async: true
+  use YummyWeb.IntegrationCase, async: false
 
   setup do
     user = insert(:user)

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { graphql, compose } from 'react-apollo';
+import { Mutation, MutationResult, compose } from 'react-apollo';
+import { ApolloClient } from 'apollo-client';
 import { Link } from 'react-router-dom';
 
 import withFlashMessage from 'components/flash/withFlashMessage';
@@ -8,12 +9,11 @@ import REVOKE_TOKEN from 'graphql/auth/revokeTokenMutation.graphql';
 import logo from 'assets/images/yummy-icon.png';
 
 // typings
-import { User, FlashMessageVariables, RevokeTokenMutation } from 'types';
-import { ApolloQueryResult } from 'apollo-client/core/types';
+import { User, FlashMessageVariables, RevokeTokenData } from 'types';
+class RevokeTokenMutation extends Mutation<RevokeTokenData> {}
 
 interface IProps {
   redirect: (path: string, message?: FlashMessageVariables) => void;
-  revokeToken: () => Promise<ApolloQueryResult<RevokeTokenMutation>>;
   currentUser: User;
   currentUserLoading: boolean;
 }
@@ -24,15 +24,17 @@ class Header extends React.Component<IProps, {}> {
     this.logout = this.logout.bind(this);
   }
 
-  private logout(event: React.MouseEvent<HTMLElement>) {
-    event.preventDefault();
-    this.props.revokeToken().then(response => {
-      const errors = response.data.revokeToken.errors;
+  private logout(revokeToken: Function, client: ApolloClient<any>) {
+    return async (event: React.MouseEvent<HTMLElement>) => {
+      event.preventDefault();
+      const response: MutationResult<RevokeTokenData> = await revokeToken();
+      const errors = response.data!.revokeToken.errors;
       if (!errors) {
         window.localStorage.removeItem('yummy:token');
-        (window as any).location = '/';
+        await client.resetStore();
+        this.props.redirect('/', { notice: 'Vous êtes bien déconnecté(e)' });
       }
-    });
+    };
   }
 
   private renderSignInLinks() {
@@ -43,14 +45,18 @@ class Header extends React.Component<IProps, {}> {
 
     if (currentUser) {
       return (
-        <div className="navbar-end">
-          <Link className="navbar-item" to="/users/profile/edit">
-            {currentUser.name}
-          </Link>
-          <a className="navbar-item" href="#logout" onClick={this.logout}>
-            Se déconnecter
-          </a>
-        </div>
+        <RevokeTokenMutation mutation={REVOKE_TOKEN}>
+          {(revokeToken, { client }) => (
+            <div className="navbar-end">
+              <Link className="navbar-item" to="/users/profile/edit">
+                {currentUser.name}
+              </Link>
+              <a className="navbar-item" href="#logout" onClick={this.logout(revokeToken, client)}>
+                Se déconnecter
+              </a>
+            </div>
+          )}
+        </RevokeTokenMutation>
       );
     }
 
@@ -84,12 +90,4 @@ class Header extends React.Component<IProps, {}> {
   }
 }
 
-const withRevokeToken = graphql(REVOKE_TOKEN, {
-  props: ({ mutate }) => ({
-    revokeToken() {
-      return mutate!({});
-    }
-  })
-});
-
-export default compose(withFlashMessage, withRevokeToken)(Header);
+export default compose(withFlashMessage)(Header);

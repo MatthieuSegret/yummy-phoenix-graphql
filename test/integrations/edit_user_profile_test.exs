@@ -1,5 +1,5 @@
 defmodule YummyWeb.Integrations.EditUserProfileTest do
-  use YummyWeb.IntegrationCase, async: true
+  use YummyWeb.IntegrationCase, async: false
 
   setup do
     user = insert(:user)
@@ -27,8 +27,10 @@ defmodule YummyWeb.Integrations.EditUserProfileTest do
       session
       |> user_sign_in(user: user)
       |> visit("/users/profile/edit")
+      |> take_screenshot()
       |> disable_alert()
       |> click(css(".cancel-account a"))
+      # |> assert_eq(notice_msg(), text: "Votre compte a bien été supprimé. Nous espérons vous revoir bientôt !")
       |> assert_eq(css(".header .navbar-end > .navbar-item:first-child"), text: "S'inscrire")
       |> current_path()
 

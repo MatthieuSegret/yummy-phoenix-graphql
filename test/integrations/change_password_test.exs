@@ -1,5 +1,5 @@
 defmodule YummyWeb.Integrations.ChangePasswordTest do
-  use YummyWeb.IntegrationCase, async: true
+  use YummyWeb.IntegrationCase, async: false
 
   describe "when user changes password" do
     setup do

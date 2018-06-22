@@ -34,7 +34,7 @@ defmodule Yummy.Mixfile do
   defp deps do
     [
       # Framework
-      {:phoenix, "~> 1.3.2"},
+      {:phoenix, "~> 1.3.3"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.2"},
       {:phoenix_html, "~> 2.10"},
@@ -73,10 +73,10 @@ defmodule Yummy.Mixfile do
       {:rollbax, "~> 0.8.2"},
 
       # Dev
-      {:credo, "~> 0.9.1", only: :dev, runtime: false},
+      {:credo, "~> 0.9.3", only: :dev, runtime: false},
 
       # Tests
-      {:wallaby, "~> 0.20.0", [runtime: false, only: :test]},
+      {:wallaby, github: "keathley/wallaby", runtime: false, only: :test},
       {:ex_machina, "~> 2.2", only: :test},
       {:faker, "~> 0.10", only: :test}
     ]

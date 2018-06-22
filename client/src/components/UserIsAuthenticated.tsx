@@ -46,5 +46,8 @@ export default function UserIsAuthenticated(WrappedComponent: React.ComponentTyp
     }
   }
 
-  return compose(withCurrentUser, withFlashMessage)(ComponentUserIsAuthenticated);
+  return compose(
+    withCurrentUser,
+    withFlashMessage
+  )(ComponentUserIsAuthenticated);
 }

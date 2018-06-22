@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { graphql, compose } from 'react-apollo';
+import { Query, compose } from 'react-apollo';
 import classnames from 'classnames';
 
 import withFlashMessage from 'components/flash/withFlashMessage';
 import FLASH_MESSAGE from 'graphql/flash/flashMessageQuery.graphql';
 
 // typings
-import { FlashMessageQuery } from 'types';
+import { FlashMessageData } from 'types';
+class FlashMessageQuery extends Query<FlashMessageData> {}
 
 interface IProps {
-  data: FlashMessageQuery;
   deleteFlashMessage: () => void;
 }
 
@@ -24,24 +24,26 @@ class FlashMessage extends React.Component<IProps, {}> {
   }
 
   public render() {
-    const { message } = this.props.data;
-    if (!message) {
-      return null;
-    }
-    const { type, text } = message;
-
     return (
-      <div
-        className={classnames('notification', {
-          'is-primary': type === 'notice',
-          'is-danger': type === 'error'
-        })}
-      >
-        <button onClick={this.onClick} className="delete" />
-        {text}
-      </div>
+      <FlashMessageQuery query={FLASH_MESSAGE}>
+        {({ data }) => {
+          if (!data || !data.message) return null;
+          const { type, text } = data.message;
+          return (
+            <div
+              className={classnames('notification', {
+                'is-primary': type === 'notice',
+                'is-danger': type === 'error'
+              })}
+            >
+              <button onClick={this.onClick} className="delete" />
+              {text}
+            </div>
+          );
+        }}
+      </FlashMessageQuery>
     );
   }
 }
 
-export default compose(graphql(FLASH_MESSAGE), withFlashMessage)(FlashMessage);
+export default compose(withFlashMessage)(FlashMessage);

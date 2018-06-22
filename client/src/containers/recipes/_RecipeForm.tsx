@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { graphql, compose } from 'react-apollo';
+import { Query } from 'react-apollo';
 import { Form, Field } from 'react-final-form';
 
 import ROOT_URL from 'config/rootUrl';
@@ -9,21 +9,20 @@ import { required } from 'components/form/validation';
 import RECIPE_OPTIONS from 'graphql/recipes/recipeOptionsQuery.graphql';
 
 // typings
-import { RecipeOptionsQuery, RecipeForEditingFragment, MutationState } from 'types';
+import { RecipeOptionsData, RecipeForEditingFragment } from 'types';
+class RecipeOptionsQuery extends Query<RecipeOptionsData> {}
 
 interface IProps {
-  handleSubmit: (event: any) => void;
   action: (values: any) => Promise<any>;
-  data: RecipeOptionsQuery;
-  initialValues: RecipeForEditingFragment;
-  mutation: MutationState;
+  initialValues: Partial<RecipeForEditingFragment>;
+  loading: boolean;
 }
 
 interface IState {
   removeImage: boolean;
 }
 
-class RecipeForm extends React.Component<IProps, IState> {
+export default class RecipeForm extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = { removeImage: false };
@@ -46,68 +45,71 @@ class RecipeForm extends React.Component<IProps, IState> {
 
   public render() {
     const { removeImage } = this.state;
-    const {
-      initialValues: recipe,
-      mutation: { loading },
-      data: { totalTimeOptions, levelOptions, budgetOptions }
-    } = this.props;
+    const { initialValues: recipe, loading } = this.props;
 
     return (
-      <Form
-        onSubmit={this.submitForm}
-        initialValues={recipe}
-        render={({ handleSubmit }: any) => (
-          <form onSubmit={handleSubmit} className="recipe-form">
-            <Field name="title" label="Titre" component={RenderField} validate={required} />
-            <div className="columns">
-              <div className="column">
-                <Field
-                  name="totalTime"
-                  label="Temps"
-                  type="select"
-                  options={totalTimeOptions}
-                  component={RenderField}
-                />
-              </div>
-              <div className="column">
-                <Field name="level" label="Niveau" type="select" options={levelOptions} component={RenderField} />
-              </div>
-              <div className="column">
-                <Field name="budget" type="select" options={budgetOptions} component={RenderField} />
-              </div>
-            </div>
+      <RecipeOptionsQuery query={RECIPE_OPTIONS}>
+        {({ data }) => {
+          if (!data) return null;
+          const { totalTimeOptions, levelOptions, budgetOptions } = data;
 
-            {recipe.image_url && !removeImage ? (
-              <div className="field">
-                <label className="label" htmlFor="recipe_image_url">
-                  Photo
-                </label>
-                <img
-                  src={`${ROOT_URL}${recipe.image_url}`}
-                  alt={recipe.title}
-                  className="recipe-image image is-96x96"
-                />
-                <a onClick={this.onRemoveImage} className="button is-text remove-image-link">
-                  Supprimer
-                </a>
-              </div>
-            ) : null}
-            <Field name="image" label="Choisir une photo..." type="file" component={RenderField} />
-            <Field
-              name="content"
-              label="Recette"
-              type="textarea"
-              inputHtml={{ rows: 14 }}
-              component={RenderField}
-              validate={required}
+          return (
+            <Form
+              onSubmit={this.submitForm}
+              initialValues={recipe}
+              render={({ handleSubmit }: any) => (
+                <form onSubmit={handleSubmit} className="recipe-form">
+                  <Field name="title" label="Titre" component={RenderField} validate={required} />
+                  <div className="columns">
+                    <div className="column">
+                      <Field
+                        name="totalTime"
+                        label="Temps"
+                        type="select"
+                        options={totalTimeOptions}
+                        component={RenderField}
+                      />
+                    </div>
+                    <div className="column">
+                      <Field name="level" label="Niveau" type="select" options={levelOptions} component={RenderField} />
+                    </div>
+                    <div className="column">
+                      <Field name="budget" type="select" options={budgetOptions} component={RenderField} />
+                    </div>
+                  </div>
+
+                  {recipe.image_url && !removeImage ? (
+                    <div className="field">
+                      <label className="label" htmlFor="recipe_image_url">
+                        Photo
+                      </label>
+                      <img
+                        src={`${ROOT_URL}${recipe.image_url}`}
+                        alt={recipe.title}
+                        className="recipe-image image is-96x96"
+                      />
+                      <a onClick={this.onRemoveImage} className="button is-text remove-image-link">
+                        Supprimer
+                      </a>
+                    </div>
+                  ) : null}
+                  <Field name="image" label="Choisir une photo..." type="file" component={RenderField} />
+                  <Field
+                    name="content"
+                    label="Recette"
+                    type="textarea"
+                    inputHtml={{ rows: 14 }}
+                    component={RenderField}
+                    validate={required}
+                  />
+
+                  <SubmitField loading={loading} />
+                </form>
+              )}
             />
-
-            <SubmitField loading={loading} />
-          </form>
-        )}
-      />
+          );
+        }}
+      </RecipeOptionsQuery>
     );
   }
 }
-
-export default compose(graphql(RECIPE_OPTIONS))(RecipeForm);

@@ -91,4 +91,8 @@ class App extends React.Component<IProps, {}> {
   }
 }
 
-export default compose(withCurrentUser, withFlashMessage, withRouter)(App);
+export default compose(
+  withCurrentUser,
+  withFlashMessage,
+  withRouter
+)(App);
