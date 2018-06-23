@@ -27,7 +27,6 @@ defmodule YummyWeb.Integrations.EditUserProfileTest do
       session
       |> user_sign_in(user: user)
       |> visit("/users/profile/edit")
-      |> take_screenshot()
       |> disable_alert()
       |> click(css(".cancel-account a"))
       # |> assert_eq(notice_msg(), text: "Votre compte a bien été supprimé. Nous espérons vous revoir bientôt !")

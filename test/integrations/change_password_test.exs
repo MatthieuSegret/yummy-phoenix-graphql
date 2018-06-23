@@ -15,6 +15,7 @@ defmodule YummyWeb.Integrations.ChangePasswordTest do
       |> fill_in(text_field("Nouveau mot de passe"), with: "123123")
       |> fill_in(text_field("Confirmer votre mot de passe"), with: "123123")
       |> click(button("Mise à jour"))
+      |> take_screenshot()
       |> assert_eq(notice_msg(), text: "Votre mot de passe a bien été mis à jour")
       |> click(link("Se déconnecter"))
       |> visit("/users/signin")

@@ -27,6 +27,7 @@ defmodule YummyWeb.IntegrationCase do
 
     metadata = Phoenix.Ecto.SQL.Sandbox.metadata_for(Yummy.Repo, self())
     {:ok, session} = Wallaby.start_session(metadata: metadata)
+    session = session |> resize_window(1600, 1200)
     {:ok, session: session}
   end
 
