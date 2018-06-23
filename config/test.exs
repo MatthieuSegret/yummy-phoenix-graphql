@@ -22,7 +22,7 @@ config :yummy, Yummy.Repo,
   username: System.get_env("DATABASE_POSTGRESQL_USERNAME") || "postgres",
   password: System.get_env("DATABASE_POSTGRESQL_PASSWORD") || "postgres",
   database: "yummy_graphql_test",
-  hostname: "localhost",
+  hostname: System.get_env("DATABASE_HOST") || "localhost",
   port: System.get_env("DATABASE_PORT") || 5432,
   pool: Ecto.Adapters.SQL.Sandbox
 

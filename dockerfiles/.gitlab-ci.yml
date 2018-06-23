@@ -1,0 +1,23 @@
+image: matthieusegret/yummy-phoenix-graphql/elixir-node
+
+services:
+  - postgres:latest
+  - adobe/s3mock
+
+variables:
+  DATABASE_HOST: postgres
+  POSTGRES_DB: yummy_graphql_test
+  POSTGRES_HOST: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: "postgres"
+  MIX_ENV: "test"
+
+before_script:
+  - npm install
+  - mix deps.get
+  - mix ecto.create
+  - mix ecto.migrate
+
+mix:
+  script:
+  - mix test
