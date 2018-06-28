@@ -46,8 +46,8 @@ RUN addgroup -g 1000 node \
   && cd .. \
   && rm -Rf "node-v$NODE_VERSION" \
   && rm "node-v$NODE_VERSION.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt
-
-RUN npm rebuild node-sass
+RUN npm install -g npm@latest && \
+  npm rebuild node-sass
 
 # Install rebar and hex
 RUN mix local.rebar --force && \

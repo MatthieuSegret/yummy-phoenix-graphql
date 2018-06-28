@@ -5,7 +5,6 @@ test:
     - postgres:latest
 
   variables:
-    DATABASE_HOST: postgres
     POSTGRES_DB: yummy_graphql_test
     POSTGRES_HOST: postgres
     POSTGRES_USER: postgres
@@ -13,12 +12,10 @@ test:
     MIX_ENV: "test"
 
   before_script:
-    - npm run build
-    - mix deps.get
-    - mix compile
-    - mix ecto.create
-    - mix ecto.migrate
     - fakes3 -r .s3bucket -p 4567 > /dev/null 2>&1 &
+    - npm run build
+    - mix deps.get --only test
+    - mix ecto.migrate
 
   script:
     - mix test

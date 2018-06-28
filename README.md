@@ -102,16 +102,15 @@ This application can be used as **starter kit** if you want to get started build
 Integration tests with [Wallaby](https://github.com/keathley/wallaby) and ChromeDriver. Instructions:
 
 1.  Install **[ChromeDriver](http://chromedriver.chromium.org)**
-2.  Run **ChromeDriver** in a new terminal window with `chromedriver &`
-3.  Install **FakeS3** with `gem install fakes3`. Fake S3 simulate Amazon S3. It minimize runtime dependencies and be more of a development tool to test S3 calls.
-4.  Run **FakeS3** in a new terminal window with `fakes3 -r $HOME/.s3bucket -p 4567 &`
-5.  Build your assets with `cd client && npm run build`
-6.  Run tests with `mix test`
+2.  Install **FakeS3** with `gem install fakes3`. Fake S3 simulate Amazon S3. It minimize runtime dependencies and be more of a development tool to test S3 calls.
+3.  Run **FakeS3** in a new terminal window with `fakes3 -r $HOME/.s3bucket -p 4567 &`
+4.  Build frontend with `npm run build`
+5.  Run tests with `mix test`
 
 ## Next step
 
-- [ ] Batch of GraphQL queries into one HTTP request
-- [ ] Create mobile app with React Native
+- [ ] Deploy application to Kubernetes cluster
+- [ ] Migrate frontend from TypeScript to ReasonML
 
 ## Screens
 

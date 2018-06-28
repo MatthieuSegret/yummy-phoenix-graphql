@@ -47,6 +47,11 @@ let config = {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        SERVER_HOST: JSON.stringify(process.env.SERVER_HOST)
+      }
+    }),
     new MiniCssExtractPlugin({
       filename: 'css/style.[contenthash].css'
     }),

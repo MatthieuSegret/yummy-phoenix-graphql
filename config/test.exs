@@ -3,7 +3,7 @@ use Mix.Config
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :yummy, YummyWeb.Endpoint,
-  http: [port: 4001],
+  http: [port: System.get_env("SERVER_PORT") || 4000],
   server: true
 
 config :yummy, :sql_sandbox, true
@@ -19,11 +19,10 @@ config :logger, level: :warn
 # Configure your database
 config :yummy, Yummy.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: System.get_env("DATABASE_POSTGRESQL_USERNAME") || "postgres",
-  password: System.get_env("DATABASE_POSTGRESQL_PASSWORD") || "postgres",
-  database: "yummy_graphql_test",
-  hostname: System.get_env("DATABASE_HOST") || "localhost",
-  port: System.get_env("DATABASE_PORT") || 5432,
+  username: System.get_env("POSTGRES_USER") || "postgres",
+  password: System.get_env("POSTGRES_PASSWORD") || "postgres",
+  database: System.get_env("POSTGRES_DB") || "yummy_graphql_test",
+  hostname: System.get_env("POSTGRES_HOST") || "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
 # Configures Bamboo

@@ -39,11 +39,10 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :yummy, Yummy.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "yummy_graphql_dev",
-  hostname: "localhost",
-  port: System.get_env("DATABASE_PORT") || 5432,
+  username: System.get_env("POSTGRES_USER") || "postgres",
+  password: System.get_env("POSTGRES_PASSWORD") || "postgres",
+  database: System.get_env("POSTGRES_DB") || "yummy_graphql_dev",
+  hostname: System.get_env("POSTGRES_HOST") || "localhost",
   pool_size: 10
 
 # Configures Bamboo

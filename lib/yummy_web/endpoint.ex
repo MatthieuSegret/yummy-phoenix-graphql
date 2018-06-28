@@ -8,8 +8,6 @@ defmodule YummyWeb.Endpoint do
     plug(Phoenix.Ecto.SQL.Sandbox)
   end
 
-  plug(Plug.Static, at: "/", gzip: true, from: "client/build", only: ~w(css js fonts  medias favicon.ico robots.txt))
-
   if Mix.env() == :dev do
     plug(Plug.Static, at: "/uploads", from: Path.expand('./uploads'), gzip: false)
   end
@@ -33,9 +31,7 @@ defmodule YummyWeb.Endpoint do
   plug(Plug.MethodOverride)
   plug(Plug.Head)
 
-  if Mix.env() == :dev do
-    plug(CORSPlug, origin: "http://localhost:3000")
-  end
+  plug(CORSPlug, origin: "http://" <> (System.get_env("CLIENT_HOST") || "localhost:3000"))
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
@@ -55,7 +51,7 @@ defmodule YummyWeb.Endpoint do
   """
   def init(_key, config) do
     if config[:load_from_system_env] do
-      port = System.get_env("PORT") || raise "expected the PORT environment variable to be set"
+      port = System.get_env("SERVER_PORT") || raise "expected the PORT environment variable to be set"
       {:ok, Keyword.put(config, :http, [:inet6, port: port])}
     else
       {:ok, config}

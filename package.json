@@ -8,7 +8,9 @@
   },
   "scripts": {
     "start": "cd client && npm start",
+    "test.server": "node client/test.server.js",
     "build": "cd client && npm install && npm run build && cd ..",
     "postinstall": "npm run build && echo 'Client built!'"
-  }
+  },
+  "devDependencies": {}
 }

@@ -65,7 +65,7 @@ export const wsLink = createAbsintheSocketLink(AbsintheSocket.create(new Phoenix
 
 const urlOpts = {
   uri: `${ROOT_URL}/graphql`,
-  credentials: process.env.NODE_ENV === 'development' ? 'include' : 'same-origin'
+  credentials: 'same-origin'
 };
 
 const httpLink = ApolloLink.from([
