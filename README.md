@@ -103,9 +103,10 @@ Integration tests with [Wallaby](https://github.com/keathley/wallaby) and Chrome
 
 1.  Install **[ChromeDriver](http://chromedriver.chromium.org)**
 2.  Install **FakeS3** with `gem install fakes3`. Fake S3 simulate Amazon S3. It minimize runtime dependencies and be more of a development tool to test S3 calls.
-3.  Run **FakeS3** in a new terminal window with `fakes3 -r $HOME/.s3bucket -p 4567 &`
+3.  Run **FakeS3** in a new terminal window with `fakes3 -r $HOME/.s3bucket -p 4567`
 4.  Build frontend with `npm run build`
-5.  Run tests with `mix test`
+5.  Start frontend test server `npm run test.server`
+6.  Run tests with `mix test`
 
 ## Next step
 

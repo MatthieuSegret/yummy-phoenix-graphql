@@ -1,7 +1,7 @@
 FROM elixir:1.6.5-alpine
 
 # Install NodeJS
-ENV NODE_VERSION 10.2.0
+ENV NODE_VERSION 10.5.0
 
 RUN addgroup -g 1000 node \
   && adduser -u 1000 -G node -s /bin/sh -D node \
