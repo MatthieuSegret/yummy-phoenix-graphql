@@ -1,6 +1,6 @@
 # Yummy Phoenix GraphQL
 
-[![Build Status](https://gitlab.com/matthieusegret/yummy-phoenix-graphql/badges/master/build.svg)](https://gitlab.com/matthieusegret/yummy-phoenix-graphql/pipelines)
+[![Build Status](https://gitlab.com/matthieusegret/yummy-phoenix-graphql/badges/master/build.svg)](https://gitlab.com/matthieusegret/yummy-phoenix-graphql/commits/master)
 
 This application can be used as **starter kit** if you want to get started building an app with **Phoenix**, **React**, and **GraphQL**. This is a simple cooking recipe sharing application using ordinary features which can be found in most web applications.
 
