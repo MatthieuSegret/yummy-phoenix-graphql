@@ -60,6 +60,7 @@ defmodule Yummy.Mixfile do
       {:secure_random, "~> 0.5"},
       {:sweet_xml, "~> 0.6"},
       {:timex, "~> 3.1"},
+      {:distillery, "~> 1.5", runtime: false},
 
       # Mails
       {:bamboo, github: "thoughtbot/bamboo"},
@@ -68,9 +69,6 @@ defmodule Yummy.Mixfile do
       {:arc, "~> 0.8.0"},
       {:arc_ecto, "~> 0.8.0"},
       {:ex_aws, "~> 1.1.3"},
-
-      # Errors
-      {:rollbax, "~> 0.8.2"},
 
       # Dev
       {:credo, "~> 0.9.3", only: :dev, runtime: false},

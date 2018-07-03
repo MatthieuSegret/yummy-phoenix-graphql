@@ -17,8 +17,12 @@ alias Yummy.Accounts.User
 alias Yummy.Recipes
 alias Yummy.Recipes.Recipe
 
+images_path = Yummy.ReleaseTasks.priv_path_for(Yummy.Repo, "images")
+
 User |> Repo.delete_all()
-{:ok, user} = Accounts.create_user(%{name: "Jose", email: "jose@yummy.com", password: "password", password_confirmation: "password"})
+{:ok, unconfirmed_user} = Accounts.create_user(%{name: "Jose", email: "jose@yummy.com", password: "password", password_confirmation: "password"})
+{:ok, code, user_with_code} = Yummy.Confirmations.generate_confirmation_code(unconfirmed_user)
+{:ok, user} = Yummy.Confirmations.confirm_account(user_with_code, code)
 
 Recipe |> Repo.delete_all()
 
@@ -54,7 +58,7 @@ Recipes.create(user, %{
 
 #### Etape 6
   Un peu avant de servir, répartir le coulis et décorer avec les fruits réservés.],
-  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "panna-cotta.jpg", path: "priv/repo/images/panna-cotta.jpg"}
+  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "panna-cotta.jpg", path: Path.join([images_path, "panna-cotta.jpg"])}
 })
 
 Recipes.create(user, %{
@@ -83,7 +87,7 @@ Recipes.create(user, %{
 
 #### Etape 4
   Laisser tiédir la pâte précuite 10 mn. Etendre la confiture d'abricots, poser dessus les figues, face coupée dessous. Saupoudrer de sucre glace, passer au four 230 °C 7 à 8 mn pour caraméliser légèrement le dessus des figues.],
-  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "tarte-figues.jpg", path: "priv/repo/images/tarte-figues.jpg"}
+  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "tarte-figues.jpg", path: Path.join([images_path, "tarte-figues.jpg"])}
 })
 
 Recipes.create(user, %{
@@ -124,7 +128,7 @@ Recipes.create(user, %{
 
 #### Etape 6
   Quand le clafoutis est cuit, sortir le plat du four et laisser tiédir quelques minutes avant de déguster.],
-  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "clafoutis.jpg", path: "priv/repo/images/clafoutis.jpg"}
+  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "clafoutis.jpg", path: Path.join([images_path, "clafoutis.jpg"])}
 })
 
 Recipes.create(user, %{
@@ -158,7 +162,7 @@ Recipes.create(user, %{
 
 #### Etape 7
   Il est possible de saupoudrer de pistaches, de noix, de noisettes ou d'amandes concassées avant d'enfourner.],
-  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "feuilletee.jpg", path: "priv/repo/images/feuilletee.jpg"}
+  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "feuilletee.jpg", path: Path.join([images_path, "feuilletee.jpg"])}
 })
 
 Recipes.create(user, %{
@@ -187,7 +191,7 @@ Recipes.create(user, %{
 
 #### Etape 4
   Servir tiède ou froid.],
-  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "pain-courgettes.jpg", path: "priv/repo/images/pain-courgettes.jpg"}
+  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "pain-courgettes.jpg", path: Path.join([images_path, "pain-courgettes.jpg"])}
 })
 
 Recipes.create(user, %{
@@ -220,5 +224,5 @@ Recipes.create(user, %{
 #### Etape 5
   Faire cuire à 180 degrés pendant 45 min.
   J'ajoute mon grain de sel.],
-  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "cake.jpg", path: "priv/repo/images/cake.jpg"}
+  image_url: %Plug.Upload{content_type: "image/jpeg", filename: "cake.jpg", path: Path.join([images_path, "cake.jpg"])}
 })
