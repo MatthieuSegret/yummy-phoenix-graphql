@@ -3,7 +3,6 @@ import { Query, compose } from 'react-apollo';
 import ReactMarkdown from 'react-markdown';
 
 import formatDate from 'utils/dateUtils';
-import ROOT_URL from 'config/rootUrl';
 import RecipeInfos from 'containers/recipes/_RecipeInfos';
 import RecipeActions from 'containers/recipes/_RecipeActions';
 
@@ -49,7 +48,7 @@ class Recipe extends React.Component<IProps, {}> {
 
               <div className="content recipe-content">
                 {recipe.image_url ? (
-                  <img src={`${ROOT_URL}${recipe.image_url}`} alt={recipe.title} className="recipe-image image" />
+                  <img src={`${recipe.image_url}`} alt={recipe.title} className="recipe-image image" />
                 ) : null}
                 <ReactMarkdown source={recipe.content} />
               </div>

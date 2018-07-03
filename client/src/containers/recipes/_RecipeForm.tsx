@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Query } from 'react-apollo';
 import { Form, Field } from 'react-final-form';
 
-import ROOT_URL from 'config/rootUrl';
 import SubmitField from 'components/form/SubmitField';
 import RenderField from 'components/form/RenderField';
 import { required } from 'components/form/validation';
@@ -83,11 +82,7 @@ export default class RecipeForm extends React.Component<IProps, IState> {
                       <label className="label" htmlFor="recipe_image_url">
                         Photo
                       </label>
-                      <img
-                        src={`${ROOT_URL}${recipe.image_url}`}
-                        alt={recipe.title}
-                        className="recipe-image image is-96x96"
-                      />
+                      <img src={`${recipe.image_url}`} alt={recipe.title} className="recipe-image image is-96x96" />
                       <a onClick={this.onRemoveImage} className="button is-text remove-image-link">
                         Supprimer
                       </a>

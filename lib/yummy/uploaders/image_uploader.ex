@@ -10,11 +10,11 @@ defmodule Yummy.ImageUploader do
   end
 
   def transform(:thumb, _) do
-    {:convert, "-strip -thumbnail x500^ -gravity center -extent x500"}
+    {:convert, "-strip -thumbnail x500^ -gravity center -extent x500 -format jpg", :jpg}
   end
 
   def transform(:mini_thumb, _) do
-    {:convert, "-strip -thumbnail 200x200^ -gravity center -extent 200x200"}
+    {:convert, "-strip -thumbnail 200x200^ -gravity center -extent 200x200 -format jpg", :jpg}
   end
 
   def filename(version, {_file, _scope}) do
@@ -36,7 +36,7 @@ defmodule Yummy.ImageUploader do
   #    :content_encoding, :content_length, :content_type,
   #    :expect, :expires, :storage_class, :website_redirect_location]
   #
-  # def s3_object_headers(version, {file, scope}) do
-  #   [content_type: Plug.MIME.path(file.file_name)]
+  # def s3_object_headers(_version, {file, _scope}) do
+  #   [content_type: MIME.from_path(file.file_name)]
   # end
 end

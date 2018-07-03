@@ -48,10 +48,5 @@ config :yummy, Yummy.Repo,
 # Configures Bamboo
 config :yummy, Yummy.Mailer, adapter: Bamboo.LocalAdapter
 
-config :rollbax,
-  access_token: "",
-  environment: "development",
-  enabled: :log
-
 config :arc,
-  storage: Arc.Storage.Local
+  storage: YummyWeb.Arc.Storage.Local
