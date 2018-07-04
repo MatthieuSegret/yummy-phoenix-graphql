@@ -63,7 +63,7 @@ defmodule Yummy.Mixfile do
       {:distillery, "~> 1.5", runtime: false},
 
       # Mails
-      {:bamboo, github: "thoughtbot/bamboo"},
+      {:bamboo, "~> 1.0.0"},
 
       # Upload
       {:arc, "~> 0.8.0"},

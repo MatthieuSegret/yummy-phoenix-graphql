@@ -20,7 +20,8 @@ config :yummy, YummyWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
   secret_key_base: "${SECRET_KEY_BASE}",
   version: Mix.Project.config()[:version],
-  server: true
+  server: true,
+  root: "."
 
 # Do not print debug messages in production
 config :logger, level: :info

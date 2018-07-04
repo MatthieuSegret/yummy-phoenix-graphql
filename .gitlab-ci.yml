@@ -1,6 +1,7 @@
 stages:
   - test
   - frontend
+  - backend
 
 test:
   image: registry.gitlab.com/matthieusegret/yummy-phoenix-graphql/ci:1.1
@@ -52,5 +53,25 @@ frontend:
   script:
   - docker pull $CONTAINER_IMAGE:latest || true
   - docker build --cache-from $CONTAINER_IMAGE:latest --tag $CONTAINER_IMAGE:$CI_BUILD_REF --tag $CONTAINER_IMAGE:latest -f dockerfiles/frontend.dockerfile .
+  - docker push $CONTAINER_IMAGE:$CI_BUILD_REF
+  - docker push $CONTAINER_IMAGE:latest
+
+backend:
+  image: docker:stable
+  stage: backend
+
+  variables:
+    CONTAINER_IMAGE: registry.gitlab.com/matthieusegret/yummy-phoenix-graphql/backend
+    DOCKER_DRIVER: overlay2
+
+  services:
+  - docker:dind
+
+  before_script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+
+  script:
+  - docker pull $CONTAINER_IMAGE:latest || true
+  - docker build --cache-from $CONTAINER_IMAGE:latest --tag $CONTAINER_IMAGE:$CI_BUILD_REF --tag $CONTAINER_IMAGE:latest -f dockerfiles/backend.dockerfile .
   - docker push $CONTAINER_IMAGE:$CI_BUILD_REF
   - docker push $CONTAINER_IMAGE:latest
