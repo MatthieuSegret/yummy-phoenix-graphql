@@ -29,7 +29,7 @@ WORKDIR /opt/app/
 RUN apk add --no-cache bash openssl imagemagick
 
 ENV MIX_ENV=prod \
-  PORT=4000 \
+  PORT=80 \
   HOST=localhost \
   REPLACE_OS_VARS=true \
   SHELL=/bin/bash

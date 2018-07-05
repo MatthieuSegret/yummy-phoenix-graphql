@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+data:
+  db-name: yummy_graphql_prod
+  db-pool-size: "12"

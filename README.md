@@ -128,24 +128,18 @@ This example explains how to deploy the application on a local **[Kubernetes clu
 
 ### Configuring Kubernetes
 
-1.  Create **yummy-dev** namespace : `kubectl create -f kubernetes/dev-namespace.yaml`
-2.  Create new context : `kubectl config set-context yummy-dev --namespace=yummy-dev --cluster=minikube --user=minikube`
-3.  Use this context as default : `kubectl config use-context yummy-dev`
-4.  Add secret key to pull images from private registry :
+1.  Edit `frontend-deploy.yaml` to use your own regirstry `image: <registry-name>/frontend:latest`
+2.  Set environment variables :
 
 ```
-kubectl create secret docker-registry regsecret \
-      --docker-server=<registry-server> \
-      --docker-username=<registry-username> \
-      --docker-password=<registry-password> \
-      --docker-email=<registry-email>
-      --namespace=yummy-dev
+export REGISTRY_SERVER=<registry-server>
+export REGISTRY_USERNAME=<registry-username>
+export REGISTRY_PASSWORD=<registry-password>
+export REGISTRY_EMAIL=<registry-email>
+export FRONTEND_IMAGE=<frontend-image>
 ```
 
-3.  Edit `frontend-deploy.yaml` to use your own regirstry `image: <registry-name>/frontend:latest`
-4.  Create frontend deployement `kubectl create -f kubernetes/frontend-deploy.yaml`
-5.  Create frontend service `kubectl create -f kubernetes/frontend-svc.yaml`
-6.  Check resources `kubectl get all`
+3.  Create Kubernetes cluster on Minikube with `chmod 755 kubernetes/create-cluster.sh && ./kubernetes/create-cluster.sh`
 
 ## Next step
 
