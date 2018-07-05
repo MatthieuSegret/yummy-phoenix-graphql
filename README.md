@@ -108,9 +108,48 @@ Integration tests with [Wallaby](https://github.com/keathley/wallaby) and Chrome
 5.  Start frontend test server `npm run test.server`
 6.  Run tests with `mix test`
 
+## Production on Kubernetes
+
+This example explains how to deploy the application on a local **[Kubernetes cluster](https://kubernetes.io)** with minikube. Instructions:
+
+### Installing Minikube
+
+1.  Install **[Minikube](https://github.com/kubernetes/minikube)**
+2.  Start Minikube with `minikube start`
+
+### Building and pushing docker images to private registry
+
+1.  Install **[Docker](https://docs.docker.com/install)**
+2.  Create account on docker registry. For example **[Gitlab](https://gitlab.com)** or **[Docker Hub](https://hub.docker.com)**
+3.  Login to docker registry `docker login <registry-name>`
+4.  Build frontend image : `docker build -t <registry-name>/frontend:latest -f dockerfiles/frontend.dockerfile .`
+5.  Build api backend image : `docker build -t <registry-name>/api:latest -f dockerfiles/api.dockerfile .`
+6.  Push images to registry : `docker push <registry-name>/frontend:latest && docker push <registry-name>/api:latest`
+
+### Configuring Kubernetes
+
+1.  Create **yummy-dev** namespace : `kubectl create -f kubernetes/dev-namespace.yaml`
+2.  Create new context : `kubectl config set-context yummy-dev --namespace=yummy-dev --cluster=minikube --user=minikube`
+3.  Use this context as default : `kubectl config use-context yummy-dev`
+4.  Add secret key to pull images from private registry :
+
+```
+kubectl create secret docker-registry regsecret \
+      --docker-server=<registry-server> \
+      --docker-username=<registry-username> \
+      --docker-password=<registry-password> \
+      --docker-email=<registry-email>
+      --namespace=yummy-dev
+```
+
+3.  Edit `frontend-deploy.yaml` to use your own regirstry `image: <registry-name>/frontend:latest`
+4.  Create frontend deployement `kubectl create -f kubernetes/frontend-deploy.yaml`
+5.  Create frontend service `kubectl create -f kubernetes/frontend-svc.yaml`
+6.  Check resources `kubectl get all`
+
 ## Next step
 
-- [ ] Deploy application to Kubernetes cluster
+- [ ] Deploy application to Google Kubernetes Engine
 - [ ] Migrate frontend from TypeScript to ReasonML
 
 ## Screens
