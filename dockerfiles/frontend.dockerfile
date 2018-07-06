@@ -2,6 +2,7 @@
 FROM node:10.5.0-alpine as build
 
 WORKDIR /app
+ENV PROD=true
 COPY client/package.json client/package-lock.json ./
 RUN npm install
 COPY client/ ./

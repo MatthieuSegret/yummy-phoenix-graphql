@@ -31,7 +31,9 @@ defmodule YummyWeb.Endpoint do
   plug(Plug.MethodOverride)
   plug(Plug.Head)
 
-  plug(CORSPlug, origin: "http://" <> (System.get_env("CLIENT_HOST") || "localhost:3000"))
+  if Mix.env() == :dev || Mix.env() == :test do
+    plug(CORSPlug, origin: "http://" <> Application.fetch_env!(:yummy, :client_host))
+  end
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.

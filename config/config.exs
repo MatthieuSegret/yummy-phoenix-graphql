@@ -8,7 +8,8 @@ use Mix.Config
 # General application configuration
 config :yummy,
   ecto_repos: [Yummy.Repo],
-  confirmation_code_expire_hours: 6
+  confirmation_code_expire_hours: 6,
+  client_host: System.get_env("CLIENT_HOST") || "localhost:3000"
 
 # Configures the endpoint
 config :yummy, YummyWeb.Endpoint,

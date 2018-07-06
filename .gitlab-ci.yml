@@ -30,10 +30,11 @@ test:
     - npm run build
     - npm run test.server  > /dev/null 2>&1 &
     - mix deps.get --only test
-    - mix ecto.migrate
+    #- mix ecto.migrate
 
   script:
-    - mix test
+    #- mix test
+    - mix ecto.migrate
 
 frontend:
   image: docker:stable

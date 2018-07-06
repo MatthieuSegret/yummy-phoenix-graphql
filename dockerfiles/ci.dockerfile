@@ -62,3 +62,5 @@ RUN apk add --no-cache ruby && \
 
 # Install chromedriver
 RUN apk add --no-cache udev chromium chromium-chromedriver xvfb
+
+ENV API_HOST=localhost:4000

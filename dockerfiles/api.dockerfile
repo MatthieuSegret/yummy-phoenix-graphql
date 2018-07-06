@@ -2,7 +2,6 @@
 FROM elixir:1.6.5-alpine as build
 
 WORKDIR /app
-
 ENV MIX_ENV=prod
 
 RUN apk add --no-cache build-base git && \
@@ -29,9 +28,8 @@ WORKDIR /opt/app/
 RUN apk add --no-cache bash openssl imagemagick
 
 ENV MIX_ENV=prod \
-  PORT=80 \
-  HOST=localhost \
   REPLACE_OS_VARS=true \
+  PORT=80 \
   SHELL=/bin/bash
 
 COPY --from=build /app/yummy.tar.gz ./
