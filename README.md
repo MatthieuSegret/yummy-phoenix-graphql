@@ -104,11 +104,11 @@ Integration tests with [Wallaby](https://github.com/keathley/wallaby) and Chrome
 1.  Install **[ChromeDriver](http://chromedriver.chromium.org)**
 2.  Install **FakeS3** with `gem install fakes3`. Fake S3 simulate Amazon S3. It minimize runtime dependencies and be more of a development tool to test S3 calls.
 3.  Run **FakeS3** in a new terminal window with `fakes3 -r $HOME/.s3bucket -p 4567`
-4.  Build frontend with `npm run build`
+4.  Build frontend with `API_HOST=localhost:4000 npm run build`
 5.  Start frontend test server `npm run test.server`
 6.  Run tests with `mix test`
 
-## Production on Kubernetes
+## Production with Kubernetes
 
 This example explains how to deploy the application on a local **[Kubernetes cluster](https://kubernetes.io)** with minikube. Instructions:
 
@@ -128,18 +128,29 @@ This example explains how to deploy the application on a local **[Kubernetes clu
 
 ### Configuring Kubernetes
 
-1.  Edit `frontend-deploy.yaml` to use your own regirstry `image: <registry-name>/frontend:latest`
-2.  Set environment variables :
+1.  Edit `(frontend|api)-deploy.yaml` to use your own registry `image: <registry-name>/(frontend|api):latest`
+2.  Set registry variables :
 
 ```
 export REGISTRY_SERVER=<registry-server>
 export REGISTRY_USERNAME=<registry-username>
 export REGISTRY_PASSWORD=<registry-password>
 export REGISTRY_EMAIL=<registry-email>
-export FRONTEND_IMAGE=<frontend-image>
 ```
 
-3.  Create Kubernetes cluster on Minikube with `chmod 755 kubernetes/create-cluster.sh && ./kubernetes/create-cluster.sh`
+3.  Create account on **[Sendgrid](https://sendgrid.com)** to send emails
+4.  Create account on **[AWS S3](https://aws.amazon.com/fr/s3)** to upload images
+5.  Set environement variables :
+
+```
+export SENDGRID_API_KEY=<your-sendgrid-api-key>
+export S3_KEY=<your-s3-key>
+export S3_SECRET=<your-s3-secret>
+export S3_BUCKET=<your-s3-bucket>
+```
+
+6.  Create Kubernetes cluster on Minikube with `chmod +x kubernetes/create-local-cluster.sh && ./kubernetes/create-local-cluster.sh`
+7.  Get minikube ip with `minikube ip` and you should be able to go to `http://<minikube-ip>:31000`
 
 ## Next step
 

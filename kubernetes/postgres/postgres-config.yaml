@@ -5,3 +5,4 @@ metadata:
 data:
   db-name: yummy_graphql_prod
   db-pool-size: "12"
+  db-host: postgres-svc
