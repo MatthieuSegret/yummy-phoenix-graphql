@@ -1,5 +1,5 @@
 # Stage 1 - the build process
-FROM node:10.5.0-alpine as build
+FROM registry.gitlab.com/matthieusegret/yummy-phoenix-graphql/node:8.11.3 as build
 
 WORKDIR /app
 ENV PROD=true

@@ -1,12 +1,8 @@
 # Stage 1 - the build process
-FROM elixir:1.6.5-alpine as build
+FROM registry.gitlab.com/matthieusegret/yummy-phoenix-graphql/elixir:1.6.5 as build
 
 WORKDIR /app
 ENV MIX_ENV=prod
-
-RUN apk add --no-cache build-base git && \
-  mix local.rebar --force && \
-  mix local.hex --force
 
 COPY mix.exs mix.lock ./
 COPY rel ./rel

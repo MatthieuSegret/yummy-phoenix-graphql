@@ -3,11 +3,19 @@ stages:
   - release
 
 test:
-  image: registry.gitlab.com/matthieusegret/yummy-phoenix-graphql/ci:1.1
+  image: registry.gitlab.com/matthieusegret/yummy-phoenix-graphql/ci:1.2
   stage: test
 
   services:
     - postgres:latest
+
+  cache: 
+    untracked: true 
+    key: ${CI_COMMIT_REF_SLUG} 
+    paths: 
+      - deps 
+      - _build 
+      - client/node_modules 
 
   variables:
     POSTGRES_DB: yummy_graphql_test
@@ -16,25 +24,15 @@ test:
     POSTGRES_PASSWORD: "postgres"
     MIX_ENV: "test"
 
-  cache:
-    untracked: true
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - deps
-      - _build
-      - client/node_modules
-      - client/build
-
   before_script:
     - fakes3 -r .s3bucket -p 4567 > /dev/null 2>&1 &
     - npm run build
     - npm run test.server  > /dev/null 2>&1 &
     - mix deps.get --only test
-    #- mix ecto.migrate
+    - mix ecto.migrate
 
   script:
-    #- mix test
-    - mix ecto.migrate
+    - mix test
 
 frontend:
   image: docker:stable
