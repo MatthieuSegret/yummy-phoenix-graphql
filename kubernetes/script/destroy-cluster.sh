@@ -1,0 +1,1 @@
+gcloud container clusters delete staging

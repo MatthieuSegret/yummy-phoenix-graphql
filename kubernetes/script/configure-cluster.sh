@@ -5,16 +5,13 @@
 #################
 
 # Create yummy-dev namespace
-kubectl apply -f kubernetes/minikube/local-namespace.yaml
+kubectl create namespace yummy-staging
 
 # Create new context
-kubectl config set-context yummy-dev --namespace=yummy-dev --cluster=minikube --user=minikube
+kubectl config set-context $(kubectl config current-context) --namespace=yummy-staging
 
-# Use this context as default
-kubectl config use-context yummy-dev
-
-# Define config for minikube
-kubectl apply -f kubernetes/minikube/
+# Define spec for gke, create config, pvc, etc.
+kubectl apply -f kubernetes/config.yaml
 
 # Add secret key to pull images from private registry
 kubectl create secret docker-registry gitlab-registry \
@@ -22,7 +19,7 @@ kubectl create secret docker-registry gitlab-registry \
   --docker-username=$REGISTRY_USERNAME \
   --docker-password=$REGISTRY_PASSWORD \
   --docker-email=$REGISTRY_EMAIL \
-  --namespace=yummy-dev
+  --namespace=yummy-staging
 
 #################
 ##### FRONTEND
@@ -40,7 +37,7 @@ export POSTGRES_USER=$(openssl rand -hex 12)
 export POSTGRES_PASSWORD=$(openssl rand -hex 24)
 kubectl create secret generic postgres-credentials --from-literal user=$POSTGRES_USER --from-literal password=$POSTGRES_PASSWORD
 
-# Create postgres config, pvc, deployement and service
+# Create postgres config, deployement and service
 kubectl apply -f kubernetes/postgres/
 
 ###################
@@ -60,9 +57,12 @@ kubectl create secret generic api-credentials \
 # Create api backend deployement and service
 kubectl apply -f kubernetes/api/
 
-# Migrate database
-kubectl exec -it api-deploy-79c69f7f96-rf6nk -- /opt/app/bin/yummy migrate
-kubectl exec -it api-deploy-79c69f7f96-rf6nk -- /opt/app/bin/yummy seeds
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=yummy/O=yummy"
+kubectl create secret tls tls-secret --key tls.key --cert tls.crt
+rm tls.key tls.crt
+
+kubectl apply -f kubernetes/ingress.yaml
 
 # Check resources
 kubectl get all
+kubectl get ingress

@@ -110,25 +110,29 @@ Integration tests with [Wallaby](https://github.com/keathley/wallaby) and Chrome
 
 ## Production with Kubernetes
 
-This example explains how to deploy the application on a local **[Kubernetes cluster](https://kubernetes.io)** with minikube. Instructions:
+This example explains how to deploy the application on **[Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)**.
 
-### Installing Minikube
+### Preaparing environment
 
-1.  Install **[Minikube](https://github.com/kubernetes/minikube)**
-2.  Start Minikube with `minikube start`
+1.  Create account on **[Google Cloud](https://cloud.google.com)** and create the project `yummy-phoenix-graphql`
+2.  Install **[gcloud](https://cloud.google.com/sdk)**
+3.  Initialize gcloud with `gcloud init`
+4.  Install kubectl with gcloud : `gcloud components install kubectl`
+5.  Create a static IP address named yummy-phoenix-graphql-ip `gcloud compute addresses create yummy-phoenix-graphql-ip --global`
+6.  Set execute permissions on scripts `chmod +x kubernetes/script/*`
 
 ### Building and pushing docker images to private registry
 
 1.  Install **[Docker](https://docs.docker.com/install)**
-2.  Create account on docker registry. For example **[Gitlab](https://gitlab.com)** or **[Docker Hub](https://hub.docker.com)**
+2.  Create account on docker registry. For example **[Gitlab](https://gitlab.com)**, **[Docker Hub](https://hub.docker.com)** or **[Google Container Registry](https://cloud.google.com/container-registry)**
 3.  Login to docker registry `docker login <registry-name>`
-4.  Build frontend image : `docker build -t <registry-name>/frontend:latest -f dockerfiles/frontend.dockerfile .`
-5.  Build api backend image : `docker build -t <registry-name>/api:latest -f dockerfiles/api.dockerfile .`
-6.  Push images to registry : `docker push <registry-name>/frontend:latest && docker push <registry-name>/api:latest`
+4.  Build frontend image : `docker build -t <registry-name>/frontend:1.0 -f dockerfiles/frontend.dockerfile .`
+5.  Build api backend image : `docker build -t <registry-name>/api:1.0 -f dockerfiles/api.dockerfile .`
+6.  Push images to registry : `docker push <registry-name>/frontend:1.0 && docker push <registry-name>/api:1.0`
 
 ### Configuring Kubernetes
 
-1.  Edit `(frontend|api)-deploy.yaml` to use your own registry `image: <registry-name>/(frontend|api):latest`
+1.  Edit `(frontend|api)-deploy.yaml` to use your own registry `image: <registry-name>/(frontend|api):1.0`
 2.  Set registry variables :
 
 ```
@@ -149,12 +153,21 @@ export S3_SECRET=<your-s3-secret>
 export S3_BUCKET=<your-s3-bucket>
 ```
 
-6.  Create Kubernetes cluster on Minikube with `chmod +x kubernetes/create-local-cluster.sh && ./kubernetes/create-local-cluster.sh`
-7.  Get minikube ip with `minikube ip` and you should be able to go to `http://<minikube-ip>:31000`
+6.  Create and configure cluster with `./kubernetes/script/create-cluster.sh && ./kubernetes/script/configure-cluster.sh`
+7.  Create and populate the Database `./kubernetes/script/create-database.sh`
+
+### Clean up
+
+To avoid incurring charges to your Google Cloud Platform account for the resources used :
+
+1.  Delete cluster with `./kubernetes/script/destroy-cluster.sh`
+2.  if you don't want to recreate this cluster in the future, delete the static ip : `gcloud compute addresses delete yummy-phoenix-graphql-ip --global`
+3.  Delete any orphaned resources : `gcloud compute backend-services delete --global -q <BACKEND_SERVICES>`
 
 ## Next step
 
-- [ ] Deploy application to Google Kubernetes Engine
+- [ ] Migrate from S3 to Google CDN
+- [ ] Connect Erlang nodes between them on Kubernetes cluster with **[Peerage](https://github.com/mrluc/peerage)**
 - [ ] Migrate frontend from TypeScript to ReasonML
 
 ## Screens

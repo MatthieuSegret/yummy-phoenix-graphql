@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: api-deploy
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: api
@@ -13,92 +13,102 @@ spec:
         app: api
     spec:
       containers:
-      - name: api
-        image: registry.gitlab.com/matthieusegret/yummy-phoenix-graphql/api:latest
-        imagePullPolicy: Always
-        env:
-          - name: NODE_NAME
-            value: "yummy@127.0.0.1"
+        - name: api
+          image: registry.gitlab.com/matthieusegret/yummy-phoenix-graphql/api:latest
+          imagePullPolicy: Always
+          env:
+            - name: NODE_NAME
+              value: 'yummy@127.0.0.1'
 
-          - name: POSTGRES_USER
-            valueFrom:
-              secretKeyRef:
-                name: postgres-credentials
-                key: user
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: user
 
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: postgres-credentials
-                key: password
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
 
-          - name: POSTGRES_DB
-            valueFrom:
-              configMapKeyRef:
-                name: postgres-config
-                key: db-name
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: db-name
 
-          - name: POSTGRES_HOST
-            valueFrom:
-              configMapKeyRef:
-                name: postgres-config
-                key: db-host
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: db-host
 
-          - name: DB_POOL_SIZE
-            valueFrom:
-              configMapKeyRef:
-                name: postgres-config
-                key: db-pool-size
+            - name: DB_POOL_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: db-pool-size
 
-          - name: PUBLIC_HOST
-            valueFrom:
-              configMapKeyRef:
-                name: yummy-config
-                key: public-host
+            - name: PUBLIC_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: yummy-config
+                  key: public-host
 
-          - name: PUBLIC_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: yummy-config
-                key: public-port
+            - name: PUBLIC_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: yummy-config
+                  key: public-port
 
-          - name: NODE_COOKIE
-            valueFrom:
-              secretKeyRef:
-                name: api-credentials
-                key: node-cookie
+            - name: NODE_COOKIE
+              valueFrom:
+                secretKeyRef:
+                  name: api-credentials
+                  key: node-cookie
 
-          - name: SECRET_KEY_BASE
-            valueFrom:
-              secretKeyRef:
-                name: api-credentials
-                key: secret-key-base
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: api-credentials
+                  key: secret-key-base
 
-          - name: SENDGRID_API_KEY
-            valueFrom:
-              secretKeyRef:
-                name: api-credentials
-                key: sendgrid-api-key
+            - name: SENDGRID_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-credentials
+                  key: sendgrid-api-key
 
-          - name: S3_KEY
-            valueFrom:
-              secretKeyRef:
-                name: api-credentials
-                key: s3-key
+            - name: S3_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-credentials
+                  key: s3-key
 
-          - name: S3_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: api-credentials
-                key: s3-secret
+            - name: S3_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: api-credentials
+                  key: s3-secret
 
-          - name: S3_BUCKET
-            valueFrom:
-              secretKeyRef:
-                name: api-credentials
-                key: s3-bucket
+            - name: S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: api-credentials
+                  key: s3-bucket
 
-        ports:
-        - containerPort: 80
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            initialDelaySeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+
       imagePullSecrets:
-      - name: regsecret
+        - name: regsecret

@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: yummy-config
-data:
-  public-host: minikube
-  public-port: "31000"

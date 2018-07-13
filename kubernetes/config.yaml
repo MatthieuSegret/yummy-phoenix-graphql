@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: yummy-config
+data:
+  public-host: 'staging.yummy-phoenix-graphql.com'
+  public-port: '80'
