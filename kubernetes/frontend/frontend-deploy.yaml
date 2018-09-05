@@ -14,10 +14,8 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: registry.gitlab.com/matthieusegret/yummy-phoenix-graphql/frontend:latest
+          image: gcr.io/yummy-phoenix-graphql/frontend
           imagePullPolicy: Always
 
           ports:
             - containerPort: 80
-      imagePullSecrets:
-        - name: regsecret

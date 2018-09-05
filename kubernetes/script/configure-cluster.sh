@@ -13,14 +13,6 @@ kubectl config set-context $(kubectl config current-context) --namespace=yummy-s
 # Define spec for gke, create config, pvc, etc.
 kubectl apply -f kubernetes/config.yaml
 
-# Add secret key to pull images from private registry
-kubectl create secret docker-registry gitlab-registry \
-  --docker-server=$REGISTRY_SERVER \
-  --docker-username=$REGISTRY_USERNAME \
-  --docker-password=$REGISTRY_PASSWORD \
-  --docker-email=$REGISTRY_EMAIL \
-  --namespace=yummy-staging
-
 #################
 ##### FRONTEND
 #################

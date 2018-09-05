@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: registry.gitlab.com/matthieusegret/yummy-phoenix-graphql/api:latest
+          image: gcr.io/yummy-phoenix-graphql/api:latest
           imagePullPolicy: Always
           env:
             - name: NODE_NAME
@@ -109,6 +109,3 @@ spec:
             httpGet:
               path: /healthz
               port: 80
-
-      imagePullSecrets:
-        - name: regsecret

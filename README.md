@@ -121,30 +121,20 @@ This example explains how to deploy the application on **[Google Kubernetes Engi
 5.  Create a static IP address named yummy-phoenix-graphql-ip `gcloud compute addresses create yummy-phoenix-graphql-ip --global`
 6.  Set execute permissions on scripts `chmod +x kubernetes/script/*`
 
-### Building and pushing docker images to private registry
+### Building and pushing docker images to Google Container Registry
 
 1.  Install **[Docker](https://docs.docker.com/install)**
-2.  Create account on docker registry. For example **[Gitlab](https://gitlab.com)**, **[Docker Hub](https://hub.docker.com)** or **[Google Container Registry](https://cloud.google.com/container-registry)**
-3.  Login to docker registry `docker login <registry-name>`
-4.  Build frontend image : `docker build -t <registry-name>/frontend:1.0 -f dockerfiles/frontend.dockerfile .`
-5.  Build api backend image : `docker build -t <registry-name>/api:1.0 -f dockerfiles/api.dockerfile .`
-6.  Push images to registry : `docker push <registry-name>/frontend:1.0 && docker push <registry-name>/api:1.0`
+2.  Read **[Quickstart for Container Registry](https://cloud.google.com/container-registry/docs/quickstart)**
+3.  Login to docker registry `gcloud auth configure-docker`
+4.  Build frontend image : `docker build -t gcr.io/yummy-phoenix-graphql/frontend:latest -f dockerfiles/frontend.dockerfile .`
+5.  Build api backend image : `docker build -t gcr.io/yummy-phoenix-graphql/api:latest -f dockerfiles/api.dockerfile .`
+6.  Push images to registry : `docker push gcr.io/yummy-phoenix-graphql/frontend:latest && docker push gcr.io/yummy-phoenix-graphql/api:latest`
 
-### Configuring Kubernetes
+### Configuring Kubernetes cluster
 
-1.  Edit `(frontend|api)-deploy.yaml` to use your own registry `image: <registry-name>/(frontend|api):1.0`
-2.  Set registry variables :
-
-```
-export REGISTRY_SERVER=<registry-server>
-export REGISTRY_USERNAME=<registry-username>
-export REGISTRY_PASSWORD=<registry-password>
-export REGISTRY_EMAIL=<registry-email>
-```
-
-3.  Create account on **[Sendgrid](https://sendgrid.com)** to send emails
-4.  Create account on **[AWS S3](https://aws.amazon.com/fr/s3)** to upload images
-5.  Set environement variables :
+1.  Create account on **[Sendgrid](https://sendgrid.com)** to send emails
+2.  Create account on **[AWS S3](https://aws.amazon.com/fr/s3)** to upload images
+3.  Set environement variables :
 
 ```
 export SENDGRID_API_KEY=<your-sendgrid-api-key>
@@ -153,8 +143,8 @@ export S3_SECRET=<your-s3-secret>
 export S3_BUCKET=<your-s3-bucket>
 ```
 
-6.  Create and configure cluster with `./kubernetes/script/create-cluster.sh && ./kubernetes/script/configure-cluster.sh`
-7.  Create and populate the Database `./kubernetes/script/create-database.sh`
+4.  Create and configure cluster with `./kubernetes/script/create-cluster.sh && ./kubernetes/script/configure-cluster.sh`
+5.  Create and populate the Database `./kubernetes/script/create-database.sh`
 
 ### Clean up
 
