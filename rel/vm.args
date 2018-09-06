@@ -1,0 +1,8 @@
+## Name of the node
+-name ${NODE_NAME}
+
+## Cookie for distributed erlang
+-setcookie ${NODE_COOKIE}
+
+## App Settings
+-yummy port ${PORT}

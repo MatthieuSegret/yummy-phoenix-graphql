@@ -49,7 +49,7 @@ let config = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        SERVER_HOST: JSON.stringify(process.env.SERVER_HOST)
+        PROD: JSON.stringify(process.env.PROD)
       }
     }),
     new MiniCssExtractPlugin({

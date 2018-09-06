@@ -1,9 +1,9 @@
 {
   "name": "yummy",
-  "version": "0.1.0",
+  "version": "1.0",
   "private": true,
   "engines": {
-    "node": "10.5.0",
+    "node": "8.11.3",
     "npm": "6.1.0"
   },
   "scripts": {

@@ -3,7 +3,7 @@ use Mix.Config
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :yummy, YummyWeb.Endpoint,
-  http: [port: System.get_env("SERVER_PORT") || 4000],
+  http: [port: System.get_env("PORT") || 4000],
   server: true
 
 config :yummy, :sql_sandbox, true
@@ -27,11 +27,6 @@ config :yummy, Yummy.Repo,
 
 # Configures Bamboo
 config :yummy, Yummy.Mailer, adapter: Bamboo.TestAdapter
-
-config :rollbax,
-  access_token: "",
-  environment: "test",
-  enabled: false
 
 config :ex_aws,
   access_key_id: ["fake", :instance_role],

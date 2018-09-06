@@ -1,15 +1,13 @@
+stages:
+  - test
+  - release
+
 test:
-  image: registry.gitlab.com/matthieusegret/yummy-phoenix-graphql/ci:1.1
+  image: registry.gitlab.com/matthieusegret/yummy-phoenix-graphql/ci:1.2
+  stage: test
 
   services:
     - postgres:latest
-
-  variables:
-    POSTGRES_DB: yummy_graphql_test
-    POSTGRES_HOST: postgres
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: "postgres"
-    MIX_ENV: "test"
 
   cache:
     untracked: true
@@ -18,7 +16,13 @@ test:
       - deps
       - _build
       - client/node_modules
-      - client/build
+
+  variables:
+    POSTGRES_DB: yummy_graphql_test
+    POSTGRES_HOST: postgres
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: 'postgres'
+    MIX_ENV: 'test'
 
   before_script:
     - fakes3 -r .s3bucket -p 4567 > /dev/null 2>&1 &
@@ -29,3 +33,39 @@ test:
 
   script:
     - mix test
+
+before_script:
+  - mkdir -p $HOME/.docker
+  - echo "$DOCKER_AUTH_CONFIG" >> "$HOME/.docker/config.json"
+
+frontend:
+  image: docker:stable
+  stage: release
+
+  variables:
+    CONTAINER_IMAGE: gcr.io/yummy-phoenix-graphql/frontend
+
+  services:
+    - docker:dind
+
+  script:
+    - docker pull $CONTAINER_IMAGE:latest || true
+    - docker build --cache-from $CONTAINER_IMAGE:latest --tag $CONTAINER_IMAGE:$CI_BUILD_REF --tag $CONTAINER_IMAGE:latest -f dockerfiles/frontend.dockerfile .
+    - docker push $CONTAINER_IMAGE:$CI_BUILD_REF
+    - docker push $CONTAINER_IMAGE:latest
+
+api:
+  image: docker:stable
+  stage: release
+
+  variables:
+    CONTAINER_IMAGE: gcr.io/yummy-phoenix-graphql/api
+
+  services:
+    - docker:dind
+
+  script:
+    - docker pull $CONTAINER_IMAGE:latest || true
+    - docker build --cache-from $CONTAINER_IMAGE:latest --tag $CONTAINER_IMAGE:$CI_BUILD_REF --tag $CONTAINER_IMAGE:latest -f dockerfiles/api.dockerfile .
+    - docker push $CONTAINER_IMAGE:$CI_BUILD_REF
+    - docker push $CONTAINER_IMAGE:latest

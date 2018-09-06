@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: yummy-config
+data:
+  public-host: {{ .Values.publicHost }}
+  public-port: '80'

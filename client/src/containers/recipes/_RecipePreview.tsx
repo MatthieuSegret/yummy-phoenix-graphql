@@ -2,7 +2,6 @@ import * as React from 'react';
 import { compose } from 'react-apollo';
 import { Link } from 'react-router-dom';
 
-import ROOT_URL from 'config/rootUrl';
 import RecipeInfos from 'containers/recipes/_RecipeInfos';
 import RecipeActions from 'containers/recipes/_RecipeActions';
 import withCurrentUser from 'queries/currentUserQuery';
@@ -23,7 +22,7 @@ class RecipePreview extends React.Component<IProps, {}> {
       <div className="recipe">
         <div className="recipe-image-wrapper">
           {recipe.image_url ? (
-            <img src={`${ROOT_URL}${recipe.image_url}`} alt={recipe.title} className="recipe-image image is-96x96" />
+            <img src={`${recipe.image_url}`} alt={recipe.title} className="recipe-image image is-96x96" />
           ) : null}
         </div>
         <div className="recipe-preview">

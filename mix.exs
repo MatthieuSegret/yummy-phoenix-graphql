@@ -4,7 +4,7 @@ defmodule Yummy.Mixfile do
   def project do
     [
       app: :yummy,
-      version: "0.0.1",
+      version: "1.0",
       elixir: "~> 1.6.5",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
@@ -60,17 +60,15 @@ defmodule Yummy.Mixfile do
       {:secure_random, "~> 0.5"},
       {:sweet_xml, "~> 0.6"},
       {:timex, "~> 3.1"},
+      {:distillery, "~> 1.5", runtime: false},
 
       # Mails
-      {:bamboo, github: "thoughtbot/bamboo"},
+      {:bamboo, "~> 1.0.0"},
 
       # Upload
       {:arc, "~> 0.8.0"},
       {:arc_ecto, "~> 0.8.0"},
       {:ex_aws, "~> 1.1.3"},
-
-      # Errors
-      {:rollbax, "~> 0.8.2"},
 
       # Dev
       {:credo, "~> 0.9.3", only: :dev, runtime: false},

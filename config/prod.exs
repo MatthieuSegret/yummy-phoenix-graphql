@@ -15,11 +15,13 @@ use Mix.Config
 # which you typically run after static files are built.
 config :yummy, YummyWeb.Endpoint,
   load_from_system_env: true,
-  http: [port: {:system, "PORT"}, compress: true],
-  url: [scheme: "https", host: "yummy-phoenix-graphql.herokuapp.com", port: 443],
-  force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  http: [port: {:system, "PORT"}],
+  url: [host: "${PUBLIC_HOST}", port: "${PUBLIC_PORT}"],
   cache_static_manifest: "priv/static/cache_manifest.json",
-  secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE")
+  secret_key_base: "${SECRET_KEY_BASE}",
+  version: Mix.Project.config()[:version],
+  server: true,
+  root: "."
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -27,11 +29,7 @@ config :logger, level: :info
 # Configures Bamboo
 config :yummy, Yummy.Mailer,
   adapter: Bamboo.SendGridAdapter,
-  api_key: System.get_env("SENDGRID_API_KEY")
-
-config :rollbax,
-  access_token: {:system, "ROLLBAR_ACCESS_TOKEN"},
-  environment: "production"
+  api_key: "${SENDGRID_API_KEY}"
 
 config :ex_aws,
   access_key_id: [{:system, "S3_KEY"}, :instance_role],
@@ -46,6 +44,8 @@ config :arc,
 # Configure your database
 config :yummy, Yummy.Repo,
   adapter: Ecto.Adapters.Postgres,
-  url: System.get_env("DATABASE_URL"),
-  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
-  ssl: true
+  username: "${POSTGRES_USER}",
+  password: "${POSTGRES_PASSWORD}",
+  database: "${POSTGRES_DB}",
+  hostname: "${POSTGRES_HOST}",
+  pool_size: "${DB_POOL_SIZE}"
