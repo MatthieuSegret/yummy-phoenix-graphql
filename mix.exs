@@ -4,7 +4,7 @@ defmodule Yummy.Mixfile do
   def project do
     [
       app: :yummy,
-      version: "0.0.1",
+      version: "1.0",
       elixir: "~> 1.6.5",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),

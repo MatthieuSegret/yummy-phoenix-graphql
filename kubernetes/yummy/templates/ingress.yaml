@@ -12,7 +12,7 @@ spec:
     serviceName: frontend-svc
     servicePort: 80
   rules:
-    - host: staging.yummy-phoenix-graphql.com
+    - host: {{ .Values.publicHost }}
       http:
         paths:
           - path: /graphql

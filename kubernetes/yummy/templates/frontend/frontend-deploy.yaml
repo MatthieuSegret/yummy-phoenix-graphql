@@ -15,7 +15,5 @@ spec:
       containers:
         - name: frontend
           image: gcr.io/yummy-phoenix-graphql/frontend
-          imagePullPolicy: Always
-
           ports:
             - containerPort: 80

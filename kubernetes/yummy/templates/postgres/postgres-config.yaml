@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+data:
+  db-name: {{ .Values.database.name }}
+  db-pool-size: "{{ .Values.database.poolSize }}"
+  db-host: postgres-svc

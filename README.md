@@ -112,39 +112,64 @@ Integration tests with [Wallaby](https://github.com/keathley/wallaby) and Chrome
 
 This example explains how to deploy the application on **[Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)**.
 
-### Preaparing environment
+### Preparing environment
 
 1.  Create account on **[Google Cloud](https://cloud.google.com)** and create the project `yummy-phoenix-graphql`
 2.  Install **[gcloud](https://cloud.google.com/sdk)**
 3.  Initialize gcloud with `gcloud init`
 4.  Install kubectl with gcloud : `gcloud components install kubectl`
 5.  Create a static IP address named yummy-phoenix-graphql-ip `gcloud compute addresses create yummy-phoenix-graphql-ip --global`
-6.  Set execute permissions on scripts `chmod +x kubernetes/script/*`
+6.  Install **jq** to parse json in command-line : https://stedolan.github.io/jq
+7.  Install **only** the Helm client (helm) : https://docs.helm.sh/using_helm/#installing-helm
+8.  Set execute permissions on scripts `chmod +x kubernetes/script/*`
 
 ### Building and pushing docker images to Google Container Registry
 
 1.  Install **[Docker](https://docs.docker.com/install)**
-2.  Read **[Quickstart for Container Registry](https://cloud.google.com/container-registry/docs/quickstart)**
+2.  Read **[Quickstart for Google Container Registry](https://cloud.google.com/container-registry/docs/quickstart)**
 3.  Login to docker registry `gcloud auth configure-docker`
 4.  Build frontend image : `docker build -t gcr.io/yummy-phoenix-graphql/frontend:latest -f dockerfiles/frontend.dockerfile .`
 5.  Build api backend image : `docker build -t gcr.io/yummy-phoenix-graphql/api:latest -f dockerfiles/api.dockerfile .`
 6.  Push images to registry : `docker push gcr.io/yummy-phoenix-graphql/frontend:latest && docker push gcr.io/yummy-phoenix-graphql/api:latest`
 
-### Configuring Kubernetes cluster
+### Creating Kubernetes cluster
 
 1.  Create account on **[Sendgrid](https://sendgrid.com)** to send emails
 2.  Create account on **[AWS S3](https://aws.amazon.com/fr/s3)** to upload images
 3.  Set environement variables :
 
 ```
+export NAMESPACE=yummy-staging
+export PUBLIC_HOST=$(gcloud compute addresses describe yummy-phoenix-graphql-ip --global --format="value(address)")
+
 export SENDGRID_API_KEY=<your-sendgrid-api-key>
 export S3_KEY=<your-s3-key>
 export S3_SECRET=<your-s3-secret>
 export S3_BUCKET=<your-s3-bucket>
 ```
 
-4.  Create and configure cluster with `./kubernetes/script/create-cluster.sh && ./kubernetes/script/configure-cluster.sh`
+4.  Create cluster with `./kubernetes/script/create-cluster.sh`
+5.  Install yummy helm chart :
+
+```
+helm install --name yummy --namespace=$NAMESPACE \
+  --set publicHost=$PUBLIC_HOST \
+  --set api.sendgridApiKey=$SENDGRID_API_KEY \
+  --set api.s3Key=$S3_KEY \
+  --set api.s3Secret=$S3_SECRET \
+  --set api.s3Bucket=$S3_BUCKET \
+  ./kubernetes/yummy
+```
+
 5.  Create and populate the Database `./kubernetes/script/create-database.sh`
+
+### Upgrading yummy chart
+
+You can edit or append to the existing customized values and templates, then apply the changes with :
+
+```
+helm upgrade yummy ./kubernetes/yummy
+```
 
 ### Clean up
 

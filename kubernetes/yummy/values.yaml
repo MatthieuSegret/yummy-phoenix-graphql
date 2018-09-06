@@ -1,0 +1,4 @@
+database:
+  name: yummy_graphql_prod
+  poolSize: 12
+  storage: 10Gi
