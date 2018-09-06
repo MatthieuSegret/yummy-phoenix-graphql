@@ -21,34 +21,22 @@ spec:
               value: 'yummy@127.0.0.1'
 
             - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-credentials
-                  key: user
+              value: {{ .Values.postgresql.postgresUser }}
 
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-credentials
-                  key: password
+                  name: {{ .Release.Name }}-postgresql
+                  key: postgres-password
 
             - name: POSTGRES_DB
-              valueFrom:
-                configMapKeyRef:
-                  name: postgres-config
-                  key: db-name
+              value: {{ .Values.postgresql.postgresDatabase }}
 
             - name: POSTGRES_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: postgres-config
-                  key: db-host
+              value: {{ .Release.Name }}-postgresql
 
             - name: DB_POOL_SIZE
-              valueFrom:
-                configMapKeyRef:
-                  name: postgres-config
-                  key: db-pool-size
+              value: "{{ .Values.api.databasePoolSize }}"
 
             - name: PUBLIC_HOST
               valueFrom:

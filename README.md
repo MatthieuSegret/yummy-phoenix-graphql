@@ -59,7 +59,7 @@ This application can be used as **starter kit** if you want to get started build
 - Erlang 20 ([Installing Erlang](https://github.com/asdf-vm/asdf)
 - Elixir 1.6 ([Installing Elixir](https://elixir-lang.org/install.html))
 - Phoenix 1.3 ([Installing Phoenix](https://hexdocs.pm/phoenix/installation.html))
-- Node 9.2 ([Installing Node](https://nodejs.org/en/download/package-manager))
+- Node 8.11 ([Installing Node](https://nodejs.org/en/download/package-manager))
 - ImageMagick 7
 - PostgreSQL
 - _Ruby only for integration tests with FakeS3_

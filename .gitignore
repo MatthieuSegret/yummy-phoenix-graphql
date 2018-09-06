@@ -4,6 +4,7 @@
 /db
 /deps
 /client/build
+/kubernetes/yummy/charts
 /test/screenshots
 /*.ez
 /.elixir_ls

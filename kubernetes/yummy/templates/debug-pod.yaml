@@ -7,3 +7,4 @@ spec:
     - name: debug
       image: alpine:3.6
       command: ['sleep', '100000']
+  restartPolicy: Never

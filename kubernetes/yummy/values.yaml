@@ -1,4 +1,18 @@
-database:
-  name: yummy_graphql_prod
-  poolSize: 12
-  storage: 10Gi
+# PostgreSQL
+## Configuration values for the postgresql dependency
+## ref: https://github.com/kubernetes/charts/blob/master/stable/postgresql/README.md
+##
+postgresql:
+  enabled: true
+  postgresUser: postgres
+  postgresDatabase: yummy_graphql_prod
+  imageTag: 10.5
+  service:
+    port: 5432
+  persistence:
+    enabled: true
+    size: 10Gi
+
+# API values
+api:
+  databasePoolSize: 12
