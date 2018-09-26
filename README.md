@@ -118,10 +118,17 @@ This example explains how to deploy the application on **[Google Kubernetes Engi
 2.  Install **[gcloud](https://cloud.google.com/sdk)**
 3.  Initialize gcloud with `gcloud init`
 4.  Install kubectl with gcloud : `gcloud components install kubectl`
-5.  Create a static IP address named yummy-phoenix-graphql-ip `gcloud compute addresses create yummy-phoenix-graphql-ip --global`
-6.  Install **jq** to parse json in command-line : https://stedolan.github.io/jq
-7.  Install **only** the Helm client (helm) : https://docs.helm.sh/using_helm/#installing-helm
-8.  Set execute permissions on scripts `chmod +x kubernetes/script/*`
+5.  Install **only** the Helm client (helm) : https://docs.helm.sh/using_helm/#installing-helm
+6.  Set execute permissions on scripts `chmod +x kubernetes/script/*`
+
+### Preparing for the istio installation
+
+1.  Move to kubernetes/istio/charts : `cd kubernetes/istio/charts`
+2.  You can run the following command to download and extract the latest release automatically : `curl -L https://git.io/getLatestIstio | sh -`
+3.  Move to istio-1.x.y, for example : `cd istio-1.0.2`
+4.  Add the istioctl client to your PATH with : `printf "export PATH=%s:\$PATH\n" $PWD/bin >> ~/.bashrc && source ~/.bashrc` (or .zshrc, .bash_profile)
+5.  Check istio version : `istioctl version`
+6.  Back to root path of the project `cd <root-project>`
 
 ### Building and pushing docker images to Google Container Registry
 
@@ -139,9 +146,6 @@ This example explains how to deploy the application on **[Google Kubernetes Engi
 3.  Set environement variables :
 
 ```
-export NAMESPACE=yummy-staging
-export PUBLIC_HOST=$(gcloud compute addresses describe yummy-phoenix-graphql-ip --global --format="value(address)")
-
 export SENDGRID_API_KEY=<your-sendgrid-api-key>
 export S3_KEY=<your-s3-key>
 export S3_SECRET=<your-s3-secret>
@@ -149,19 +153,9 @@ export S3_BUCKET=<your-s3-bucket>
 ```
 
 4.  Create cluster with `./kubernetes/script/create-cluster.sh`
-5.  Install yummy helm chart :
-
-```
-helm install --name yummy --namespace=$NAMESPACE \
-  --set publicHost=$PUBLIC_HOST \
-  --set api.sendgridApiKey=$SENDGRID_API_KEY \
-  --set api.s3Key=$S3_KEY \
-  --set api.s3Secret=$S3_SECRET \
-  --set api.s3Bucket=$S3_BUCKET \
-  ./kubernetes/yummy
-```
-
-5.  Create and populate the Database `./kubernetes/script/create-database.sh`
+5.  Check if you have external ip : `kubectl -n istio-system get service istio-ingressgateway'`. Retry if ingress is not ready yet.
+6.  Create Kubernetes resources `./kubernetes/script/create-resources.sh`
+7.  Create and populate the Database `./kubernetes/script/create-database.sh`
 
 ### Upgrading yummy chart
 
@@ -171,18 +165,56 @@ You can edit or append to the existing customized values and templates, then app
 helm upgrade yummy ./kubernetes/yummy
 ```
 
+### Querying Metrics from Prometheus
+
+1. Verify that the prometheus service is running in your cluster:
+
+```
+kubectl -n istio-system get svc prometheus
+```
+
+2. In Kubernetes environments, execute the following command:
+
+```
+$ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=prometheus -o jsonpath='{.items[0].metadata.name}') 9090:9090 &
+```
+
+3. To open the Prometheus UI, visit http://localhost:9090/graph in your web browser.
+
+### Visualizing Metrics with Grafana
+
+1. Verify that the prometheus service is running in your cluster:
+
+```
+kubectl -n istio-system get svc prometheus
+```
+
+2. Verify that the Grafana service is running in your cluster:
+
+```
+kubectl -n istio-system get svc grafana
+```
+
+3. In Kubernetes environments, execute the following command:
+
+```
+$ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000 &
+```
+
+4. Visit http://localhost:3000/dashboard/db/istio-mesh-dashboard in your web browser.
+
 ### Clean up
 
 To avoid incurring charges to your Google Cloud Platform account for the resources used :
 
 1.  Delete cluster with `./kubernetes/script/destroy-cluster.sh`
-2.  if you don't want to recreate this cluster in the future, delete the static ip : `gcloud compute addresses delete yummy-phoenix-graphql-ip --global`
-3.  Delete any orphaned resources : `gcloud compute backend-services delete --global -q <BACKEND_SERVICES>`
+2.  Delete any orphaned resources : `gcloud compute backend-services delete --global -q <BACKEND_SERVICES>`
 
 ## Next step
 
+- [ ] Setup **[k8s_traffic_plug](https://github.com/Financial-Times/k8s_traffic_plug)** : Traffic endpoint and graceful shutdown for Elixir Plug apps
 - [ ] Migrate from S3 to Google CDN
-- [ ] Connect Erlang nodes between them on Kubernetes cluster with **[Peerage](https://github.com/mrluc/peerage)**
+- [ ] Connect Erlang nodes between them on Kubernetes cluster with **[Libcluster](https://github.com/bitwalker/libcluster)**
 - [ ] Migrate frontend from TypeScript to ReasonML
 
 ## Screens

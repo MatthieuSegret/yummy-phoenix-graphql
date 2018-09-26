@@ -5,6 +5,7 @@
 /deps
 /client/build
 /kubernetes/yummy/charts
+/kubernetes/istio/charts/istio*
 /test/screenshots
 /*.ez
 /.elixir_ls
@@ -24,3 +25,5 @@ erl_crash.dump
 # secrets files as long as you replace their contents by environment
 # variables.
 /config/*.secret.exs
+
+transaction\.yaml

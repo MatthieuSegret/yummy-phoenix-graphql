@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: yummy-config
 data:
-  public-host: {{ .Values.publicHost }}
+  public-host: {{ .Values.host }}
   public-port: '80'
