@@ -118,8 +118,9 @@ This example explains how to deploy the application on **[Google Kubernetes Engi
 2.  Install **[gcloud](https://cloud.google.com/sdk)**
 3.  Initialize gcloud with `gcloud init`
 4.  Install kubectl with gcloud : `gcloud components install kubectl`
-5.  Install **only** the Helm client (helm) : https://docs.helm.sh/using_helm/#installing-helm
-6.  Set execute permissions on scripts `chmod +x kubernetes/script/*`
+5.  Install **jq** to parse json in command-line : https://stedolan.github.io/jq
+6.  Install **only** the Helm client (helm) : https://docs.helm.sh/using_helm/#installing-helm
+7.  Set execute permissions on scripts `chmod +x kubernetes/script/*`
 
 ### Preparing for the istio installation
 
@@ -153,9 +154,6 @@ export S3_BUCKET=<your-s3-bucket>
 ```
 
 4.  Create cluster with `./kubernetes/script/create-cluster.sh`
-5.  Check if you have external ip : `kubectl -n istio-system get service istio-ingressgateway'`. Retry if ingress is not ready yet.
-6.  Create Kubernetes resources `./kubernetes/script/create-resources.sh`
-7.  Create and populate the Database `./kubernetes/script/create-database.sh`
 
 ### Upgrading yummy chart
 
@@ -201,14 +199,19 @@ kubectl -n istio-system get svc grafana
 $ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000 &
 ```
 
-4. Visit http://localhost:3000/dashboard/db/istio-mesh-dashboard in your web browser.
+4. To open the Prometheus UI, visit http://localhost:3000 in your web browser. Username is `admin` and you can get the password with :
+
+```
+$ kubectl get secret grafana -n istio-system -o json | jq -r '.data.password' | base64 --decode
+```
 
 ### Clean up
 
-To avoid incurring charges to your Google Cloud Platform account for the resources used :
+To avoid incurring charges to your Google Cloud Platform account for the resources used, delete cluster with :
 
-1.  Delete cluster with `./kubernetes/script/destroy-cluster.sh`
-2.  Delete any orphaned resources : `gcloud compute backend-services delete --global -q <BACKEND_SERVICES>`
+```
+$ ./kubernetes/script/destroy-cluster.sh
+```
 
 ## Next step
 

@@ -12,6 +12,9 @@ postgresql:
   persistence:
     enabled: true
     size: 10Gi
+  metrics:
+    enabled: true
+    imageTag: v0.4.6
 
 # API values
 api:
