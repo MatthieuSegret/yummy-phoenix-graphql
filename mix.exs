@@ -76,7 +76,15 @@ defmodule Yummy.Mixfile do
       # Tests
       {:wallaby, github: "keathley/wallaby", runtime: false, only: :test},
       {:ex_machina, "~> 2.2", only: :test},
-      {:faker, "~> 0.10", only: :test}
+      {:faker, "~> 0.10", only: :test},
+
+      # Prometheus
+      {:prometheus, "~> 4.2", override: true},
+      {:prometheus_ex, "~> 3.0.3"},
+      {:prometheus_ecto, "~> 1.3.0"},
+      {:prometheus_phoenix, "~> 1.2.1"},
+      {:prometheus_plugs, "~> 1.1.5"},
+      {:prometheus_process_collector, "~> 1.3.1"}
     ]
   end
 

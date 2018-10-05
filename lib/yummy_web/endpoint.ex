@@ -4,6 +4,9 @@ defmodule YummyWeb.Endpoint do
 
   socket("/socket", YummyWeb.UserSocket)
 
+  plug(Yummy.PipelineInstrumenter)
+  plug(Yummy.PrometheusExporter)
+
   if Application.get_env(:yummy, :sql_sandbox) do
     plug(Phoenix.Ecto.SQL.Sandbox)
   end

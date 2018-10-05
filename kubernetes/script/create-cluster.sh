@@ -35,7 +35,6 @@ helm init --service-account=tiller --wait
 ISTIO_PATH=$(find kubernetes/istio/charts -type d -iname "istio-1.*" | head -1)
 cd $ISTIO_PATH
 
-GRAFANA_PASSWORD=$(openssl rand -hex 12)
 # GRAFANA_PERSIST is false by default
 if [ -z "${GRAFANA_PERSIST}" ]; then 
   GRAFANA_PERSIST=false
@@ -53,7 +52,6 @@ kubectl create namespace istio-system
 helm install install/kubernetes/helm/istio --wait --name istio --namespace istio-system \
   --set grafana.enabled=true \
   --set grafana.security.enabled=true \
-  --set grafana.security.adminPassword=$GRAFANA_PASSWORD \
   --set grafana.persist=$GRAFANA_PERSIST
 cd -
 

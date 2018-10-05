@@ -196,14 +196,10 @@ kubectl -n istio-system get svc grafana
 3. In Kubernetes environments, execute the following command:
 
 ```
-$ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000 &
+$ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3001:3000 &
 ```
 
-4. To open the Prometheus UI, visit http://localhost:3000 in your web browser. Username is `admin` and you can get the password with :
-
-```
-$ kubectl get secret grafana -n istio-system -o json | jq -r '.data.password' | base64 --decode
-```
+4. To open the Grafana UI, visit http://localhost:3001 in your web browser. Username and password is `admin`. You can change the password.
 
 ### Clean up
 

@@ -16,10 +16,197 @@
   "editable": true,
   "gnetId": 455,
   "graphTooltip": 0,
-  "id": 19,
-  "iteration": 1538060858100,
+  "id": 7,
+  "iteration": 1538748237446,
   "links": [],
   "panels": [
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 80,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "round(sum(irate(istio_tcp_received_bytes_total{reporter=\"destination\", connection_security_policy=\"mutual_tls\", destination_workload_namespace=~\"yummy-staging\", destination_workload=~\"yummy-postgresql\"}[1m])) by (source_workload, source_workload_namespace), 0.001)",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{ source_workload }}.{{ source_workload_namespace}} (🔐mTLS)",
+          "refId": "A",
+          "step": 2
+        },
+        {
+          "expr": "round(sum(irate(istio_tcp_received_bytes_total{reporter=\"destination\", connection_security_policy!=\"mutual_tls\", destination_workload_namespace=~\"yummy-staging\", destination_workload=~\"yummy-postgresql\"}[1m])) by (source_workload, source_workload_namespace), 0.001)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{ source_workload }}.{{ source_workload_namespace}}",
+          "refId": "B",
+          "step": 2
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Bytes Received from Incoming TCP Connection",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "Bps",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 82,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "round(sum(irate(istio_tcp_sent_bytes_total{connection_security_policy=\"mutual_tls\", reporter=\"destination\", destination_workload_namespace=~\"yummy-staging\", destination_workload=~\"yummy-postgresql\"}[1m])) by (source_workload, source_workload_namespace), 0.001)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{ source_workload }}.{{ source_workload_namespace}} (🔐mTLS)",
+          "refId": "A",
+          "step": 2
+        },
+        {
+          "expr": "round(sum(irate(istio_tcp_sent_bytes_total{connection_security_policy!=\"mutual_tls\", reporter=\"destination\", destination_workload_namespace=~\"yummy-staging\", destination_workload=~\"yummy-postgresql\"}[1m])) by (source_workload, source_workload_namespace), 0.001)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{ source_workload }}.{{ source_workload_namespace}}",
+          "refId": "B",
+          "step": 2
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Bytes Sent to Incoming TCP Connection",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "Bps",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
     {
       "aliasColors": {},
       "bars": false,
@@ -34,7 +221,7 @@
         "h": 7,
         "w": 20,
         "x": 0,
-        "y": 0
+        "y": 6
       },
       "id": 1,
       "isNew": true,
@@ -355,7 +542,7 @@
         "h": 3,
         "w": 4,
         "x": 20,
-        "y": 0
+        "y": 6
       },
       "height": "55px",
       "id": 11,
@@ -469,7 +656,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 7
+        "y": 13
       },
       "id": 2,
       "isNew": true,
@@ -784,7 +971,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 7
+        "y": 13
       },
       "id": 3,
       "isNew": true,
@@ -958,7 +1145,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 14
+        "y": 20
       },
       "id": 12,
       "isNew": true,
@@ -1048,7 +1235,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 14
+        "y": 20
       },
       "id": 13,
       "isNew": true,
@@ -1134,6 +1321,7 @@
       {
         "allValue": ".*",
         "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1157,8 +1345,9 @@
       {
         "allValue": ".*",
         "current": {
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": "yummy_graphql_prod",
+          "value": "yummy_graphql_prod"
         },
         "datasource": "Prometheus",
         "hide": 0,
