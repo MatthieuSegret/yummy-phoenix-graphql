@@ -201,6 +201,8 @@ $ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=
 
 4. To open the Grafana UI, visit http://localhost:3001 in your web browser. Username and password is `admin`. You can change the password.
 
+<img alt="Resources dashboard" src="http://documents.matthieusegret.com/resources-dashboard.png" width="500">
+
 ### Clean up
 
 To avoid incurring charges to your Google Cloud Platform account for the resources used, delete cluster with :

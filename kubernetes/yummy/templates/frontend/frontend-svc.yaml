@@ -4,6 +4,9 @@ metadata:
   name: frontend-svc
   labels:
     app: frontend-svc
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "80"
 spec:
   selector:
     app: frontend

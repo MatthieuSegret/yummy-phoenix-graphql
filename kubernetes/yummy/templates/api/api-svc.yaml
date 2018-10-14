@@ -4,6 +4,9 @@ metadata:
   name: api-svc
   labels:
     app: api-svc
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "80"
 spec:
   selector:
     app: api
